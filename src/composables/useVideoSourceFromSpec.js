@@ -98,14 +98,17 @@ export function useVideoSourceFromSpec(options) {
 
        // Build provider input (normalized) with our scoped effectiveJF.
       // This does not mutate store/route.
+      var jfString = String(effectiveJF || "");
       var input = {
         provider: toId(rawSpec && rawSpec.provider, ""),
         study: toId(study, "jvideo"),
         lesson: toInt(lesson, 1),
-        languageCodeJF: effectiveJF,   // <= fallback applied
+        languageCodeJF: jfString,   // <= fallback applied
+        jf:jfString,
         languageCodeHL: selHL,        // UI language unchanged
         meta: providerMeta
       };
+      console.log (input);
 
       // If we still have no provider, we can't build anything useful
       if (!input.provider) {

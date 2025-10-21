@@ -6,6 +6,7 @@ export function buildVideoSource(input) {
   if (!input || typeof input !== "object") return buildFileSource({});
   switch (input.provider) {
     case "arclight":
+      console.log ('went to arclight');
       return buildArcLightSource(input);
     case "vimeo":
       return buildVimeoSource(input);

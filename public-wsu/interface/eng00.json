@@ -59,6 +59,11 @@
             "1": "Jesus' words and actions have shaped history, offering a wisdom that stands apart. As you watch this video, ask yourself: What did Jesus teach? How does his wisdom compare to what others have said — and what could it mean for you?"
         }
     },
+    "review": {
+      "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
+      "p2": "This helps us encourage each other and see how God is at work.",
+      "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
+    },
     "hope": {
         "title": "Seven Stories of Hope",
         "summary": "Seven encounters with Jesus that reveal His heart of compassion, forgiveness, and power to transform lives—even in the most unlikely situations.",

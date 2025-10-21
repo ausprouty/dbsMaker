@@ -168,7 +168,7 @@ export function buildArcLightPlayerUrl(videoMeta, lesson, languageJF, opts) {
  */
 export function buildArcLightSource(input) {
   var meta = flattenMeta(input);
-  var url = buildArcLightPlayerUrl(meta, input.lesson, input.languageJF, {
+  var url = buildArcLightPlayerUrl(meta, input.lesson, input.languageCodeJF, {
     base: meta.embedBase,
     playerStyle: meta.playerStyle || "default",
     params: input.params, // optional { start, end, ... }

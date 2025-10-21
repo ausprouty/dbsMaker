@@ -51,7 +51,12 @@
       "2": "Gather your friends and start exploring! Click on the images below to begin your journey — discovering not just wisdom, but a relationship with God and the spiritual community He invites you into."
     }
   },
-  "jVideo": {
+  "review": {
+		"p1": "Before we begin, let’s take a moment to review what you committed to last time.",
+		"p2": "This helps us encourage each other and see how God is at work.",
+		"empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
+	},
+  "jvideo": {
     "title": "The Life of Jesus",
     "summary": "See how Jesus’ actions and teachings challenged expectations, inspired hope, and still speak powerfully today.",
     "para": {
@@ -151,32 +156,9 @@
       "1": "Although we are created in God’s image and made to center our lives on Him, our rebellious hearts have led us to trust in ourselves and substitute gods. This misplaced trust has broken not just God's law but His heart. Yet God, in His deep love, sent Jesus to restore what was lost.",
       "2": "The journey of trust begins as we turn from earning God's favor to receiving His mercy through Jesus. His life, death, and resurrection offer us a new beginning—not just life after death, but life with God now. Will you take the step from striving to trusting?"
     }
-  },
-
-  "review": {
-    "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
-    "p2": "This helps us encourage each other and see how God is at work.",
-    "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
-  },
-  "menu": {
-    "next": "Next",
-    "nextVideo": "Next Video",
-    "previous": "Previous",
-    "select": "Select",
-    "videoSegment": "Video Segment",
-    "language": "Select Language",
-    "topic": "Topic",
-    "changeLanguage": "Click the globe at the top of the page to choose a different language."
-  },
-  "lesson": {
-    "completed": "Completed",
-    "notCompleted": "Mark as completed"
-  },
-  "notes": {
-    "lookBackNoteInstruction": "Write your notes for Look Back here",
-    "lookUpNoteInstruction": "Write your notes for Look Up here",
-    "lookForwardNoteInstruction": "Write your notes for Look Forward here",
-    "videoNoteInstruction": "Write your notes for this video here"
   }
+
+
+
 }
 
