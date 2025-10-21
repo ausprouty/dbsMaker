@@ -1,0 +1,124 @@
+[
+  {
+    "id": 1,
+    "name": "Bengali",
+    "ethnicName": "বাংলা",
+    "languageCodeHL": "bng00",
+    "languageCodeJF": "139082",
+    "languageCodeBrowser": "bn",
+    "direction": "",
+    "font": "shonar",
+    "fontData": "{\"shonar\": {\"R\": \"shonar.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
+  {
+    "id": 2,
+    "name": "English",
+    "ethnicName": "English",
+    "languageCodeHL": "eng00",
+    "languageCodeJF": "529",
+    "languageCodeBrowser": "en",
+    "direction": "ltr",
+    "font": "arial",
+    "fontData": "null"
+  },
+  {
+    "id": 3,
+    "name": "Gujarati",
+    "ethnicName": "ગુજરાતી",
+    "languageCodeHL": "gjr00",
+    "languageCodeJF": "6600",
+    "languageCodeBrowser": "gu",
+    "direction": "",
+    "font": "arialuni",
+    "fontData": "{\"arialuni\": {\"R\": \"arialuni.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
+  {
+    "id": 4,
+    "name": "Hindi",
+    "ethnicName": "हिन्दी",
+    "languageCodeHL": "hnd00",
+    "languageCodeJF": "6464",
+    "languageCodeBrowser": "hi",
+    "direction": "",
+    "font": "mangal",
+    "fontData": "{\"mangal\": {\"R\": \"mangal.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
+  {
+    "id": 5,
+    "name": "Kannada",
+    "ethnicName": "ಕನ್ನಡ",
+    "languageCodeHL": "kjv00",
+    "languageCodeJF": "6318",
+    "languageCodeBrowser": "kn",
+    "direction": "",
+    "font": "lohitkannada",
+    "fontData": "{\"arialuni\": {\"R\": \"arialuni.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
+  {
+    "id": 6,
+    "name": "Malayalam",
+    "ethnicName": "മലയാളം",
+    "languageCodeHL": "mjs00",
+    "languageCodeJF": "19985",
+    "languageCodeBrowser": "ml",
+    "direction": "",
+    "font": "tholikanew",
+    "fontData": "{\"tholikanew\": {\"R\": \"tholikanew.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
+  {
+    "id": 7,
+    "name": "Nepali",
+    "ethnicName": "नेपाली भाषा ",
+    "languageCodeHL": "nep00",
+    "languageCodeJF": "1370",
+    "languageCodeBrowser": "ne",
+    "direction": "",
+    "font": "mangal",
+    "fontData": "{\"mangal\": {\"R\": \"mangal.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
+  {
+    "id": 8,
+    "name": "Punjabi",
+    "ethnicName": "Punjabi",
+    "languageCodeHL": "pan19",
+    "languageCodeJF": "46771",
+    "languageCodeBrowser": "pa",
+    "direction": null,
+    "font": "akaash",
+    "fontData": "{\"akaash\": {\"B\": \"akaash_bold.ttf\", \"R\": \"akaash.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
+{
+	  "id": 9,
+	  "name": "Marathi",
+	  "ethnicName": "मराठी",
+	  "languageCodeHL": "mrt00",
+	  "languageCodeJF": "6174",
+	  "languageCodeBrowser": "mr",
+	  "direction": "",
+	  "font": "arialuni",
+	 "fontData": "{\"arialuni\": {\"R\": \"arialuni.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+	},
+
+  {
+    "id": 10,
+    "name": "Tamil",
+    "ethnicName": "தமிழ்",
+    "languageCodeHL": "tcv00",
+    "languageCodeJF": "5871",
+    "languageCodeBrowser": "ta",
+    "direction": "",
+    "font": "tau-valluvar-b",
+    "fontData": "{\"tau-valluvar-b\": {\"R\": \"tau-valluvar-b.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
+  {
+    "id": 11,
+    "name": "Telugu",
+    "ethnicName": "తెలుగు",
+    "languageCodeHL": "tcw00",
+    "languageCodeJF": "139167",
+    "languageCodeBrowser": "te",
+    "direction": "",
+    "font": "gidugu",
+    "fontData": "{\"gidugu\": {\"R\": \"gidugu.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  }
+]

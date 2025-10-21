@@ -1,0 +1,31 @@
+[
+  {
+    "key": "jvideo",
+    "title": "The Source of Wisdom",
+    "image": "/images/source.png",
+    "route": "/jvideo",
+    "maxLessons": 61
+  },
+  {
+    "key": "life",
+    "title": "Wisdom for Life",
+    "image": "/images/life.png",
+    "route": "/series/life?variant=wisdom",
+    "maxLessons": 23
+  },
+  {
+    "key": "ctc",
+    "title": "The Grand Story",
+    "image": "/images/ctc.png",
+    "route": "/series/ctc?variant=wisdom",
+    "maxLessons": 23
+  },
+  {
+    "key": "ask",
+    "title": "Discover and AsK",
+    "image": "/images/ask.png",
+    "route": "/questions?url=https://www.everyperson.com/contact.php"
+
+  }
+
+]

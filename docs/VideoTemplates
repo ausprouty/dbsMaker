@@ -1,0 +1,59 @@
+Great—let’s make the builder flexible enough to cover JF61, plus
+one-off templates like 1_{JF}-cl-0-0 and 1_{JF}-wl60-0-0, and also let
+you pass start/stop times (or any extra params) cleanly.
+
+Below is a plain JS drop-in that:
+
+Accepts either the full video object or just video.meta.
+
+Adds a template system with tokens:
+
+{JF} → languageCodeJF
+
+{NN} → 2-digit lesson (01…61)
+
+{L} → lesson number (un-padded)
+
+Keeps your existing behaviors (per-lesson ref, single ref, segment
+maps, autoJF61).
+
+Lets you define default query params in meta and override/extend
+them per call with opts.params (e.g., start, end).
+
+Suggested meta shapes
+
+// JF61 auto by lesson
+{
+  autoJF61: true,
+  playerStyle: "default",
+  embedBase: "https://api.arclight.org/videoPlayerUrl/"
+}
+
+// “Classic” (no lesson index used)
+{
+  template: "1_{JF}-cl-0-0"
+}
+
+// “Word of Life 60” (no lesson index used)
+{
+  template: "1_{JF}-wl60-0-0"
+}
+
+// A per-lesson template (rare but supported)
+{
+  template: "1_{JF}-custom{NN}-0-0"   // uses lesson 2-digit
+}
+
+// Per-lesson explicit override still works:
+{
+  lessons: {
+    7: { ref: "1_529-special-0-0" },               // verbatim ref
+    8: { template: "1_{JF}-unit{L}-0-0" }          // template for this lesson
+  }
+}
+
+// Optional default params to append to the player URL:
+{
+  paramsDefault: { autoplay: 1 }
+}
+

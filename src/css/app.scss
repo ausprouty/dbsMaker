@@ -1,0 +1,343 @@
+/* src/css/app.scss */
+@use "@/css/tokens.core.site.scss" as core;
+
+/* Quasar base */
+@import "quasar/src/css/index.sass";
+
+/* Emit :root variables after Quasar */
+@include core.emit-css-vars();
+
+@import "./appbar.scss";
+
+
+
+
+/* ----------------------
+   General Layout
+----------------------- */
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* ----------------------
+   Bible Reference and Text
+----------------------- */
+
+.bible-reference {
+  font-weight: bold;
+  color: var(--color-accent);
+  font-size: 1.2em;
+}
+
+.bible-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: var(--color-warning);
+  border-radius: 5px;
+}
+
+.bible-text:first-child {
+  margin-right: 20px;
+}
+
+div.bible-text {
+  color: var(--color-text);
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+/* ----------------------
+   Select Elements
+----------------------- */
+
+.select {
+  background-color: var(--color-surface);
+  color: var(--color-accent);
+  border: 1px solid var(--color-secondary);
+}
+
+/* ----------------------
+   Layout & Gutters
+----------------------- */
+
+.q-gutter-md,
+.q-mr-md,
+.q-ml-md {
+  margin-top: 10px;
+  margin-left: 0;
+  margin-right: 0;
+  background-color: var(--color-warning);
+}
+
+.q-gutter-y-md,
+.q-gutter-md {
+  margin-top: 0;
+}
+
+.q-gutter-y-md > *,
+.q-gutter-md > * {
+  margin-top: 0;
+}
+
+/* ----------------------
+   DBS Container
+----------------------- */
+
+div.dbs {
+  background-color: var(--color-warning);
+  max-width: 800px;
+  margin: auto;
+  padding: 10px;
+  border: 2px solid var(--color-accent);
+}
+
+/* ----------------------
+   Tables
+----------------------- */
+
+table {
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid var(--color-warning);
+}
+
+table.dbs {
+  border-collapse: collapse;
+  border: none;
+}
+
+td,
+th {
+  vertical-align: top;
+  padding: 10px;
+}
+
+td {
+  width: 50%;
+  border-bottom: 1px solid var(--color-secondary);
+}
+
+td.dbs,
+th.dbs {
+  border: none;
+}
+
+td.rtl {
+  direction: rtl;
+}
+
+.ltr.dbs.link {
+  text-align: center;
+}
+
+/* ----------------------
+   Lists & Notes
+----------------------- */
+
+li {
+  padding-top: 10px;
+}
+
+li.dbs {
+  font-size: 1rem;
+}
+
+.notes {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 16px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* ----------------------
+   Headers
+----------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Arial", sans-serif;
+  color: var(--color-primary);
+}
+
+h1.dbs {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-weight: bold;
+}
+
+h2.dbs {
+  font-size: 1.5rem;
+  line-height: 1.7rem;
+  font-weight: bold;
+}
+
+h3.dbs {
+  margin-block-end: 0.3em;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: bold;
+}
+
+h4.dbs {
+  margin-block: 0;
+  font-size: 1rem;
+  line-height: 1.2rem;
+}
+
+/* ----------------------
+   Footer
+----------------------- */
+
+p.copyright {
+  text-align: center;
+  color: var(--color-divider);
+}
+
+/* ----------------------
+   Hover Effects
+----------------------- */
+
+.link:hover {
+  color: var(--color-warning);
+  text-decoration: underline;
+}
+
+/* ----------------------
+   Clickable Images
+----------------------- */
+
+td[clickable] {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+td[clickable] img.menu_picture:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px var(--overlay);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+td[clickable]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: var(--overlay);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+td[clickable]:active::after {
+  width: 150px;
+  height: 150px;
+  opacity: 1;
+  transition: 0s;
+}
+
+/* ----------------------
+   Read More Button
+----------------------- */
+
+.readmore-button {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: center;
+  transition: filter 0.3s ease;
+}
+
+.readmore-button:hover {
+  filter: brightness(0.92);
+}
+
+/* Toggle Button */
+.toggle-button {
+  width: 100%;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.toggle-button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.language-select{
+  color:var(--color-primary);
+  font-size: 18px;
+
+}
+
+/* ----------------------
+   Navigation Buttons
+----------------------- */
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  padding: 5px 15px;
+  border-radius: 50px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px var(--overlay);
+  transition: filter 0.3s ease, transform 0.2s ease;
+}
+
+.nav-button:hover {
+  filter: brightness(0.92);
+  transform: scale(1.05);
+}
+
+.nav-button.active {
+  background-color: var(--color-positive);
+  color: var(--color-on-positive);
+}
+
+
+.accent {
+  color: var(--color-accent);
+}
+
+
+/* ----------------------
+   Mark Complete
+----------------------- */
+
+.mark-complete-btn {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: bold;
+  border-radius: 8px;
+  transition: filter 0.2s ease;
+
+  &:hover {
+    filter: brightness(0.88);
+  }
+}

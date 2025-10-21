@@ -1,0 +1,63 @@
+currentApi.defaults.baseURL   // "/api" in dev via proxy; full URL in prod
+API_BASE
+
+ENV.VITE_API
+ENV.MODE
+
+
+--------------------------------------------------
+import { debug } from 'src/lib/debug'
+
+const log = debug('InterfaceService')
+const net = debug('InterfaceService:net')
+
+log('from DB', { messages })        // general flow
+log.info('HL ready', hl)
+log.warn('Using fallback', FALLBACK_HL)
+
+net('GET', apiPath)                  // network-only
+net.group('response')
+net.log({ status: res?.status, headers: res?.headers })
+net.log(String(res?.data).slice(0, 160))
+net.groupEnd()
+
+net.time('fetch')
+const res = await http.get(apiPath, { responseType: 'text' })
+net.timeEnd('fetch')
+
+// you can also gate expensive dumps
+if (net.enabled()) {
+  net.log('big object snapshot', deepObject)
+}
+--------------------------------------------
+
+
+
+How to target logs
+
+One file (and its sub-namespaces):
+
+URL: ?debug=InterfaceService*
+
+Or console (persists):
+localStorage.DEBUG = 'InterfaceService*'; location.reload();
+
+A single sub-namespace only:
+
+?debug=InterfaceService:net
+
+Multiple files/namespaces:
+
+?debug=InterfaceService*,MenuService,ShareLink
+
+Everything (dev firehose):
+
+?debug=* or localStorage.DEBUG='*'
+
+Disable:
+
+localStorage.removeItem('DEBUG'); location.reload();
+
+Patterns use * as a wildcard and are comma-separated, case-insensitive.
+
+In the file

@@ -1,0 +1,20 @@
+/* src/sites/uom/quasar.variables.scss */
+$primary:   #000F46;  /* Heritage blue */
+$secondary: #ABC1A7;  /* Light sage */
+$accent:    #46C8F0;  /* Bright blue */
+
+$minor1:    #DDE7DF;  /* light sage tint (focus) */
+$minor2:    #5E6F63;  /* deep sage (dividers) */
+$neutral:   #C8C8C8;  /* light neutral */
+
+$dark:      #2D2D2D;  /* dark gray (ink) */
+$dark-page: #000B34;  /* deep page bg */
+
+$positive:  #2E7D32;  /* green */
+$negative:  #C62828;  /* danger red */
+$info:      $primary; /* info tone */
+$warning:   #FFD629;  /* UoM yellow */
+
+$highlight-scripture: #FFD629; /* Scripture highlight */
+$shadow:              #7F6E63; /* subtle shadow */
+$success-highlight:   $primary; /* brand-tinted success */

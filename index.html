@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <!-- set at runtime via router/site meta -->
+    <meta name="api-origin" content="https://api2.mylanguage.net.au">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Quasar injects PWA meta/links when injectPwaMetaTags: true -->
+  </head>
+  <body>
+    <noscript>
+      <p>This site requires JavaScript to function. Please enable it.</p>
+    </noscript>
+
+    <!-- quasar:entry-point -->
+
+    <style>
+    /* --- Generic PWA Splash (multi-site) --- */
+:root {
+  --splash-bg: none;
+  --splash-pos: center center;      /* center by default */
+  --splash-fill: var(--color-primary);   /* set your brand fill color */
+}
+
+/* Show until JS adds .splash-done to <html> */
+html:not(.splash-done)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: block;
+  background:
+   var(--splash-bg) no-repeat,
+   var(--splash-fill);          /* fill edges (letterbox/pillarbox) */
+  background-position: var(--splash-pos);
+  background-size: contain;     /* <-- show entire image, no crop */
+  transition: opacity 420ms ease;
+  will-change: opacity;
+}
+
+
+
+/* Fade out when ready */
+html.splash-done::before {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html:not(.splash-done)::before {
+    transition: none;
+  }
+}
+
+    </style>
+
+<script>
+(function () {
+  // --- pick the right splash image & preload only what's used ---
+  var mq = matchMedia("(orientation: portrait)");
+
+  function choosePaths() {
+    var portrait = mq.matches;
+    var base = portrait
+      ? "/splash/splash-portrait.webp"
+      : "/splash/splash-landscape.webp";
+    var hidpi = base.replace(/\.webp$/, "@2x.webp");
+    return { base: base, hidpi: hidpi };
+  }
+
+  function setBgAndPreload() {
+    var p = choosePaths();
+
+    // Let CSS pick 1x/2x by device pixel ratio
+    var cssVal = 'image-set(url("' + p.base + '") 1x, url("' + p.hidpi + '") 2x)';
+    document.documentElement.style.setProperty("--splash-bg", cssVal);
+
+    // Preload only the variant this device will actually use
+    var dpr2 = (window.devicePixelRatio || 1) >= 2;
+    var href = dpr2 ? p.hidpi : p.base;
+
+    if (!document.querySelector('link[rel="preload"][data-splash="'+href+'"]')) {
+      var link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = href;
+      link.dataset.splash = href;
+      document.head.appendChild(link);
+    }
+  }
+
+  setBgAndPreload();
+  mq.addEventListener("change", setBgAndPreload);
+
+  // --- your existing timing controls (unchanged) ---
+  var MIN_MS = 2200;  // minimum time the splash stays visible
+  var MAX_MS = 6000;  // hard cap
+
+  // If coming from bfcache, skip long splash
+  window.addEventListener("pageshow", function (e) {
+    if (e.persisted) document.documentElement.classList.add("splash-done");
+  });
+
+  var splashStart = performance.now();
+  requestAnimationFrame(function () { splashStart = performance.now(); });
+
+  var finished = false;
+  function finishIfReady() {
+    if (finished) return;
+    finished = true;
+
+    var elapsed = performance.now() - splashStart;
+    var waitMore = Math.max(0, MIN_MS - elapsed);
+
+    setTimeout(function () {
+      document.documentElement.classList.add("splash-done");
+      // cleanup listeners
+      mq.removeEventListener("change", setBgAndPreload);
+    }, waitMore);
+  }
+
+  window.addEventListener("load", finishIfReady);
+  setTimeout(finishIfReady, MAX_MS);
+})();
+</script>
+
+
+</html>

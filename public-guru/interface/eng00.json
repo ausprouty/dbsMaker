@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "schema": "interface.v1",
+    "kind": "interface",
+    "subject": "root",
+    "variant": null,
+
+    "languageName": "English",
+    "languageCodeHL": "eng00",
+    "languageCodeISO": "en",
+    "direction": "ltr",
+    "numeralSet": "western",
+    "font": "Open Sans",
+
+    "translationComplete": true,
+    "keysTotal": 0,
+    "keysMissing": 0,
+    "keysFuzzy": 0,
+
+    "sourceOfTruth": "hl-api",
+    "sourceCommit": "abcdef0",
+    "toolVersion": "ml-dbs-translate@2025.09.03",
+
+    "version": 3,
+    "createdAt": "2025-08-30T03:12:00Z",
+    "updatedAt": "2025-09-03T04:05:00Z",
+    "updatedBy": "build-bot",
+
+    "license": "CC BY-SA 4.0",
+    "notes": ""
+  },
+
+  "interface": {
+	  "changeLanguage": "Change language.",
+	  "choosePlatform": "Choose a platform:",
+	  "completed": "Completed",
+	  "copied": "Link copied to clipboard!",
+	  "copyFailed": "Failed to copy the link.",
+	  "copyLink": "Copy link",
+	  "language": "Select Language",
+	  "lookBackNoteInstruction": "Write your notes for Look Back here",
+	  "lookForwardNoteInstruction": "Write your notes for Look Forward here",
+	  "lookUpNoteInstruction": "Write your notes for Look Up here",
+	  "markCompleted": "Mark as completed",
+	  "next": "Next",
+	  "nextVideo": "Next Video",
+	  "notCompleted": "Mark as completed",
+	  "otherVideos": "Other Videos",
+	  "previous": "Previous",
+	  "read": "Read {0}",
+	  "readMore": "Read More",
+	  "readOrWatch": "Read or watch {0} two times as everyone listens",
+	  "readPlain": "Read from the Bible",
+	  "readTwice": "Read {0} two times as others listen.",
+	  "select": "Select",
+	  "selectPassage": "Select Passage",
+	  "selectSegment": "Select Segment",
+	  "share": "Share",
+	  "shareFail": "Sharing failed!",
+	  "shareFallback": "Sharing not supported. Using fallback.",
+	  "shareOk": "Shared successfully!",
+	  "shareVia": "Share via",
+	  "summary": "Summary",
+	  "teaching": "Teaching",
+	  "timing": "(spend one third of your time on this section)",
+	  "topic": "Topic",
+	  "videoNoteInstruction": "Write your notes for this video here",
+	  "videoSegment": "Video Segment",
+	  "watchOnline": "Watch {0} online"
+	},
+  "review": {
+    "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
+    "p2": "This helps us encourage each other and see how God is at work.",
+    "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
+  },
+
+  "index": {
+    "para": {
+      "1": "Spiritual growth isn’t a solo journey — it happens in community. We all need wisdom we can trust and people who encourage us along the way. The lessons below will help you discover how God’s wisdom shapes lives, builds genuine relationships, and reveals His love and care for you.",
+      "2": "Gather your friends and start exploring! Click on the images below to begin your journey — discovering not just wisdom, but a relationship with God and the spiritual community He invites you into."
+    }
+  },
+
+  "jvideo": {
+    "title": "The Life of the Guru",
+    "summary": "Discover how the life and teachings of Lord Jesus challenged expectations, inspired hope, and still speak powerfully today."
+  },
+
+  "mountain": {
+    "title": "The Mountain of God",
+    "summary": "Explore the well-known story of the Mountain of God and consider whether every path really leads to the same place."
+  },
+
+  "wisemen": {
+    "title": "Birth of the Guru",
+    "summary": "Astrologers spot a new star and trace it to Israel, honoring a newborn king. Travel with them and meet the Guru who changes lives."
+  },
+
+  "life": {
+    "title": "His Teachings",
+    "summary": "What did Lord Jesus teach His followers, and how can those teachings bring wisdom and transformation to our lives today?"
+  },
+  "ctc": {
+    "title": "His Holy Book",
+    "summary": "Journey through the Holy Book to see how people have connected with God from the very beginning—through struggles, questions, and life-changing moments."
+  },
+  "following": {
+    "title": "Following Him",
+    "summary": "This video series shows friends discovering who Lord Jesus is, how to pray to Him, and how to share His story in their community."
+  },
+  "deepavali": {
+    "title": "Light for the Soul",
+    "summary": "Deepavali celebrates light overcoming darkness. Discover how the light of Lord Jesus brings peace, joy, and freedom to the heart."
+  },
+  "karma": {
+    "title": "Escaping Karma",
+    "summary": "We all long for release from the cycle of cause and effect. See how Lord Jesus opens a path to true peace and lasting freedom."
+  },
+  "ask": {
+    "title": "Ask a Question",
+    "summary": "Do you have questions about life, faith or God? You can share them here in a safe place and receive a personal reply from a real person."
+  }
+
+}

@@ -1,0 +1,100 @@
+
+{
+  "language": {
+    "EnglishName": "English",
+    "hlCode": "eng00",
+    "google": "en",
+    "folder": "interface",
+    "subfolder": "uom",
+    "translationComplete": "true",
+    "lastUpdated": "2025-08-06T14:00:00Z"
+  },
+
+  "index": {
+    "para": {
+      "1": "Spiritual growth isn’t a solo journey — it happens in community. We all need wisdom we can trust and people who encourage us along the way. The lessons below will help you discover how God’s wisdom shapes lives, builds genuine relationships, and reveals His love and care for you.",
+      "2": "Gather your friends and start exploring! Click on the images below to begin your journey — discovering not just wisdom, but a relationship with God and the spiritual community He invites you into."
+    }
+  },
+  "jvideo": {
+    "title": "The Life of Jesus",
+    "summary": "See how Jesus’ actions and teachings challenged expectations, inspired hope, and still speak powerfully today.",
+    "para": {
+      "1": "Jesus' words and actions have shaped history, offering a wisdom that stands apart. As you watch this video, ask yourself: What did Jesus teach? How does his wisdom compare to what others have said — and what could it mean for you?"
+    }
+  },
+  "ctc": {
+    "title": "Discovering Spiritual Community",
+    "summary": "Discover how God prepared people for Jesus and the spiritual community He began — and what that means for us today.",
+    "para": {
+      "1": "Discovering Spiritual Community takes you on a journey through history, exploring how people connected with God through challenges, questions, and life-changing moments. If you're curious about faith, purpose, and belonging, this series is a great place to start.",
+      "2": "Gather your friends to explore how God prepared people for the arrival of Jesus and the spiritual community he began."
+    }
+  },
+ 
+
+  "hope": {
+    "title": "Seven Stories of Hope",
+    "summary": "Seven encounters with Jesus that reveal His heart of compassion, forgiveness, and power to transform lives—even in the most unlikely situations.",
+    "para": {
+      "1": "In a world full of uncertainty, the stories of Jesus meeting real people offer a lifeline of hope. These seven powerful accounts from the Gospels show how Jesus responded to sin, shame, suffering, and doubt with love and restoration. They remind us that no one is too far from God’s reach.",
+      "2": "As you read each story, consider what they reveal about Jesus—and what they invite in your own life. Whether you feel broken, distant, or searching, these stories are for you. Hope is not just an idea; it is a person, and His name is Jesus."
+    }
+  },
+
+
+  "life": {
+    "title": "Life Issues",
+    "summary": "Discover practical wisdom from Jesus and his early followers that still transforms lives today.",
+    "para": {
+      "1": "Life Issues explores the practical teachings of Jesus and his early followers — wisdom that has changed lives for centuries. Many have experienced transformation by inviting Jesus to help them live out these truths. Could this be true for you too?",
+      "2": "Gather your friends and discover what these timeless truths could mean for your life today."
+    }
+  },
+  
+ 
+  "tips": {
+    "title": "Facilitator's Tips",
+    "summary": "Here are some ideas to help you effectively lead a Discovery Bible Study",
+    "para": {
+      "1": "Many people have found these guildelines helpful in facilitating discussion",
+      "2": "We know this is different from how a typical Bible study group works, and we have found that this method helps people hear directly from God."
+    }
+  },
+    "outline": {
+    "title": "DBS Outline",
+    "summary": "An outline you can use to lead a Discovery Bible Study with any passage",
+    "para": {
+      "1": "What will you discover about God today?",
+      "2": "Who can you share your discoveries with?"
+    }
+  },
+ 
+  
+  "review": {
+    "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
+    "p2": "This helps us encourage each other and see how God is at work.",
+    "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
+  },
+  "menu": {
+    "next": "Next",
+    "nextVideo": "Next Video",
+    "previous": "Previous",
+    "select": "Select",
+    "videoSegment": "Video Segment",
+    "language": "Select Language",
+    "topic": "Topic",
+    "changeLanguage": "Click the globe at the top of the page to choose a different language."
+  },
+  "lesson": {
+    "completed": "Completed",
+    "notCompleted": "Mark as completed"
+  },
+  "notes": {
+    "lookBackNoteInstruction": "Write your notes for Look Back here",
+    "lookUpNoteInstruction": "Write your notes for Look Up here",
+    "lookForwardNoteInstruction": "Write your notes for Look Forward here",
+    "videoNoteInstruction": "Write your notes for this video here"
+  }
+}
+

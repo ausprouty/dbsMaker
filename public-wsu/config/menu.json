@@ -1,0 +1,30 @@
+[
+  {
+    "key": "jvideo",
+    "title": "Jesus Video",
+    "image": "/images/jesus.png",
+    "route": "/jvideo",
+    "maxLessons": 61
+  },
+  {
+    "key": "hope",
+    "title": "Seven Stories of Hope",
+    "image": "/images/hope.png",
+    "route": "/series/hope?variant=apply",
+    "maxLessons": 7
+  },
+  {
+    "key": "outline",
+    "title": "DBS Outline",
+    "image": "/images/outline.png",
+    "route": "/page/dbsOutline",
+    "maxLessons": 1
+  },
+  {
+    "key": "tips",
+    "title": "Facilitator's Tips",
+    "image": "/images/tips.png",
+    "route": "/page/tips",
+    "maxLessons": 1
+  }
+]

@@ -1,0 +1,28 @@
+/* src/css/appbar.scss */
+.appbar {
+  background: var(--appbar-bg);
+  color: var(--appbar-fg);
+  transition: background 120ms ease, color 120ms ease, box-shadow 120ms ease;
+}
+
+.appbar--surface {
+  --appbar-bg: var(--color-surface);
+  --appbar-fg: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.appbar--primary {
+  --appbar-bg: var(--color-primary);
+  --appbar-fg: var(--color-on-primary);
+}
+
+.appbar--transparent {
+  /* fallback first */
+  background: var(--color-surface);
+  /* then fancy */
+  --appbar-bg: color-mix(in srgb, var(--color-surface) 75%, transparent);
+  --appbar-fg: var(--color-text);
+  backdrop-filter: blur(6px);
+  border-bottom:
+    1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
+}

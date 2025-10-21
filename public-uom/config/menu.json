@@ -1,0 +1,44 @@
+[
+  {
+    "key": "jvideo",
+    "title": "Jesus Video",
+    "image": "/images/jesus.png",
+    "route": "/jvideo",
+    "maxLessons": 61
+  },
+  {
+    "key": "life",
+    "title": "Life Issues",
+    "image": "/images/life.png",
+    "route": "/series/life",
+    "maxLessons": 23
+  },
+  {
+    "key": "hope",
+    "title": "Seven Stories of Hope",
+    "image": "/images/hope.png",
+    "route": "/series/hope",
+    "maxLessons": 7
+  },
+  {
+    "key": "ctc",
+    "title": "Connect to Community",
+    "image": "/images/community.png",
+    "route": "/series/ctc",
+    "maxLessons": 23
+  },
+  {
+    "key": "outline",
+    "title": "DBS Outline",
+    "image": "/images/outline.png",
+    "route": "/page/dbsOutline",
+    "maxLessons": 1
+  },
+  {
+    "key": "tips",
+    "title": "Facilitator's Tips",
+    "image": "/images/tips.png",
+    "route": "/page/tips",
+    "maxLessons": 1
+  }
+]

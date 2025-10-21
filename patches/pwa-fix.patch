@@ -1,0 +1,88 @@
+diff --git a/quasar.config.cjs b/quasar.config.cjs
+--- a/quasar.config.cjs
++++ b/quasar.config.cjs
+@@ -1,6 +1,6 @@
+ import { configure } from 'quasar/wrappers'
+ import { loadEnv } from 'vite'
+-import fs from 'node:fs'
++import fs from 'node:fs'
+ import path from 'node:path'
+
+ const ROOT = process.cwd()
+@@ -173,6 +173,74 @@ export default configure((ctx) => {
+       open: true,
+       proxy: {
+         // forward /api to the chosen API origin in dev
+         '^/api(/|$)': {
+           target: `${apiOrigin}/api`,
+           changeOrigin: true,
+           secure: true,
+           rewrite: p => p, // keep /api
+         }
+       }
+     },
+
+
++    pwa: {
+
++      workboxMode: 'GenerateSW',
++      injectRegister: 'auto',
++      manifestFilename: 'manifest.json',
++
++      extendGenerateSWOptions (config) {
+
++        config.globPatterns = ['**/*.{js,css,html,ico,png,svg,webp,woff2}']
++
+
++        config.additionalManifestEntries = [
++          { url: `${base}index.html`, revision: null }
++        ]
++
+
++        config.runtimeCaching = [
+
++          {
++            urlPattern: ({ url }) => url.pathname.startsWith(`${base}interface/`),
++            handler: 'StaleWhileRevalidate',
++            options: {
++              cacheName: `interface-${site}`,
++              expiration: {
++                maxEntries: 50,
++                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
++              }
++            }
++          },
++
++          {
++            urlPattern: ({ url }) => url.pathname.startsWith(`${base}api/`),
++            handler: 'NetworkFirst',
++            options: {
++              cacheName: `api-${site}`,
++              networkTimeoutSeconds: 4
++            }
++          }
++        ]
++        return config
++      },
++
++
++      extendManifestJson (manifest) {
++        manifest.name        = (meta && meta.name) || 'DBS 2025'
++        manifest.short_name  = (meta && meta.shortName) || 'DBS'
++        manifest.scope       = base
++        manifest.start_url   = base
++        manifest.display     = 'standalone'
++        manifest.background_color = '#111111'
++        manifest.theme_color      = '#a05a2c'
+
++        manifest.icons = manifest.icons?.length ? manifest.icons : [
++          { src: `${base}icons/icon-192.png`, sizes: '192x192', type: 'image/png' },
++          { src: `${base}icons/icon-512.png`, sizes: '512x512', type: 'image/png' },
++          { src: `${base}icons/maskable-icon-192.png`, sizes: '192x192', type: 'image/png', purpose: 'maskable any' },
++          { src: `${base}icons/maskable-icon-512.png`, sizes: '512x512', type: 'image/png', purpose: 'maskable any' }
++        ]
++        return manifest
++      }
++    }
+   }
+ })

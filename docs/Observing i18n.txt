@@ -1,0 +1,46 @@
+Yep—since you exposed window.__i18n in dev, you can poke around from the console.
+
+Quick peeks
+
+// current locale + all locales
+__i18n.global.locale.value
+__i18n.global.availableLocales
+
+// whole message tree for a locale
+__i18n.global.getLocaleMessage('eng00')   // object
+console.log(JSON.stringify(__i18n.global.getLocaleMessage('eng00'), null, 2))
+
+
+// a specific section
+__i18n.global.getLocaleMessage('eng00').interface
+Object.keys(__i18n.global.getLocaleMessage('eng00').interface || {})
+
+
+// does a key exist?
+__i18n.global.te('interface.copyLink')
+
+
+function flatten(obj, prefix = '') {
+  const out = {};
+  for (const [k, v] of Object.entries(obj || {})) {
+    const path = prefix ? `${prefix}.${k}` : k;
+    if (v && typeof v === 'object' && !Array.isArray(v)) {
+      Object.assign(out, flatten(v, path));
+    } else {
+      out[path] = v;
+    }
+  }
+  return out;
+}
+
+const msgs = __i18n.global.getLocaleMessage('eng00');
+const flat = flatten(msgs);
+console.table(Object.entries(flat));     // dot-path -> value
+Object.keys(flat).length                 // total key count
+
+
+const map = {};
+for (const loc of __i18n.global.availableLocales) {
+  map[loc] = Object.keys(flatten(__i18n.global.getLocaleMessage(loc)));
+}
+console.log(map);

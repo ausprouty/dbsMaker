@@ -1,0 +1,105 @@
+<script setup>
+import { ref, computed, toRefs } from "vue";
+import { useI18n } from "vue-i18n";
+import { useBibleReference } from "src/composables/useBibleReference";
+
+const { t, te, locale } = useI18n({ useScope: "global" });
+
+// allow null to avoid Vue "Expected Object, got Null" warning
+const props = defineProps({
+  passage: { default: null }
+});
+
+const { passage } = toRefs(props);
+const { cleanReference } = useBibleReference();
+
+const isVisible = ref(false);
+
+const readLabel = computed(() => {
+  // keep reactive to locale changes
+  // eslint-disable-next-line no-unused-expressions
+  locale.value;
+
+  const p = passage.value;
+  const raw = String((p && p.referenceLocalLanguage) || "");
+  const firstLine =
+    raw
+      .split(/\r?\n|\r/)
+      .map((s) => s.trim())
+      .find(Boolean) || "";
+  const title = cleanReference(firstLine);
+
+  if (title && te("interface.read")) return t("interface.read", [title]);
+  if (te("interface.readPlain")) return t("interface.readPlain");
+  return "Read from the Bible";
+});
+</script>
+
+<template>
+  <div v-if="passage">
+    <div class="bible-container">
+      <button
+        type="button"
+        class="toggle-button"
+        @click="isVisible = !isVisible"
+        :aria-expanded="isVisible ? 'true' : 'false'"
+      >
+        {{ isVisible ? "▼" : "►" }} {{ readLabel }}
+      </button>
+
+      <div v-show="isVisible" class="bible-section">
+        <div v-html="passage.passageText" class="bible-text"></div>
+        <a
+          v-if="passage && passage.passageUrl"
+          :href="passage.passageUrl"
+          class="readmore-button"
+          target="_blank"
+          rel="noopener"
+        >
+          {{ t("interface.readMore") }}
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.bible-container {
+  margin-top: 20px;
+  padding: 16px;
+  border: 2px solid var(--color-accent);
+  border-radius: 8px;
+  background-color: var(--color-neutral);
+  color: var(--color-minor2);
+  box-shadow: 0 2px 6px var(--color-shadow);
+}
+.toggle-button {
+  width: 100%;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.toggle-button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+.bible-section {
+  margin-top: 12px;
+  background-color: color-mix(in srgb, var(--color-minor1) 85%, white);
+  padding: 14px;
+  border-left: 4px solid var(--color-accent);
+  border-radius: 4px;
+}
+.bible-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-minor2);
+}
+</style>

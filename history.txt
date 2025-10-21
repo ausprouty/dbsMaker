@@ -1,0 +1,41 @@
+yarn global add @quasar/cli
+removed package-lock.json as per yarn
+quasar mode add pwa
+
+ALWAYS USE YARN -- NOT NPM
+
+Create Languages file with:
+
+SELECT h.id, h.name, h.ethnicName, h.languageCodeIso, h.languageCodeHL, h.languageCodeJF, h.languageCodeBrowser, h.isChinese FROM hl_languages AS h INNER JOIN dbs_languages AS d ON d.languageCodeHL = h.languageCodeHL WHERE d.collectionCode = "C" ORDER BY h.isChinese, h.name;
+
+Now using node v18.18.0
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+yarn add --dev dotenv
+https://quasar.dev/quasar-cli-vite/handling-process-env
+
+from https://quasar.dev/options/app-internationalization/
+     yarn add vue-i18n@next
+      yarn add --dev @intlify/vue-i18n-loader
+
+
+for PWA https://quasar.dev/quasar-cli-webpack/developing-pwa/app-icons
+
+For Tables: https://youtu.be/u4d6PeQje1Q
+
+icongenie generate -m pwa -i c:/ampp/htdocs/mylanguage-hindu/public/icons/android-chrome-512x512.png
+
+translation through my account bobprouty12@gmail.com
+
+
+yarn vitest run tests/unit/LessonContentService.test.js --reporter verbose
+yarn vitest run tests/integration/getLessonContent.test.js --reporter verbose
+yarn test
+yarn dev:uom
+yarn build:wsu

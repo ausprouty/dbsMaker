@@ -1,0 +1,26 @@
+/* src/css/tokens.core.site.scss */
+/* Re-export the configured tokens so app.scss can include the mixin */
+@use "@brand" as brand;
+@use 'sass:math';
+
+@forward "@/css/tokens.core.scss" with (
+  $primary:   brand.$primary,
+  $secondary: brand.$secondary,
+  $accent:    brand.$accent,
+
+  $minor1:    brand.$minor1,
+  $minor2:    brand.$minor2,
+  $neutral:   brand.$neutral,
+
+  $dark:      brand.$dark,
+  $dark-page: brand.$dark-page,
+
+  $positive:  brand.$positive,
+  $negative:  brand.$negative,
+  $info:      brand.$info,
+  $warning:   brand.$warning,
+
+  $highlight-scripture: brand.$highlight-scripture,
+  $shadow:              brand.$shadow,
+  $success-highlight:   brand.$success-highlight
+);

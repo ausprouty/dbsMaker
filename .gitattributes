@@ -1,0 +1,4 @@
+# Normalize line endings for scripts and patches
+*.sh    text eol=lf
+*.patch text eol=lf
+*.diff  text eol=lf

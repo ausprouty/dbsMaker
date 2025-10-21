@@ -1,0 +1,129 @@
+/* src/css/tokens.core.scss */
+@use "sass:color";
+@use "sass:math";
+
+/* ---------- helpers ---------- */
+@function -linear-channel($c) {
+  // old: $c: $c / 255;
+  $c: math.div($c, 255);
+
+  // old: $c: $c / 12.92;
+  @return if($c <= 0.04045, math.div($c, 12.92),
+   math.pow(math.div(($c + 0.055), 1.055), 2.4)
+  );
+}
+@function luminance($c) {
+  $r: _linear-channel(color.channel($c, "red"));
+  $g: _linear-channel(color.channel($c, "green"));
+  $b: _linear-channel(color.channel($c, "blue"));
+  @return 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
+}
+@function contrast-color($bg, $light: #fff, $dark: #111, $threshold: 0.55) {
+  @return if(luminance($bg) > $threshold, $dark, $light);
+}
+
+/* ---------- configurable inputs (Quasar-style only) ---------- */
+$primary: #a05a2c !default;
+$secondary: #d59744 !default;
+$accent: #bf6b30 !default;
+
+$minor1: #d3b18c !default;
+$minor2: #6a4e42 !default;
+
+$neutral: #f8f3ee !default;
+
+$dark: #2e2e2e !default;
+$dark-page: #1c1c1c !default;
+
+$positive: #65c058 !default;
+$negative: #b03a2e !default;
+$info: #a05a2c !default;
+$warning: #d59744 !default;
+
+$highlight-scripture: #d59744 !default;
+$shadow: #7f6e63 !default;
+$success-highlight: #a05a2c !default;
+
+/* ---------- derived semantics ---------- */
+$surface: #ffffff !default;
+$text-color: #111111 !default;
+
+$border-color: color.mix($minor2, white, 40%);
+$divider-color: color.change($border-color, $alpha: 0.5);
+
+$link: $primary;
+$link-hover: color.scale($primary, $lightness: -10%);
+
+$focus: $minor1;
+$focus-ring: 0 0 0 3px color.change($focus, $alpha: 0.45);
+
+$overlay: rgba(0, 0, 0, 0.45);
+
+/* auto-contrast “on-*” tokens */
+$on-primary: contrast-color($primary) !default;
+$on-secondary: contrast-color($secondary) !default;
+$on-accent: contrast-color($accent) !default;
+$on-positive: contrast-color($positive) !default;
+$on-negative: contrast-color($negative) !default;
+$on-warning: contrast-color($warning) !default;
+$on-info: contrast-color($info) !default;
+
+/* ---------- Mixin to emit CSS vars ---------- */
+@mixin emit-css-vars {
+  :root {
+    --color-primary: #{$primary};
+    --color-secondary: #{$secondary};
+    --color-accent: #{$accent};
+
+    --color-minor1: #{$minor1};
+    --color-minor2: #{$minor2};
+    --color-neutral: #{$neutral};
+
+    --color-surface: #{$surface};
+    --color-text: #{$text-color};
+    --color-border: #{$border-color};
+    --color-divider: #{$divider-color};
+
+    --color-positive: #{$positive};
+    --color-negative: #{$negative};
+    --color-info: #{$info};
+    --color-warning: #{$warning};
+
+    --color-link: #{$link};
+    --color-link-hover: #{$link-hover};
+
+    --color-on-primary: #{$on-primary};
+    --color-on-secondary: #{$on-secondary};
+    --color-on-accent: #{$on-accent};
+    --color-on-positive: #{$on-positive};
+    --color-on-negative: #{$on-negative};
+    --color-on-info: #{$on-info};
+    --color-on-warning: #{$on-warning};
+    --color-on-surface: #{$text-color};
+
+    --focus-ring: #{$focus-ring};
+    --overlay: #{$overlay};
+
+    /* handy mirrors for Quasar debugging */
+    --q-primary: #{$primary};
+    --q-secondary: #{$secondary};
+    --q-accent: #{$accent};
+    --q-positive: #{$positive};
+    --q-negative: #{$negative};
+    --q-info: #{$info};
+    --q-warning: #{$warning};
+    --q-dark: #{$dark};
+    --q-dark-page: #{$dark-page};
+
+    --color-highlight-scripture: #{$highlight-scripture};
+    --color-shadow: #{$shadow};
+    --color-success-highlight: #{$success-highlight};
+  }
+
+  .body--dark {
+    --color-surface: #{$dark};
+    --color-text: #ffffff;
+    --color-border: #{color.change(#ffffff, $alpha: 0.2)};
+    --color-divider: #{color.change(#ffffff, $alpha: 0.12)};
+  }
+}

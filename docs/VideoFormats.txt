@@ -1,0 +1,52 @@
+A) Simplest (recommended for JESUS 61-part): autoJF61
+
+Generates 1_<JF>-jf61<LL>-0-0 automatically from your lesson + JF code.
+
+
+"video": {
+  "provider": "arclight",
+  "segments": 61,
+  "multiLanguage": true,
+  "languages": "all",
+  "meta": {
+    "autoJF61": true,
+    "embedBase": "https://api.arclight.org/video-player/?ref="  // optional
+  }
+}
+
+For /video/jvideo/7/.../529 this produces:
+https://api.arclight.org/video-player/?ref=1_529-jf6107-0-0
+
+"video": {
+  "provider": "arclight",
+  "segments": 61,
+  "multiLanguage": true,
+  "languages": "all",
+  "meta": {
+    "lessons": {
+      "7": { "ref": "1_529-jf6107-0-0" },
+      "8": { "ref": "1_529-jf6108-0-0" }
+    }
+  }
+}
+
+
+C) Legacy prefix/suffix + segment map
+
+(Builder concatenates prefix + JF + suffix + segments[lesson].)
+
+"video": {
+  "provider": "arclight",
+  "segments": 61,
+  "multiLanguage": true,
+  "languages": "all",
+  "meta": {
+    "prefix": "1_",
+    "suffix": "-jf61",
+    "segments": {
+      "1": "01-0-0",
+      "7": "07-0-0",
+      "8": "08-0-0"
+    }
+  }
+}

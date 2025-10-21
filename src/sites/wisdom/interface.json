@@ -1,0 +1,76 @@
+{
+  "language": {
+    "EnglishName": "English",
+    "hlCode": "eng00",
+    "google": "en",
+    "folder": "interface",
+    "subfolder": "wisdom",
+    "translationComplete": "true",
+    "lastUpdated": "2025-08-06T14:00:00Z"
+  },
+  "index": {
+    "para": {
+       "1": "In order to make any real progress in our spiritual life we know we need a reliable source of wisdom.",
+      "2": "Clicking on the images below will start you on a path to discovering the eternal wisdom that God wants you to know and follow."
+    }
+  },
+  "jVideo": {
+    "title": "The Source of Wisdom",
+    "summary": "",
+    "para": {
+      "1": "Jesus is the source of eternal wisdom. As you watch the video, ask yourself \"What did Jesus do and teach? How is his wisdom different from what others have said.\""
+    }
+  },
+  "ctc": {
+    "title": "Discovering Spiritual Community",
+    "summary": "Discovering Spiritual Community takes you on a journey through history, exploring how people connected with God through challenges, questions, and life-changing moments. ",
+    "para": {
+      "1": "Discovering Spiritual Community takes you on a journey through history, exploring how people connected with God through challenges, questions, and life-changing moments. If you're curious about faith, purpose, and belonging, this series is a great place to start.",
+      "2": "Gather your friends to explore how God prepared people for the arrival of Jesus and the spiritual community he began."
+    }
+  },
+
+  "life": {
+    "title": "Wisdom for Life",
+    "summary": "Discover practical wisdom from Jesus and his early followers that still transforms lives today.",
+    "para": {
+      "1": "These are some of the things that Jesus and his early followers taught.",
+      "2": "Many people have seen their lives transformed as they asked Jesus to give them the power to put these teachings into action.",
+      "3": "Gather your friends and see what you discover as you discuss the following questions."
+    }
+  },
+
+  "question": {
+    "title": "Do you have a question?",
+    "summary": "We welcome your comments or questions about God. "
+
+  },
+
+
+  "review": {
+    "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
+    "p2": "This helps us encourage each other and see how God is at work.",
+    "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
+  },
+  "menu": {
+    "next": "Next",
+    "nextVideo": "Next Video",
+    "previous": "Previous",
+    "select": "Select",
+    "videoSegment": "Video Segment",
+    "language": "Select Language",
+    "topic": "Topic",
+    "changeLanguage": "Click the globe at the top of the page to choose a different language."
+  },
+  "lesson": {
+    "completed": "Completed",
+    "notCompleted": "Mark as completed"
+  },
+  "notes": {
+    "lookBackNoteInstruction": "Write your notes for Look Back here",
+    "lookUpNoteInstruction": "Write your notes for Look Up here",
+    "lookForwardNoteInstruction": "Write your notes for Look Forward here",
+    "videoNoteInstruction": "Write your notes for this video here"
+  }
+}
+

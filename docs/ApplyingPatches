@@ -1,0 +1,9 @@
+# 1) Make sure you're at the repo top (where package.json lives)
+git rev-parse --show-toplevel
+# if that prints your project folder, you're good
+
+# 2) Dry-run (no changes)
+git apply --check src/patches/pwa-fix.patch
+
+# 3) Apply
+git apply src/patches/pwa-fix.patch

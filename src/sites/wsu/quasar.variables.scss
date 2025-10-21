@@ -1,0 +1,20 @@
+/* src/sites/wsu/quasar.variables.scss */
+$primary:   #A50034;  /* Western Red (crimson) */
+$secondary: #111111;  /* headings / strong text */
+$accent:    #D59744;  /* warm gold accent */
+
+$minor1:    #D3B18C;  /* sand / highlight */
+$minor2:    #6A4E42;  /* warm brown divider */
+$neutral:   #F8F3EE;  /* off-white background */
+
+$dark:      #2E2E2E;
+$dark-page: #1C1C1C;
+
+$positive:  #65C058;  /* semantic green */
+$negative:  $primary; /* brand red for errors */
+$info:      $primary; /* brand emphasis */
+$warning:   $accent;  /* gold */
+
+$highlight-scripture: $accent;   /* scripture highlight */
+$shadow:              #7F6E63;   /* consistent subtle shadow */
+$success-highlight:   $primary;  /* brand-tinted success callout */

@@ -1,0 +1,32 @@
+{
+  "base": "/",
+  "publicDir": "public-uom",
+  "varsPath": "src/sites/uom/quasar.variables.scss",
+  "title": "Houses of Peace – UoM",
+  "description": "Resources for Houses of Peace at UoM.",
+  "appbar": { "style": "surface" },
+  "env": {
+    "VITE_APP": "uom",
+    "VITE_APP_TITLE": "HOP Resources",
+    "VITE_APP_VERSION": "1.3.1",
+    "VITE_STUDY": "ctc",
+    "VITE_LESSON": "1",
+    "VITE_LANGUAGE_CODE_HL": "eng00",
+    "VITE_LANGUAGE_CODE_JF": "529",
+    "VITE_LANGUAGE_PICKER_TYPE": "select"
+  },
+  "dev": {
+    "host": "localhost",
+    "port": 9232,
+    "https": false
+  },
+  "pwa": {
+    "name": "Houses of Peace - UoM",
+    "short_name": "UOM",
+    "description": "Resources for Houses of Peace at UoM",
+    "theme_color": "#000F46",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "portrait"
+  }
+}
