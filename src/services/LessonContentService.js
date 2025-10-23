@@ -28,7 +28,7 @@ export async function getLessonContent(
 
   //api/translate/lessonContent/{languageCodeHL}/{study}/{lesson}?jf=
   // http.get will add root url plus /api
-  const url = `/translate/lessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`
+  const url = `/v2/translate/lessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`
   const key = buildLessonContentKey(studyId, hl, jf, lessonId)
   const contentStore = useContentStore()
 

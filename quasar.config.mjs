@@ -3,8 +3,7 @@ import { configure } from "quasar/wrappers";
 import { loadEnv } from "vite";
 import fs from "node:fs";
 import path from "node:path";
-  const ROOT = process.cwd();
-
+const ROOT = process.cwd();
 
 // ---------- small helpers ----------
 const exists = (p) => fs.existsSync(path.join(ROOT, p));
@@ -21,12 +20,23 @@ function cleanUrl(v) {
   return x.replace(/\/+$/, ""); // drop trailing slashes
 }
 
+// ---- Safe access helpers (no optional chaining) -------------------------
+function getIn(obj, path) {
+  let cur = obj;
+  for (const k of path) {
+    if (cur == null || !(k in cur)) return undefined;
+    cur = cur[k];
+  }
+  return cur;
+}
+function definedOr(v, fallback) {
+  return v === undefined || v === null ? fallback : v;
+}
 
 // ---------- main export ----------
 export default configure((ctx) => {
   // site key used by your project structure
-  const site = process.env.SITE || process.env.VITE_APP || 'dbs'
-
+  const site = process.env.SITE || process.env.VITE_APP || "dbs";
 
   // Base mode = dev/prod; Site mode = uom/wsu/... (optional)
   const baseMode = ctx.dev ? "development" : "production";
@@ -41,13 +51,13 @@ export default configure((ctx) => {
   const envAll = { ...envBase, ...envSite };
 
   // Load per-site meta.json (if present)
-  const metaPath = path.resolve(ROOT, `src/sites/${site}/meta.json`)
+  const metaPath = path.resolve(ROOT, `src/sites/${site}/meta.json`);
   const meta = fs.existsSync(metaPath)
-    ? JSON.parse(fs.readFileSync(metaPath, 'utf8'))
-    : {}
+    ? JSON.parse(fs.readFileSync(metaPath, "utf8"))
+    : {};
   const envFromMeta = Object.fromEntries(
-    Object.entries(meta?.env || {}).filter(([k]) => k.startsWith('VITE_'))
-  )
+    Object.entries(meta?.env || {}).filter(([k]) => k.startsWith("VITE_"))
+  );
   const scssVarsPath = `src/sites/${site}/quasar.variables.scss`;
   if (!fs.existsSync(path.resolve(ROOT, scssVarsPath))) {
     throw new Error(
@@ -55,30 +65,28 @@ export default configure((ctx) => {
     );
   }
 
-
   // ---- Resolve API once, expose everywhere ----
-  const resolvedApiRaw =
-    cleanUrl(
-      process.env.VITE_API ||
+  const resolvedApiRaw = cleanUrl(
+    process.env.VITE_API ||
       envAll.VITE_API ||
       envFromMeta.VITE_API ||
       meta.api ||
       (ctx.dev
-        ? 'http://localhost/api_mylanguage'
-        : 'https://api2.mylanguage.net.au')
-    );
+        ? "http://localhost/api_mylanguage2026"
+        : "https://api2.mylanguage.net.au")
+  );
 
-  const apiBase = (resolvedApiRaw || '').replace(/\/+$/, '');
+  const apiBase = (resolvedApiRaw || "").replace(/\/+$/, "");
 
-  let apiOrigin = '';
-  let apiPath = '';
+  let apiOrigin = "";
+  let apiPath = "";
   try {
     const u = new URL(apiBase);
     apiOrigin = `${u.protocol}//${u.host}`;
-    apiPath = (u.pathname || '').replace(/\/$/, '');
+    apiPath = (u.pathname || "").replace(/\/$/, "");
   } catch {
-    apiOrigin = apiBase.replace(/\/.*$/, '');
-    apiPath = '';
+    apiOrigin = apiBase.replace(/\/.*$/, "");
+    apiPath = "";
   }
 
   // Optional: per-site public dir (public-uom → else public)
@@ -91,7 +99,6 @@ export default configure((ctx) => {
   const base = meta.base || "/";
   // for debug
   const debugProd = process.env.DEBUG_BUILD === "1";
-
 
   // ---------- friendly build logs ----------
   console.log("▶ Env resolution");
@@ -142,7 +149,7 @@ export default configure((ctx) => {
       "route-resume",
       "router-debug",
       "version-check",
-       ...(ctx.dev ? ['dev-expose-env'] : []),
+      ...(ctx.dev ? ["dev-expose-env"] : []),
     ],
     css: ["app.scss"],
     extras: ["material-icons"],
@@ -197,7 +204,8 @@ export default configure((ctx) => {
         // ---------- SCSS: inject per-site variables into all SFC <style lang="scss"> ----------
         if (hasScssVars) {
           const injectLine = `@use "${scssVarsPath.replace(/\\/g, "/")}" as *;`;
-          const existing = viteConf.css?.preprocessorOptions?.scss?.additionalData;
+          const existing =
+            viteConf.css?.preprocessorOptions?.scss?.additionalData;
 
           // Merge politely with any existing additionalData (string or function)
           let additionalData;
@@ -251,7 +259,10 @@ export default configure((ctx) => {
     // Dev server: keep your /api proxy if you use it
     devServer: {
       host: "localhost",
-      port: meta?.dev?.port || 9232,
+      port: (() => {
+        const v = getIn(meta, ["dev", "port"]);
+        return v === undefined || v === null ? 9232 : v;
+      })(),
       https: !!meta?.dev?.https,
       open: true,
       proxy: {
@@ -318,8 +329,19 @@ export default configure((ctx) => {
 
       extendManifestJson(manifest) {
         // You can override with src/sites/<site>/meta.json if you have names there
-        manifest.name = (meta && meta.name) || "DBS 2025";
-        manifest.short_name = (meta && meta.shortName) || "DBS";
+              extendManifestJson(manifest) {
+        // Prefer values in meta.pwa.*, but only fall back on undefined/null
+        const pwaName = definedOr(
+          getIn(meta, ['pwa', 'name']),
+          'DBS 2026'
+        );
+        const pwaShort = definedOr(
+          getIn(meta, ['pwa', 'shortName']),
+          'DBS'
+        );
+        manifest.name = pwaName;
+        manifest.short_name = pwaShort;
+
         manifest.scope = base;
         manifest.start_url = base;
         manifest.display = "standalone";
