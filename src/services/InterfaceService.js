@@ -113,7 +113,7 @@ export async function getTranslatedInterface(
 ) {
   const hl = normId(languageCodeHL);
   const app = normId(import.meta.env.VITE_APP) || "default";
-  console.log ('in getTranslatedInterface for ' + hl);
+  console.log("in getTranslatedInterface for " + hl);
 
   if (!hl) {
     console.error("[InterfaceService] Missing languageCodeHL", {
@@ -153,7 +153,7 @@ export async function getTranslatedInterface(
       const h = Object.fromEntries(
         Object.entries(headers || {}).map(([k, v]) => [k.toLowerCase(), v])
       );
-      console.log (h);
+      console.log(h);
       const ctype = String(h["content-type"] || "");
       const body = String(data ?? "");
 
@@ -180,22 +180,22 @@ export async function getTranslatedInterface(
       payload = parsed?.data ?? parsed ?? null;
 
       const meta = payload?.meta ?? {};
-      console.log (meta);
+      console.log("meta");
+      console.log(meta);
       if (meta?.translationComplete) {
         await saveInterfaceToDB(hl, payload); // persist full payload (incl. meta)
       } else {
         // I know there is a value stored in the .env file, but we are
         // not using it.  This cronKey came from the api and allows
         // us to focus on translating the text we need NOW.
-        cronKey = meta?.cronKey;
-        console.log (cronKey);
+        const cronKey = meta?.cronKey;
         if (cronKey) {
-            // http.get will add root url plus /api
+          // http.get will add root url plus /api
           http
-            .get(`/translate/cron/${encodeURIComponent(cronKey)}`)
+            .get(`/v2/translate/cron/${encodeURIComponent(cronKey)}`)
             .catch(() => {});
         }
-        console.log ('we are pollingtranslation of interface');
+        console.log("we are pollingtranslation of interface");
         // Begin polling; it will persist to IDB as progress is made
         pollTranslationUntilComplete({
           languageCodeHL: hl,
@@ -214,7 +214,7 @@ export async function getTranslatedInterface(
       const content = stripBlockedTopLevel(payload); // everything except 'meta'
 
       if (import.meta.env.DEV) {
-        console.log (meta);
+        console.log(meta);
         const beforeKeys = Object.keys(i18n.global.getLocaleMessage(hl) || {});
         const incomingKeys = Object.keys(content || {});
         const dropped = Object.keys(payload || {}).filter((k) =>
@@ -226,9 +226,9 @@ export async function getTranslatedInterface(
       }
 
       // Validate values are strings and shape is sane (non-destructive)
-      console.log(content)
+      console.log(content);
       const { okTree, bad } = validateMessagesTree(content);
-      console.log (okTree);
+      console.log(okTree);
 
       if (bad.length) {
         console.warn(

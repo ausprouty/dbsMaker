@@ -1,7 +1,10 @@
-/* eslint-env serviceworker */
+/* eslint-env serviceworker
+// Workbox in InjectManifest mode expects you to write routes here.
+// The precache manifest will be injected into __WB_MANIFEST at build time.
+*/
 
 import { clientsClaim } from "workbox-core";
-import { enable as enableNavigationPreload } from "workbox-navigation-preload";
+//import { enable as enableNavigationPreload } from "workbox-navigation-preload";
 import {
   precacheAndRoute,
   cleanupOutdatedCaches,
@@ -12,56 +15,101 @@ import { StaleWhileRevalidate, NetworkFirst } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
-/* ---------- Precache & lifecycle ---------- */
+// --- Activation strategy ---
+self.skipWaiting();
+clientsClaim();
+// Navigation preload is optional; disabling avoids noisy console warnings
+// enableNavigationPreload();
 
-// Injected by Workbox at build-time
+// --- Precache ---
 precacheAndRoute(self.__WB_MANIFEST || [], {
   ignoreURLParametersMatching: [/^v$/, /^__WB_REVISION__$/],
 });
-
 cleanupOutdatedCaches();
 
-// Fast take-over
-self.skipWaiting();
-clientsClaim();
-
-// (Optional) Helps NetworkFirst routes by using the browser's preload
-enableNavigationPreload();
-
-/* ---------- SPA navigation fallback ---------- */
-
-// Works for "/" or subfolders like "/dbs/"
+// --- SPA fallback aware of non-root base path ---
 const scopePath = new URL(self.registration.scope).pathname;
-const esc = (s) => s.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-const rx = (p) => new RegExp(`^${esc(scopePath)}${p}`, "i");
-
-// App shell bound to the correct base path
 const indexURL =
   (scopePath.endsWith("/") ? scopePath : scopePath + "/") + "index.html";
-const appShellHandler = createHandlerBoundToURL(indexURL);
 
-// Requests that should NOT return the SPA shell
-const denylist = [
-  rx("api(/|$)"),
-  rx("config(/|$)"),
-  rx("content(/|$)"),
-  rx("interface(/|$)"),
-  /^\/\.well-known\//i, // root ACME
-  rx("\\.well-known(/|$)"), // subfolder, if any
-  // Any direct file request (let server/cache handle it)
-  /\/[^/]+\.(?:html?|js|css|map|json|png|jpe?g|gif|svg|webp|ico|woff2?)$/i,
-];
+try {
+  const handler = createHandlerBoundToURL(indexURL);
+  registerRoute(
+    new NavigationRoute(handler, {
+      denylist: [
+        new RegExp(`^${scopePath}api/`, "i"), // legacy API
+        new RegExp(`^${scopePath}api/v2/translate/`, "i"), // new translate API
+        new RegExp(`^${scopePath}_/`), // typical Next/Quasar pattern
+        /\/[^/?]+\.[^/]+$/i, // any “/file.ext”
+        /service-worker\.js$/i,
+        /sw\.js$/i,
+        /workbox-(?:.*)\.js$/i,
+        // do NOT treat these as navigations (serve as files)
+        new RegExp(`^${scopePath}config/`, "i"),
+        new RegExp(`^${scopePath}content/`, "i"),
+        new RegExp(`^${scopePath}interface/`, "i"),
+        // avoid catching the web manifest
+        new RegExp(`^${scopePath}manifest\\.(?:json|webmanifest)$`, "i"),
+      ],
+    })
+  );
+} catch (_) {
+  // In dev, index.html might not be precached; skip SPA fallback.
+}
 
-registerRoute(new NavigationRoute(appShellHandler, { denylist }));
-
-/* ---------- Runtime caching ---------- */
-
-// Site-aware cache names
+// --- Runtime caching (site-aware cache names) ---
 const scopeSlug = scopePath.replace(/[^\w-]+/g, "_");
 const slash = scopePath.endsWith("/") ? "" : "/";
 const apiV2Root = `${scopePath}${slash}api/v2/translate/`;
 
-// interface (SWR)
+// ===== Static folders at site root =====
+// /interface/* — static JSON used by the app (NOT the API v2 endpoint)
+registerRoute(
+  ({ url }) => url.pathname.startsWith(`${scopePath}interface/`),
+  new StaleWhileRevalidate({
+    cacheName: `static-interface-${scopeSlug}`,
+    matchOptions: { ignoreVary: true },
+    plugins: [
+      new CacheableResponsePlugin({ statuses: [0, 200] }),
+      new ExpirationPlugin({
+        maxEntries: 100,
+        maxAgeSeconds: 60 * 60 * 24 * 30,
+      }),
+    ],
+  })
+);
+
+// /config/* — e.g., /config/menu.json
+registerRoute(
+  ({ url }) => url.pathname.startsWith(`${scopePath}config/`),
+  new StaleWhileRevalidate({
+    cacheName: `static-config-${scopeSlug}`,
+    matchOptions: { ignoreVary: true },
+    plugins: [
+      new CacheableResponsePlugin({ statuses: [0, 200] }),
+      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 7 }),
+    ],
+  })
+);
+
+// /content/* — e.g., /content/dbsOutline.html
+registerRoute(
+  ({ url }) => url.pathname.startsWith(`${scopePath}content/`),
+  new StaleWhileRevalidate({
+    cacheName: `static-content-${scopeSlug}`,
+    matchOptions: { ignoreVary: true },
+    plugins: [
+      new CacheableResponsePlugin({ statuses: [0, 200] }),
+      new ExpirationPlugin({
+        maxEntries: 120,
+        maxAgeSeconds: 60 * 60 * 24 * 14,
+      }),
+    ],
+  })
+);
+
+// ===== API v2 (translation) – keep your dynamic rules =====
+// -------- interface (API v2 JSON) --------
 registerRoute(
   ({ url }) => url.pathname.startsWith(apiV2Root + "text/interface/"),
   new StaleWhileRevalidate({
@@ -77,7 +125,7 @@ registerRoute(
   })
 );
 
-// commonContent (SWR)
+// -------- commonContent -------- (SWR; semi-static bundles)
 registerRoute(
   ({ url }) => url.pathname.startsWith(apiV2Root + "text/commonContent/"),
   new StaleWhileRevalidate({
@@ -93,12 +141,12 @@ registerRoute(
   })
 );
 
-// lessonContent (NetworkFirst)
+// -------- lessonContent -------- (NetworkFirst; more dynamic)
 registerRoute(
   ({ url }) => url.pathname.startsWith(apiV2Root + "lessonContent/"),
   new NetworkFirst({
     cacheName: `v2-lessonContent-${scopeSlug}`,
-    matchOptions: { ignoreVary: true },
+    matchOptions: { ignoreVary: true }, // fixes Vary: Origin matching/deletion
     networkTimeoutSeconds: 8,
     plugins: [
       new CacheableResponsePlugin({ statuses: [0, 200] }),
@@ -107,7 +155,7 @@ registerRoute(
   })
 );
 
-// any other /api/v2/translate (NetworkFirst)
+// -------- fallback for any other /api/v2/translate calls --------
 registerRoute(
   ({ url }) => url.pathname.startsWith(apiV2Root),
   new NetworkFirst({
@@ -121,7 +169,7 @@ registerRoute(
   })
 );
 
-// legacy API (if still used)
+// -------- legacy API (optional; keep if still used) --------
 registerRoute(
   ({ url }) => url.pathname.startsWith(`${scopePath}api/`),
   new NetworkFirst({
@@ -131,8 +179,8 @@ registerRoute(
   })
 );
 
-/* Optional: message to trigger update
+/* Optional controlled updates:
 self.addEventListener('message', (e) => {
-  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
-});
+  if (e.data?.type === 'SKIP_WAITING') self.skipWaiting()
+})
 */

@@ -32,6 +32,30 @@ function getIn(obj, path) {
 function definedOr(v, fallback) {
   return v === undefined || v === null ? fallback : v;
 }
+// ---- build timestamp (YYYYMMDD_HHMMSS) -------------------------------
+function pad2(n) {
+  n = String(n);
+  return n.length < 2 ? "0" + n : n;
+}
+function buildStamp() {
+  const d = new Date();
+  return (
+    d.getFullYear() +
+    pad2(d.getMonth() + 1) +
+    pad2(d.getDate()) +
+    "_" +
+    pad2(d.getHours()) +
+    pad2(d.getMinutes()) +
+    pad2(d.getSeconds())
+  );
+}
+const DIST_STAMP = buildStamp();
+// If you already have a `site` var, this uses it; else falls back to "unknown".
+// Ex: "dist/site-wsu_20251024_153045"
+function makeDistDir(site) {
+  const s = site ? String(site) : "unknown";
+  return `dist/site-${s}_${DIST_STAMP}`;
+}
 
 // ---------- main export ----------
 export default configure((ctx) => {
@@ -160,7 +184,7 @@ export default configure((ctx) => {
       plugins: ["Notify", "Dialog"],
     },
     build: {
-      distDir: `dist/site-${site}`,
+      distDir: makeDistDir(site),
       env: {
         ...envFromMeta,
         VITE_APP: site,
@@ -263,7 +287,7 @@ export default configure((ctx) => {
         const v = getIn(meta, ["dev", "port"]);
         return v === undefined || v === null ? 9232 : v;
       })(),
-      https: !!meta?.dev?.https,
+      https: Boolean(definedOr(getIn(meta, ["dev", "https"]), false)),
       open: true,
       proxy: {
         // forward /api to the chosen API origin in dev
@@ -328,17 +352,9 @@ export default configure((ctx) => {
       },
 
       extendManifestJson(manifest) {
-        // You can override with src/sites/<site>/meta.json if you have names there
-              extendManifestJson(manifest) {
         // Prefer values in meta.pwa.*, but only fall back on undefined/null
-        const pwaName = definedOr(
-          getIn(meta, ['pwa', 'name']),
-          'DBS 2026'
-        );
-        const pwaShort = definedOr(
-          getIn(meta, ['pwa', 'shortName']),
-          'DBS'
-        );
+        const pwaName = definedOr(getIn(meta, ["pwa", "name"]), "DBS 2026");
+        const pwaShort = definedOr(getIn(meta, ["pwa", "shortName"]), "DBS");
         manifest.name = pwaName;
         manifest.short_name = pwaShort;
 
