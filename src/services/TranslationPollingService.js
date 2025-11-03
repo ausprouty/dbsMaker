@@ -78,6 +78,8 @@ export async function pollTranslationUntilComplete({
         const cur = i18n.global.getLocaleMessage(hl) || {};
         const next = deepMergeWithDelete({ ...cur }, messages || {});
         i18n.global.setLocaleMessage(hl, next);
+        console.log("TranslationPollingService changed interface to " + hl);
+
         i18n.global.locale.value = hl;
 
         // Set <html lang> — prefer explicit, then HL (supports old/new shapes)

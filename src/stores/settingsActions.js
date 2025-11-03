@@ -1,12 +1,9 @@
 import { normJF, normHL, isHLCode } from "src/utils/normalize";
-import { detectDirection, applyDirection } from 'src/utils/i18nDirection';
+import { detectDirection, applyDirection } from "src/utils/i18nDirection";
 import { i18n } from "src/boot/i18n";
 import { useContentStore } from "src/stores/ContentStore";
 import { MAX_LESSON_NUMBERS } from "src/constants/Defaults";
-import {
-  validateLessonNumber,
-  validateNonEmptyString,
-} from "./validators";
+import { validateLessonNumber, validateNonEmptyString } from "./validators";
 
 export const settingsActions = {
   addRecentLanguage(lang) {
@@ -100,39 +97,40 @@ export const settingsActions = {
     this.currentStudy = study;
   },
   // --- i18n: use HL code directly as the active vue-i18n locale
-    setI18nLocaleFromHL(hl) {
-      const code = normHL(hl); // e.g., "eng00"
-      const { global } = i18n;
-      global.locale.value = code;
-    },
-
-      /**
-     * End-to-end: update selection (HL/JF), switch vue-i18n locale,
-     * and proactively fetch the interface bundle.
-     */
-  async setLanguageAndApply(payload) {
-    const { hl, jf } = this.setLanguageCodes(payload); // returns applied HL/JF
-    this.setI18nLocaleFromHL(hl);                      // locale = 'eng00' etc.
-    const content = useContentStore();
-    await content.loadInterface({ hl, jf });           // fetch bundle
+  setI18nLocaleFromHL(hl) {
+    const code = normHL(hl); // e.g., "eng00"
+    const { global } = i18n;
+    global.locale.value = code;
   },
 
+  /**
+   * End-to-end: update selection (HL/JF), switch vue-i18n locale,
+   * and proactively fetch the interface bundle.
+   */
+  async setLanguageAndApply(payload) {
+    const { hl, jf } = this.setLanguageCodes(payload); // returns applied HL/JF
+    this.setI18nLocaleFromHL(hl); // locale = 'eng00' etc.
+    const content = useContentStore();
+    await content.loadInterface({ hl, jf }); // fetch bundle
+    i18n.global.locale.value = hl;
+    console.log("SettingStore.setLanguageAndApply changed interface to " + hl);
+  },
 
   setLanguageObjectSelected(lang) {
-    console.log ('entered store to setLanguageObjectSelected');
+    console.log("entered store to setLanguageObjectSelected");
     // Keep this for API stability (also updates MRU + direction)
     if (!lang) return;
-     console.log ('have language');
-     console.log (lang);
+    console.log("have language");
+    console.log(lang);
     this.languageObjectSelected = lang;
     this.addRecentLanguage(lang);
     try {
       localStorage.setItem("lang:selected", JSON.stringify(lang));
     } catch {}
-    console.log ('about to applyDirection');
+    console.log("about to applyDirection");
     applyDirection(detectDirection(lang));
   },
-  
+
   setLanguageCodes(payload) {
     // payload: { hl, jf }  (either may be provided)
     var hl = normHL(payload && payload.hl);

@@ -10,9 +10,9 @@ import { validateLessonNumber } from "./validators";
 
 export const useContentStore = defineStore("contentStore", {
   state: () => ({
-    commonContent: {},     // {'commonContent-${study}-${hl}': html}
-    lessonContent: {},     // {'lessonContent-${study}-${hl}-${jf}-lesson-${n}': html}
-    videoUrls: {},         // {'videoUrls-${study}-${jf}': [url1, url2]}
+    commonContent: {}, // {'commonContent-${study}-${hl}': html}
+    lessonContent: {}, // {'lessonContent-${study}-${hl}-${jf}-lesson-${n}': html}
+    videoUrls: {}, // {'videoUrls-${study}-${jf}': [url1, url2]}
     // NEW: cache for video meta per study
     _videoMetaByStudy: {}, // { [study]: { provider, segments, meta } }
     translationComplete: {
@@ -28,10 +28,12 @@ export const useContentStore = defineStore("contentStore", {
       return state.lessonContent[key] || null;
     },
 
-    commonContentFor: (state) => ( hl, study, variant = null) => {
-      const key = ContentKeys.buildCommonContentKey(study, hl, variant);
-      return state.commonContent[key] || null;
-    },
+    commonContentFor:
+      (state) =>
+      (hl, study, variant = null) => {
+        const key = ContentKeys.buildCommonContentKey(study, hl, variant);
+        return state.commonContent[key] || null;
+      },
 
     videoUrlsFor: (state) => (study, jf) => {
       const key = ContentKeys.buildVideoUrlsKey(study, jf);
@@ -47,7 +49,6 @@ export const useContentStore = defineStore("contentStore", {
   },
 
   actions: {
-
     async getVideoSourceFor(study, languageHL, languageJF, lesson) {
       const meta = await this.getStudyVideoMeta(study); // { provider, segments, meta }
       const result = buildVideoSource({
@@ -78,7 +79,7 @@ export const useContentStore = defineStore("contentStore", {
         console.warn("lessonContent key is null — skipping set.");
       }
     },
-     // moves retreived videoURLs  into Content Store which I plan to remove
+    // moves retreived videoURLs  into Content Store which I plan to remove
     setVideoUrls(study, jf, data) {
       const key = ContentKeys.buildVideoUrlsKey(study, jf);
       if (key) {
@@ -97,7 +98,10 @@ export const useContentStore = defineStore("contentStore", {
     // this is the good stuff.  We get the interface content from
     // either the database (if we can), or go to the API
     async loadInterface(hl) {
-      return await getTranslatedInterface(hl);
+      await getTranslatedInterface(hl);
+      i18n.global.locale.value = hl;
+      console.log("ContentStore.loadInterface changed interface to " + hl);
+      return;
     },
     // this is the good stuff.  We get the lesson content from
     // either the database (if we can), or go to the API
@@ -122,7 +126,9 @@ export const useContentStore = defineStore("contentStore", {
     },
 
     setTranslationComplete(section, value) {
-      if (Object.prototype.hasOwnProperty.call(this.translationComplete, section)) {
+      if (
+        Object.prototype.hasOwnProperty.call(this.translationComplete, section)
+      ) {
         this.translationComplete[section] = value;
       }
     },

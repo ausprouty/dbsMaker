@@ -67,7 +67,8 @@
     "name": "Cantonese",
     "ethnicName": "广东话",
     "languageCodeIso": "yue",
-    "languageCodeHL": "chn-s",
+    "languageCodeHL": "yuh00",
+    "script": "zh_CN",
     "languageCodeJF": "20601",
     "textDirection": "ltr"
   },
@@ -76,7 +77,8 @@
     "name": "Chinese-traditional",
     "ethnicName": "普通话",
     "languageCodeIso": "cmn",
-    "languageCodeHL": "chn-t",
+    "languageCodeHL": "zhhant",
+    "script": "zh_TW",
     "languageCodeJF": "23221",
     "textDirection": "ltr"
   },
@@ -366,6 +368,16 @@
     "languageCodeIso": "mal",
     "languageCodeHL": "mjs00",
     "languageCodeJF": "19985",
+    "textDirection": "ltr"
+  },
+  {
+    "id": 478,
+    "name": "Mandarin",
+    "ethnicName": "回族版圣经",
+    "languageCodeIso": "cmn",
+    "languageCodeHL": "chn00",
+    "languageCodeJF": "20615",
+    "script": "zh_CN",
     "textDirection": "ltr"
   },
   {

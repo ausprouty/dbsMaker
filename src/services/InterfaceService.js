@@ -249,6 +249,7 @@ export async function getTranslatedInterface(
       // *** MERGE ONLY (non-destructive). Keep anything already present. ***
       i18n.global.mergeLocaleMessage(hl, okTree);
       i18n.global.locale.value = hl;
+      console.log("InterfaceService changed interface to " + hl);
 
       if (import.meta.env.DEV) {
         const afterKeys = Object.keys(i18n.global.getLocaleMessage(hl) || {});
