@@ -185,6 +185,7 @@ export default configure((ctx) => {
     },
     build: {
       distDir: makeDistDir(site),
+      vueDevtools: true, // if your Quasar version supports it; otherwise keep the define flag
       env: {
         ...envFromMeta,
         VITE_APP: site,
@@ -205,6 +206,7 @@ export default configure((ctx) => {
 
         // ---------- Define: expose env to client ----------
         const viteDefines = {
+          __VUE_PROD_DEVTOOLS__: true, // Devtools in production
           "import.meta.env.MODE": JSON.stringify(baseMode),
           "import.meta.env.SITE": JSON.stringify(site),
         };
