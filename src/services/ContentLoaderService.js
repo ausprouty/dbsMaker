@@ -1,153 +1,193 @@
-import { http } from 'src/lib/http'
-import { pollTranslationUntilComplete } from 'src/services/TranslationPollingService'
+// src/services/ContentLoaderService.js
+// First-stop orchestrator for content (lesson/common/etc.)
+// Order: Store -> IndexedDB -> API -> (if incomplete) poll -> persist -> store.
+// No i18n/DOM logic here.
+
+import { http } from "src/lib/http";
+import { pollTranslationUntilComplete } from "src/services/TranslationPollingService";
+
+/**
+ * @typedef GetContentWithFallbackOptions
+ * @property {string} key                    // unique key for logs/debug
+ * @property {any} store                     // Pinia store instance
+ * @property {(store:any)=>any} storeGetter  // read from store
+ * @property {(store:any, data:any)=>void} storeSetter // write to store
+ * @property {()=>Promise<any>} dbGetter     // read from IndexedDB
+ * @property {(data:any)=>Promise<void>} dbSetter // write to IndexedDB
+ * @property {string} apiUrl                 // GET endpoint (http adds /api root)
+ * @property {string} languageCodeHL         // HL (eng00, zhhant, etc.)
+ * @property {"lessonContent"|"commonContent"|"interface"} translationType
+ * @property {(data:any)=>void} [onInstall]  // called on poll completion (store update)
+ * @property {boolean} [requireCronKey=true] // enforce meta.cronKey presence
+ * @property {number} [maxAttempts=5]
+ * @property {number} [interval=300]         // ms
+ */
 
 /**
  * Loads content from Pinia store, IndexedDB, or API.
- * Triggers polling if translation is incomplete.
+ * If translation is not complete (meta.complete !== true), starts the poller.
+ *
+ * @param {GetContentWithFallbackOptions} opts
+ * @returns {Promise<any>} The best-available payload (even if not complete yet)
  */
-export async function getContentWithFallback({
-  key,
-  store,
-  storeGetter,
-  storeSetter,
-  dbGetter,
-  dbSetter,
-  apiUrl,
-  languageCodeHL,
-  translationType,
-  skipTranslationCheck = false,
-}) {
-  // ---- input validation ----
-  if (!key || typeof key !== 'string') throw new TypeError('getContentWithFallback: key must be a string')
-  if (!store) throw new TypeError('getContentWithFallback: store is required')
-  if (typeof storeGetter !== 'function') throw new TypeError('getContentWithFallback: storeGetter must be a function')
-  if (typeof storeSetter !== 'function') throw new TypeError('getContentWithFallback: storeSetter must be a function')
-  if (typeof dbGetter !== 'function') throw new TypeError('getContentWithFallback: dbGetter must be a function')
-  if (typeof dbSetter !== 'function') throw new TypeError('getContentWithFallback: dbSetter must be a function')
-  if (!apiUrl || typeof apiUrl !== 'string' || apiUrl.trim() === '') {
-    throw new TypeError('getContentWithFallback: apiUrl must be a non-empty string')
-  }
-  if (!translationType || typeof translationType !== 'string') {
-    throw new TypeError('getContentWithFallback: translationType must be a string')
+export async function getContentWithFallback(opts) {
+  const {
+    key,
+    store,
+    storeGetter,
+    storeSetter,
+    dbGetter,
+    dbSetter,
+    apiUrl,
+    languageCodeHL,
+    translationType,
+    onInstall, // optional: how to update the store when poll completes
+    requireCronKey = true,
+    maxAttempts = 5,
+    interval = 300,
+  } = opts;
+
+  if (
+    !key ||
+    !store ||
+    !storeGetter ||
+    !storeSetter ||
+    !dbGetter ||
+    !dbSetter ||
+    !apiUrl ||
+    !languageCodeHL ||
+    !translationType
+  ) {
+    throw new Error("[ContentLoaderService] Missing required options");
   }
 
-  const isTrueFlag = (v) => v === true || v === 1 || v === '1' || String(v).toLowerCase() === 'true'
-  const isCompleteFlag = (obj) =>
-    isTrueFlag(obj && obj.meta && obj.meta.complete) ||
-    isTrueFlag(obj && obj.meta && obj.meta.translationComplete) // legacy fallback
+  const isComplete = (t) => Boolean(t?.meta?.complete === true);
+  const extract = (d) => d?.payload ?? d?.translation ?? d ?? null;
 
-  // 1) Try Pinia store
+  // 1) Store fast path
   try {
-    const storeValue = storeGetter(store)
-    if (storeValue) {
-      console.log(`✅ Loaded ${key} from ContentStore`)
-      console.log (storeValue)
-      if (isCompleteFlag(storeValue)) {
-        if (typeof store.setTranslationComplete === 'function') {
-          store.setTranslationComplete(translationType, true)
-        }
-        return storeValue
+    const fromStore = storeGetter(store);
+    if (fromStore) {
+      // If incomplete, kick polling, but return immediately with current data.
+      if (!isComplete(fromStore)) {
+        void startPoll({
+          languageCodeHL,
+          translationType,
+          apiUrl,
+          dbSetter,
+          storeSetter: (data) => storeSetter(store, data),
+          onInstall, // often same as storeSetter bound
+          requireCronKey,
+          maxAttempts,
+          interval,
+        });
       }
+      return fromStore;
     }
   } catch (e) {
-    console.warn(`⚠️ storeGetter failed for ${key}:`, e)
+    console.warn(`[ContentLoaderService] storeGetter threw for ${key}:`, e);
   }
 
-  // 2) Try IndexedDB
+  // 2) IndexedDB fallback
   try {
-    console.log('ContentLoader Service trying indexedDB')
-    const dbValue = await dbGetter()
-    if (dbValue) {
-      console.log(`✅ Loaded ${key} from IndexedDB`)
-      try { storeSetter(store, dbValue) } catch (e) { console.warn('⚠️ storeSetter threw while applying DB value:', e) }
-      if (isCompleteFlag(dbValue)) {
-        if (typeof store.setTranslationComplete === 'function') {
-          store.setTranslationComplete(translationType, true)
-        }
-        console.log (dbValue)
-        return dbValue
-      }
-      console.log('translation in DB not complete')
-    }
-  } catch (err) {
-    console.warn(`⚠️ DB getter failed for ${key}:`, err)
-    console.log (dbValue)
-  }
-
-  // 3) Fetch from API
-  try {
-    console.log(`🌐 ContentLoaderService Fetching ${key} from API: ${apiUrl}`)
-    const response = await http.get(apiUrl, { timeout: 10000 })
-
-    // tolerate both {data:{...}} and {...}
-    let data = response && response.data ? (response.data.data ?? response.data) : null
-    console.log('ContentLoaderService-84');
-    console.log(data)
-    // accept stringified JSON
-    if (typeof data === 'string') {
-      try { data = JSON.parse(data) } catch (parseError) {
-        console.error(`❌ JSON.parse failed for ${key}:`, data)
-        throw parseError
-      }
-    }
-
-    if (!data || typeof data !== 'object') {
-      console.error(`❌ No valid data returned from API for ${key}`)
-      throw new Error(`Empty or invalid API response for ${key}`)
-    }
-    // update store with whatever we get
-    try { storeSetter(store, data) } catch (e) { console.warn('⚠️ storeSetter threw while applying API value:', e) }
-
-    const complete = skipTranslationCheck || isCompleteFlag(data)
-
-    if (complete) {
-      console.log(`✅ ContentLoaderService-104 ${key} from API is complete - caching to DB`)
-      if (typeof store.setTranslationComplete === 'function') {
-        store.setTranslationComplete(translationType, true)
-      }
+    const fromDb = await dbGetter();
+    if (fromDb) {
+      // hydrate store
       try {
-        // dbSetter supports (data) or (hl, data)
-        if (dbSetter.length >= 2) {
-          await dbSetter(languageCodeHL, data)
-        } else {
-          await dbSetter(data)
-        }
+        storeSetter(store, fromDb);
       } catch (e) {
-        console.warn('⚠️ dbSetter threw while caching complete data:', e)
+        console.warn("[ContentLoaderService] storeSetter threw (DB path):", e);
       }
-      return data
+      if (!isComplete(fromDb)) {
+        void startPoll({
+          languageCodeHL,
+          translationType,
+          apiUrl,
+          dbSetter,
+          storeSetter: (data) => storeSetter(store, data),
+          onInstall,
+          requireCronKey,
+          maxAttempts,
+          interval,
+        });
+      }
+      return fromDb;
+    }
+  } catch (e) {
+    console.warn(`[ContentLoaderService] dbGetter threw for ${key}:`, e);
+  }
+
+  // 3) API load
+  try {
+    const res = await http.get(apiUrl);
+    const data = extract(res?.data);
+    if (!data) {
+      throw new Error(`[ContentLoaderService] Empty payload for ${key}`);
     }
 
-    // not complete — kick off polling and still return partial data
-    console.warn(`⚠️ContentLoaderService-122  ${key} from API is incomplete — polling`)
+    // persist to DB
     try {
-      pollTranslationUntilComplete({
+      await dbSetter(data);
+    } catch (e) {
+      console.warn("[ContentLoaderService] dbSetter threw (API path):", e);
+    }
+
+    // update store
+    try {
+      storeSetter(store, data);
+    } catch (e) {
+      console.warn("[ContentLoaderService] storeSetter threw (API path):", e);
+    }
+
+    // 4) If not complete, start poll but return current data immediately
+    if (!isComplete(data)) {
+      void startPoll({
         languageCodeHL,
         translationType,
         apiUrl,
         dbSetter,
-        store,
-        storeSetter,
-      })
-    } catch (e) {
-      console.warn('⚠️ pollTranslationUntilComplete failed to start:', e)
+        storeSetter: (payload) => storeSetter(store, payload),
+        onInstall,
+        requireCronKey,
+        maxAttempts,
+        interval,
+      });
     }
 
-    // cache partial to DB too
-    try {
-      if (dbSetter.length >= 2) {
-        await dbSetter(languageCodeHL, data)
-      } else {
-        await dbSetter(data)
-      }
-    } catch (e) {
-      console.warn('⚠️ dbSetter threw while caching partial data:', e)
-    }
-
-    return data
+    return data;
   } catch (error) {
-    console.error(`❌ Failed to load ${key} from API:`, error)
-    console.error(apiUrl)
-    throw error
+    console.error(`❌ Failed to load ${key} from API:`, error);
+    console.error(apiUrl);
+    throw error;
   }
+}
+
+/** Internal: delegate to the pure poller with pass-through options */
+function startPoll({
+  languageCodeHL,
+  translationType,
+  apiUrl,
+  dbSetter,
+  storeSetter,
+  onInstall,
+  requireCronKey,
+  maxAttempts,
+  interval,
+}) {
+  pollTranslationUntilComplete({
+    languageCodeHL,
+    translationType,
+    apiUrl,
+    dbSetter,
+    storeSetter,
+    onInstall,
+    requireCronKey,
+    maxAttempts,
+    interval,
+  }).catch((e) => {
+    console.warn(
+      "[ContentLoaderService] Polling ended with warning:",
+      e?.message || e
+    );
+  });
 }

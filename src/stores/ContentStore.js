@@ -7,6 +7,10 @@ import { getTranslatedInterface } from "../services/InterfaceService.js";
 import { buildVideoSource } from "@/utils/videoSource";
 import { unref } from "vue";
 import { validateLessonNumber } from "./validators";
+import { i18n } from "src/boot/i18n";
+// for use by loadInterface
+
+let lastInterfaceReq = 0;
 
 export const useContentStore = defineStore("contentStore", {
   state: () => ({
@@ -95,15 +99,14 @@ export const useContentStore = defineStore("contentStore", {
       this.setCommonContent(study, hl, data, variant);
       return data;
     },
-    // this is the good stuff.  We get the interface content from
+    //  We get the interface content from
     // either the database (if we can), or go to the API
     async loadInterface(hl) {
-      await getTranslatedInterface(hl);
-      i18n.global.locale.value = hl;
+      await getTranslatedInterface(hl); // fetch/cache only
       console.log("ContentStore.loadInterface changed interface to " + hl);
-      return;
     },
-    // this is the good stuff.  We get the lesson content from
+  },
+    // We get the lesson content from
     // either the database (if we can), or go to the API
     async loadLessonContent(hl, jf, study, lesson) {
       const validated = validateLessonNumber(unref(lesson));

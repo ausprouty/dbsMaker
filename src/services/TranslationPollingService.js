@@ -1,205 +1,134 @@
+// src/services/TranslationPollingService.js
+// Pure poller: GET status -> (require cronKey) -> nudge cron if not complete
+// -> persist -> notify. No i18n, no DOM, no merging.
+
 import { http } from "src/lib/http";
-import { i18n } from "src/lib/i18n";
 import { normId } from "src/utils/normalize";
 
-const activePolls = new Set();
+// De-duplicate identical concurrent polls
+const inFlight = new Map();
 const ALLOWED_TYPES = new Set(["interface", "commonContent", "lessonContent"]);
 
-export async function pollTranslationUntilComplete({
+/**
+ * Polls the translation endpoint until complete (meta.complete === true).
+ *
+ * @param {Object} opts
+ * @param {string} opts.languageCodeHL
+ * @param {"interface"|"commonContent"|"lessonContent"} opts.translationType
+ * @param {string} opts.apiUrl                  // GET endpoint to read status/payload
+ * @param {function(string, any): Promise<void>} opts.dbSetter
+ * @param {object=} opts.store
+ * @param {function(any):void=} opts.storeSetter
+ * @param {function(string, any):void=} opts.onInstall
+ * @param {number=} opts.maxAttempts            // default 5
+ * @param {number=} opts.interval               // ms between polls (default 300)
+ * @param {boolean=} opts.requireCronKey        // default true: error if missing
+ * @returns {Promise<any>} resolves with payload when complete
+ */
+export function pollTranslationUntilComplete({
   languageCodeHL,
   translationType,
   apiUrl,
   dbSetter,
   store,
   storeSetter,
+  onInstall,
   maxAttempts = 5,
   interval = 300,
-  replaceWhenComplete = false,
+  requireCronKey = true,
 }) {
-  // ---- input validation ----
-  const hl = normId
-    ? normId(languageCodeHL)
-    : String(languageCodeHL ?? "").trim();
-  if (!hl) {
+  if (!ALLOWED_TYPES.has(translationType)) {
     throw new Error(
-      `[poll] 'languageCodeHL' is required for translationType "${translationType}" and apiUrl "${apiUrl}"`
+      `[TranslationPollingService] Unsupported type: ${translationType}`
     );
   }
 
-  if (!ALLOWED_TYPES.has(translationType)) {
-    throw new TypeError(`[poll] Invalid translationType: ${translationType}`);
+  const hl = normId(languageCodeHL);
+  const key = `${translationType}:${hl}:${apiUrl}`;
+
+  if (inFlight.has(key)) {
+    return inFlight.get(key);
   }
-  if (typeof apiUrl !== "string" || apiUrl.trim() === "") {
-    throw new TypeError("[poll] 'apiUrl' must be a non-empty string");
-  }
 
-  maxAttempts = Math.max(1, parseInt(String(maxAttempts), 10) || 5);
-  interval = Math.max(100, parseInt(String(interval), 10) || 300);
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  const pollKey = `${translationType}:${hl}`;
-  if (activePolls.has(pollKey)) {
-    console.log(`⏳ Poll already active for ${pollKey}`);
-    return;
-  }
-  activePolls.add(pollKey);
+  const extractTranslation = (data) =>
+    data?.payload ?? data?.translation ?? data ?? null;
 
-  let attempts = 0;
-  const finish = () => activePolls.delete(pollKey);
+  const isComplete = (t) => Boolean(t?.meta?.complete === true);
 
-  const poll = async () => {
-    attempts++;
+  const getCronKey = (t) => {
+    const k = t?.meta?.cronKey;
+    return k == null ? "" : String(k).trim();
+  };
+
+  const nudgeCron = async (cronKey) => {
+    const url = `/v2/translate/cron/${encodeURIComponent(cronKey)}`;
+    // Fire-and-forget, but await to surface network errors in logs;
+    // we still continue polling even if this call fails.
     try {
-      console.log(
-        `🔄 Polling ${translationType} for ${hl} (attempt ${attempts})`
-      );
-      const res = await http.get(apiUrl);
-      const translation = res && res.data ? res.data.data ?? res.data : null;
-
-      if (!translation || typeof translation !== "object") {
-        console.warn("[poll] Empty or invalid translation payload");
-      }
-
-      // optional store update
-      if (typeof storeSetter === "function" && store && translation) {
-        try {
-          storeSetter(store, translation);
-        } catch (e) {
-          console.warn("[poll] storeSetter threw:", e);
-        }
-      }
-
-      // ---- i18n updates (only for interface bundles) ----
-      if (translationType === "interface" && translation) {
-        console.log(translation);
-        // don’t merge meta into i18n messages
-        const { meta, ...messages } = translation;
-
-        // deep merge with deletion semantics (null/"")
-        const cur = i18n.global.getLocaleMessage(hl) || {};
-        const next = deepMergeWithDelete({ ...cur }, messages || {});
-        i18n.global.setLocaleMessage(hl, next);
-        console.log("TranslationPollingService changed interface to " + hl);
-
-        i18n.global.locale.value = hl;
-
-        // Set <html lang> — prefer explicit, then HL (supports old/new shapes)
-        const htmlLang =
-          (meta &&
-            meta.language &&
-            (meta.language.html ||
-              meta.language.google ||
-              meta.language.code)) ||
-          (translation.language &&
-            (translation.language.html ||
-              translation.language.google ||
-              translation.language.code)) ||
-          hl;
-        if (typeof document !== "undefined") {
-          document.documentElement &&
-            document.documentElement.setAttribute("lang", String(htmlLang));
-        }
-      }
-
-      // support new shape (meta) and old shape (language) for completion flag
-      const isComplete =
-        (translation &&
-          translation.meta &&
-          translation.meta.complete === true) ||
-        (translation &&
-          translation.language &&
-          translation.language.translationComplete === true);
-
-      console.log("translationComplete:", !!isComplete);
-
-      if (store && typeof store.setTranslationComplete === "function") {
-        try {
-          store.setTranslationComplete(translationType, !!isComplete);
-        } catch (e) {
-          console.warn("[poll] setTranslationComplete threw:", e);
-        }
-      }
-
-      // save to DB (support both arities: (hl, data) or (data))
-      if (typeof dbSetter === "function" && translation) {
-        try {
-          if (dbSetter.length >= 2) {
-            await dbSetter(hl, translation);
-          } else {
-            await dbSetter(translation);
-          }
-        } catch (e) {
-          console.warn("[poll] dbSetter threw:", e);
-        }
-      }
-
-      if (isComplete) {
-        // Optional: replace the merged bundle with the final messages only
-        if (
-          replaceWhenComplete &&
-          translationType === "interface" &&
-          translation
-        ) {
-          const { meta, ...messages } = translation;
-          i18n.global.setLocaleMessage(hl, messages || {});
-        }
-        console.log(`✅ ${translationType} for ${hl} is complete`);
-        finish();
-        return;
-      }
-
-      if (attempts < maxAttempts) {
-        console.log("meta");
-        console.log(translation.meta);
-        // nudge backend if we have a cron token (meta-first, fallback old field)
-        const cronKey =
-          translation && translation.meta && translation.meta.cronKey;
-        if (cronKey == null || cronKey === "")
-          throw new Error("Missing cronKey");
-        else {
-          console.log(cronKey);
-          const url = `/v2/translate/cron/${encodeURIComponent(
-            String(cronKey)
-          )}`;
-          console.log(url);
-          http
-            .get(url)
-            .catch((err) => console.warn("⚠️ Cron trigger failed:", err));
-        }
-        setTimeout(poll, interval);
-      } else {
-        console.warn(
-          `❌ ${translationType} polling exceeded max attempts for ${hl}`
-        );
-        finish();
-      }
-    } catch (error) {
-      console.error(`💥 Polling error for ${translationType} ${hl}:`, error);
-      finish();
+      await http.get(url);
+    } catch (err) {
+      console.warn("[TranslationPollingService] cron trigger failed:", err);
     }
   };
 
-  // deep merge that also supports deletions with null/""
-  function deepMergeWithDelete(target, source) {
-    if (!source || typeof source !== "object") return target;
-    for (const k of Object.keys(source)) {
-      const v = source[k];
-      if (v === null || v === "") {
-        if (Object.prototype.hasOwnProperty.call(target, k)) delete target[k];
-        continue;
-      }
-      if (v && typeof v === "object" && !Array.isArray(v)) {
-        const base =
-          target && typeof target[k] === "object" && !Array.isArray(target[k])
-            ? target[k]
-            : {};
-        target[k] = deepMergeWithDelete({ ...base }, v);
-      } else {
-        target[k] = v;
-      }
-    }
-    return target;
-  }
+  const p = (async () => {
+    try {
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        // 1) Read current status/payload
+        const res = await http.get(apiUrl);
+        const data = res?.data;
+        const translation = extractTranslation(data);
 
-  // fire-and-forget
-  poll();
+        // 2) Complete? -> persist -> notify -> return
+        if (isComplete(translation)) {
+          await dbSetter(hl, translation);
+          if (typeof storeSetter === "function") {
+            try {
+              storeSetter(translation);
+            } catch (e) {
+              console.warn("[TranslationPollingService] storeSetter threw:", e);
+            }
+          }
+          if (typeof onInstall === "function") {
+            try {
+              onInstall(hl, translation);
+            } catch (e) {
+              console.warn("[TranslationPollingService] onInstall threw:", e);
+            }
+          }
+          return translation;
+        }
+
+        // 3) Not complete yet — require cronKey if configured
+        const cronKey = getCronKey(translation);
+        if (requireCronKey && cronKey === "") {
+          throw new Error(
+            "[TranslationPollingService] Missing cronKey in translation.meta"
+          );
+        }
+
+        // 4) Nudge backend cron (if we have a key), then wait and retry
+        if (cronKey !== "") {
+          await nudgeCron(cronKey);
+        }
+
+        if (attempt < maxAttempts) {
+          await sleep(interval);
+          continue;
+        }
+
+        // 5) Max attempts exhausted
+        throw new Error(
+          `[TranslationPollingService] Max attempts reached without completion: ${key}`
+        );
+      }
+    } finally {
+      inFlight.delete(key);
+    }
+  })();
+
+  inFlight.set(key, p);
+  return p;
 }
