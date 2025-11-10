@@ -13,6 +13,8 @@ import {
   saveInterfaceToDB,
 } from "src/services/IndexedDBService";
 import { normId } from "src/utils/normalize";
+import { buildInterfacePath } from "src/utils/apiPath";
+import { normalizeOkAndFlatten } from "src/services/api/normalize";
 
 const FALLBACK_HL = "eng00";
 const BLOCK_NS = new Set(["meta"]); // never merge 'meta' into messages
@@ -161,6 +163,7 @@ export function installInterfaceMergeOnly(hlRaw, payload) {
  */
 export async function getTranslatedInterface(hlRaw, hasRetried = false) {
   const hl = normId(hlRaw);
+  const app = normId(import.meta.env.VITE_APP) || "default";
   try {
     // 1) Try DB cache
     const fromDb = await getInterfaceFromDB(hl);
@@ -172,14 +175,15 @@ export async function getTranslatedInterface(hlRaw, hasRetried = false) {
       return fromDb;
     }
 
-    // 2) Fetch from API
-    const apiPath = `/v2/translate/text/interface/${encodeURIComponent(hl)}`;
+    // 2) Fetch from API (needs App name)
+    const apiPath = buildInterfacePath(app, hl);
     const res = await http.get(apiPath);
-    const payload = res?.data?.payload ?? res?.data?.translation ?? res?.data;
-
+    // Normalize: only accept status==='ok', flatten `data`, fold meta once.
+    const payload = normalizeOkAndFlatten(res?.data);
     if (isObj(payload)) {
       await saveInterfaceToDB(hl, payload);
       installInterfaceMergeOnly(hl, payload);
+
       void startPoll(hl);
       return payload;
     }
@@ -200,7 +204,9 @@ export async function getTranslatedInterface(hlRaw, hasRetried = false) {
 /** Kick off background polling and re-install on completion */
 function startPoll(hlRaw) {
   const hl = normId(hlRaw);
-  const apiPath = `/v2/translate/text/interface/${encodeURIComponent(hl)}`;
+  // Use same path shape as initial fetch (requires app)
+  const app = normId(import.meta.env.VITE_APP) || "default";
+  const apiPath = buildInterfacePath(app, hl);
 
   pollTranslationUntilComplete({
     languageCodeHL: hl,

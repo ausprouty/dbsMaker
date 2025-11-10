@@ -25,7 +25,7 @@ export function useInterfaceLocale() {
     try {
       document.documentElement.dir = isRTL(lang) ? "rtl" : "ltr";
     } catch {}
-    return Promise.resolve(hlCode);
+    return Promise.resolve(lang?.languageCodeHL);
   }
 
   return { applyInterfaceLanguageToWebpage };

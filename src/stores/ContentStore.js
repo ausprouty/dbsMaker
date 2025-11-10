@@ -105,7 +105,7 @@ export const useContentStore = defineStore("contentStore", {
       await getTranslatedInterface(hl); // fetch/cache only
       console.log("ContentStore.loadInterface changed interface to " + hl);
     },
-  },
+
     // We get the lesson content from
     // either the database (if we can), or go to the API
     async loadLessonContent(hl, jf, study, lesson) {
@@ -191,6 +191,4 @@ export const useContentStore = defineStore("contentStore", {
       this._videoMetaByStudy[study] = value;
     },
   },
-
-  persist: false,
 });
