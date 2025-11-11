@@ -1,5 +1,5 @@
 <script>
-import NoteSection from "src/components/notes/NoteSection.vue";
+import NoteSection from "src/components/Notes/NoteSection.vue";
 
 export default {
   name: "DbsSection",
@@ -28,7 +28,7 @@ export default {
   </section>
 </template>
 <style>
-  .timing{
-    color:var(--q-primary);
-  }
+.timing {
+  color: var(--q-primary);
+}
 </style>

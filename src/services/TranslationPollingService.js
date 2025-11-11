@@ -58,7 +58,12 @@ export function pollTranslationUntilComplete({
   const isComplete = (t) => Boolean(t?.meta?.complete === true);
 
   const getCronKey = (t) => {
-    const k = t?.meta?.cronKey;
+    if (!t || typeof t !== "object") return "";
+    const k =
+      t?.meta?.cronKey ??
+      t?.data?.meta?.cronKey ??
+      t?.translation?.meta?.cronKey ?? // optional extra safety
+      null;
     return k == null ? "" : String(k).trim();
   };
 

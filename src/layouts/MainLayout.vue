@@ -43,7 +43,7 @@ async function handleLanguageSelect(languageObject) {
   try {
     // 1) Persist selection (MRU etc.)
     settingsStore.setLanguageObjectSelected(languageObject);
-    console.log("MainLayout-43 setLanguageObjectSelected ✓");
+    console.log("MainLayout setLanguageObjectSelected ✓");
 
     // 2) Ensure interface bundle is loaded for this HL
     await contentStore.loadInterface(hl);
@@ -51,16 +51,16 @@ async function handleLanguageSelect(languageObject) {
 
     // 3) Apply i18n + <html lang|dir>
     await applyInterfaceLanguageToWebpage(languageObject);
-    console.log("MainLayout-51 appied InterfaceLanguageToWebpage ✓");
+    console.log("MainLayout appied InterfaceLanguageToWebpage ✓");
     console.log(languageObject);
 
     // 4) Update the URL (guarded internally to avoid no-ops/loops)
     await changeLanguage(hl, jf);
-    console.log("MainLayout-55 navigation ✓");
+    console.log("MainLayout navigation ✓");
   } catch (e) {
     console.warn("MainLayout switch failed:", e);
   } finally {
-    console.log("MainLayout-59 closing drawer");
+    console.log("MainLayout closing drawer");
     closeRightDrawer();
   }
 }

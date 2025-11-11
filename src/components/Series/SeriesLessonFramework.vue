@@ -3,16 +3,15 @@ import { computed, watch, onMounted } from "vue";
 import { useContentStore } from "stores/ContentStore";
 import { useI18n } from "vue-i18n";
 
-import DbsSection from "src/components/series/DbsSection.vue";
-import LookupSection from "src/components/series/LookupSection.vue";
-import SeriesReviewLastLesson from "src/components/series/SeriesReviewLastLesson.vue";
+import DbsSection from "src/components/Series/DbsSection.vue";
+import LookupSection from "src/components/Series/LookupSection.vue";
+import SeriesReviewLastLesson from "src/components/Series/SeriesReviewLastLesson.vue";
 
 export default {
   name: "SeriesLessonFramework",
   components: { DbsSection, LookupSection, SeriesReviewLastLesson },
 
   props: {
-
     languageCodeHL: { type: String, required: true },
     languageCodeJF: { type: String, required: true },
     study: { type: String, required: true },
@@ -42,6 +41,9 @@ export default {
     });
     const lookForwardNoteInstruction = computed(function () {
       return t("interface.lookForwardNoteInstruction");
+    });
+    const lessonLoading = computed(function () {
+      return t("interface.lessonLoading");
     });
 
     // Safe fallbacks for template (no optional chaining)
@@ -104,7 +106,7 @@ export default {
 
 <template>
   <div v-if="!lessonContent">
-    <h2 class="warning">Your lesson content is loading...</h2>
+    <h2 class="warning">{{ lessonLoading }}</h2>
   </div>
   <div v-else>
     <h1 class="title dbs">{{ lessonContent.title }}</h1>

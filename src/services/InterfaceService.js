@@ -112,6 +112,8 @@ function deepMergeWithDelete(target, patch) {
  *  - sets locale and <html lang/dir>
  */
 export function installInterfaceMergeOnly(hlRaw, payload) {
+  console.log("installInterfaceMergeOnly for " + hlRaw);
+  console.log(payload);
   if (!payload) return;
   const hl = normId(hlRaw);
 
@@ -141,6 +143,7 @@ export function installInterfaceMergeOnly(hlRaw, payload) {
   const merged = deepMergeWithDelete(current, okTree);
   i18n.global.setLocaleMessage(hl, merged);
   i18n.global.locale.value = hl;
+  console.log("set Global Locale Value to " + hl);
 
   // Apply <html lang> and dir from meta
   const htmlLang = htmlLangFromMeta(meta, hl);
@@ -166,6 +169,7 @@ export async function getTranslatedInterface(hlRaw, hasRetried = false) {
   const app = normId(import.meta.env.VITE_APP) || "default";
   try {
     // 1) Try DB cache
+    console.log("Trying to get interface from DB for " + hl);
     const fromDb = await getInterfaceFromDB(hl);
     if (fromDb && isObj(fromDb)) {
       installInterfaceMergeOnly(hl, fromDb);
@@ -176,10 +180,13 @@ export async function getTranslatedInterface(hlRaw, hasRetried = false) {
     }
 
     // 2) Fetch from API (needs App name)
+    console.log("Trying to get interface from API for " + hl);
     const apiPath = buildInterfacePath(app, hl);
     const res = await http.get(apiPath);
+    console.log(res?.data);
     // Normalize: only accept status==='ok', flatten `data`, fold meta once.
     const payload = normalizeOkAndFlatten(res?.data);
+    console.log(payload);
     if (isObj(payload)) {
       await saveInterfaceToDB(hl, payload);
       installInterfaceMergeOnly(hl, payload);
@@ -204,6 +211,7 @@ export async function getTranslatedInterface(hlRaw, hasRetried = false) {
 /** Kick off background polling and re-install on completion */
 function startPoll(hlRaw) {
   const hl = normId(hlRaw);
+  console.log("start poll for interface for " + hl);
   // Use same path shape as initial fetch (requires app)
   const app = normId(import.meta.env.VITE_APP) || "default";
   const apiPath = buildInterfacePath(app, hl);
