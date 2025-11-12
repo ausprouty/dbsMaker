@@ -3,7 +3,6 @@ const dbVersion = 3;
 let dbInstance = null;
 import * as ContentKeys from "src/utils/ContentKeyBuilder";
 
-
 export function openDatabase() {
   if (typeof indexedDB === "undefined") {
     console.warn(`IndexedDB not available — skipping cache read for ${key}`);
@@ -38,7 +37,6 @@ export function openDatabase() {
       if (!db.objectStoreNames.contains("interface"))
         db.createObjectStore("interface");
 
-
       if (!db.objectStoreNames.contains("notes")) db.createObjectStore("notes");
 
       if (!db.objectStoreNames.contains("completed_lessons"))
@@ -54,8 +52,8 @@ export function openDatabase() {
 // --- IndexedDB core -----------------------------------------
 async function saveItem(storeName, key, value, opts = {}) {
   const {
-    allowEmpty = false,        // if true, permits saving empties (default: refuse)
-    deleteOnEmpty = true       // if value is empty, delete key instead of saving
+    allowEmpty = false, // if true, permits saving empties (default: refuse)
+    deleteOnEmpty = true, // if value is empty, delete key instead of saving
   } = opts;
 
   if (key == null) {
@@ -64,8 +62,10 @@ async function saveItem(storeName, key, value, opts = {}) {
   }
 
   // Refuse error objects
-  if (isPlainObject(value) && ('error' in value)) {
-    console.warn(`⛔ Skipping save for key "${key}" due to error: ${value.error}`);
+  if (isPlainObject(value) && "error" in value) {
+    console.warn(
+      `⛔ Skipping save for key "${key}" due to error: ${value.error}`
+    );
     return false;
   }
 
@@ -77,7 +77,7 @@ async function saveItem(storeName, key, value, opts = {}) {
     console.warn(value);
     if (deleteOnEmpty) {
       return new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, 'readwrite');
+        const tx = db.transaction(storeName, "readwrite");
         const store = tx.objectStore(storeName);
         const del = store.delete(key);
         del.onsuccess = () => resolve(true);
@@ -89,7 +89,7 @@ async function saveItem(storeName, key, value, opts = {}) {
 
   // Save meaningful values
   return new Promise((resolve, reject) => {
-    const tx = db.transaction(storeName, 'readwrite');
+    const tx = db.transaction(storeName, "readwrite");
     const store = tx.objectStore(storeName);
     const req = store.put(value, key);
     req.onsuccess = () => resolve(true);
@@ -99,7 +99,7 @@ async function saveItem(storeName, key, value, opts = {}) {
 
 async function getItem(storeName, key, opts = {}) {
   const {
-    deleteIfEmpty = true       // delete `{}`/empty-on-read (default: true)
+    deleteIfEmpty = true, // delete `{}`/empty-on-read (default: true)
   } = opts;
 
   if (key == null) {
@@ -111,24 +111,47 @@ async function getItem(storeName, key, opts = {}) {
 
   return new Promise((resolve, reject) => {
     // Use readwrite so we can delete inside the same transaction if empty
-    const tx = db.transaction(storeName, deleteIfEmpty ? 'readwrite' : 'readonly');
+    const tx = db.transaction(
+      storeName,
+      deleteIfEmpty ? "readwrite" : "readonly"
+    );
     const store = tx.objectStore(storeName);
     const req = store.get(key);
 
     req.onsuccess = () => {
       const val = req.result;
 
+      // Treat true "missing key" as a normal cache miss, not a warning.
+      if (val === undefined) {
+        if (process?.env?.NODE_ENV !== "production") {
+          console.debug("[IDB] cache miss for", String(key));
+        }
+        resolve(null);
+        return;
+      }
+
       if (!isMeaningful(val)) {
         // debug
-        console.warn('[IDB] meaningless value at', `${key}`, '→', val);
-        console.log('type:', Object.prototype.toString.call(val), 'ctor:', val?.constructor?.name);
+        console.warn("[IDB] meaningless value at", String(key), "→", val);
+        console.log(
+          "type:",
+          Object.prototype.toString.call(val),
+          "ctor:",
+          val?.constructor?.name
+        );
         console.groupCollapsed(`🧹 Purge candidate ${key}`);
-        console.log('preview:', previewVal(val));
+        console.log("preview:", previewVal(val));
         console.dir(val);
         console.groupEnd();
-        if (deleteIfEmpty && tx.mode === 'readwrite') {
-          try { store.delete(key); } catch (_) {}
-          console.warn(`🧹 Purged empty/meaningless "${key}" from IndexedDB.`);
+        // Only attempt delete for keys that exist; skip when readonly.
+        if (deleteIfEmpty && tx.mode === "readwrite") {
+          try {
+            // delete is idempotent but keep errors silent
+            store.delete(key);
+            console.warn(
+              `🧹 Purged empty/meaningless "${String(key)}" from IndexedDB.`
+            );
+          } catch (_) {}
         }
         resolve(null);
         return;
@@ -142,11 +165,16 @@ async function getItem(storeName, key, opts = {}) {
 
 function previewVal(v) {
   if (v == null) return String(v);
-  if (typeof v === 'string') return `"${v.slice(0,120)}"${v.length>120?`…(${v.length})`:''}`;
-  if (Array.isArray(v)) return `Array(${v.length}) [${v.slice(0,5).map(x => typeof x==='string'? `"${x.slice(0,20)}"` : String(x)).join(', ')}${v.length>5?', …':''}]`;
+  if (typeof v === "string")
+    return `"${v.slice(0, 120)}"${v.length > 120 ? `…(${v.length})` : ""}`;
+  if (Array.isArray(v))
+    return `Array(${v.length}) [${v
+      .slice(0, 5)
+      .map((x) => (typeof x === "string" ? `"${x.slice(0, 20)}"` : String(x)))
+      .join(", ")}${v.length > 5 ? ", …" : ""}]`;
   if (v instanceof Blob) return `Blob ${v.type} ${v.size}B`;
   if (v instanceof ArrayBuffer) return `ArrayBuffer ${v.byteLength}B`;
-  if (v && typeof v === 'object') return `Object keys=${Object.keys(v).length}`;
+  if (v && typeof v === "object") return `Object keys=${Object.keys(v).length}`;
   return String(v);
 }
 // ----------------- Common Content -----------------
@@ -171,7 +199,10 @@ export async function getCommonContentFromDB(study, languageCodeHL) {
 
 export async function saveCommonContentToDB(study, languageCodeHL, content) {
   const key = ContentKeys.buildCommonContentKey(study, languageCodeHL);
+  console.log("SAVE COMMON CONTENT TO DB");
   console.log(key);
+  console.log(languageCodeHL);
+  console.log(content);
   return saveItem("commonContent", key, content);
 }
 
@@ -205,10 +236,11 @@ export async function saveLessonContentToDB(
     languageCodeJF,
     lesson
   );
+  console.log("SAVE LESSON CONTENT TO DB");
+  console.log(key);
+  console.log(content);
   return saveItem("lessonContent", key, content);
 }
-
-
 
 // ----------------- Study Progress and Last Completed Lesson per Study ---------
 export async function getStudyProgress(study) {
@@ -231,24 +263,24 @@ export async function saveStudyProgress(study, progress) {
 // ----------------- Notes -----------------
 
 export async function getNoteFromDB(study, lesson, section) {
-  const key = ContentKeys.buildNotesKey(study, lesson, section)
-  return getItem('notes', key)
+  const key = ContentKeys.buildNotesKey(study, lesson, section);
+  return getItem("notes", key);
 }
 
 export async function saveNoteToDB(study, lesson, section, content) {
-  const key = ContentKeys.buildNotesKey(study, lesson, section)
-  return saveItem('notes', key, content)
+  const key = ContentKeys.buildNotesKey(study, lesson, section);
+  return saveItem("notes", key, content);
 }
 
 export async function deleteNoteFromDB(study, lesson, section) {
-  const db = await openDatabase()
-  const key = ContentKeys.buildNotesKey(study, lesson, section)
-  const tx = db.transaction('notes', 'readwrite')
-  tx.objectStore('notes').delete(key)
+  const db = await openDatabase();
+  const key = ContentKeys.buildNotesKey(study, lesson, section);
+  const tx = db.transaction("notes", "readwrite");
+  tx.objectStore("notes").delete(key);
   return new Promise((resolve, reject) => {
-    tx.oncomplete = () => resolve(true)
-    tx.onerror = (e) => reject(e)
-  })
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = (e) => reject(e);
+  });
 }
 
 // ----------------- Clear Table -----------------
@@ -272,18 +304,20 @@ export async function clearTable(tableName) {
 
 // --- Meaningfulness helpers ---------------------------------
 function isPlainObject(v) {
-  return v != null &&
-         typeof v === 'object' &&
-         Object.getPrototypeOf(v) === Object.prototype;
+  return (
+    v != null &&
+    typeof v === "object" &&
+    Object.getPrototypeOf(v) === Object.prototype
+  );
 }
 
 function isMeaningful(v) {
-  if (v == null) return false;                     // null/undefined
-  if (typeof v === 'string') return v.trim().length > 0;
+  if (v == null) return false; // null/undefined
+  if (typeof v === "string") return v.trim().length > 0;
   if (Array.isArray(v)) return v.length > 0;
   if (isPlainObject(v)) {
-    if ('error' in v) return false;               // explicit error payloads
-    return Object.keys(v).length > 0;             // {} is not meaningful
+    if ("error" in v) return false; // explicit error payloads
+    return Object.keys(v).length > 0; // {} is not meaningful
   }
   return true; // numbers, booleans, Date, etc.
 }

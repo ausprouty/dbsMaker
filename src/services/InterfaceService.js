@@ -220,7 +220,7 @@ function startPoll(hlRaw) {
     languageCodeHL: hl,
     translationType: "interface",
     apiUrl: apiPath,
-    dbSetter: (hlCode, data) => saveInterfaceToDB(hlCode, data),
+    dbSetter: (data) => saveInterfaceToDB(hl, data),
     maxAttempts: 5,
     interval: 300,
     requireCronKey: true, // enforce presence of cronKey per your contract

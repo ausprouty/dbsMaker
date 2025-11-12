@@ -4,6 +4,10 @@
 
 import { http } from "src/lib/http";
 import { normId } from "src/utils/normalize";
+import {
+  extractTranslationPayload,
+  isComplete,
+} from "src/services/TranslationPayload";
 
 // De-duplicate identical concurrent polls
 const inFlight = new Map();
@@ -52,23 +56,21 @@ export function pollTranslationUntilComplete({
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  const extractTranslation = (data) =>
-    data?.payload ?? data?.translation ?? data ?? null;
-
-  const isComplete = (t) => Boolean(t?.meta?.complete === true);
-
   const getCronKey = (t) => {
+    console.log(t);
     if (!t || typeof t !== "object") return "";
     const k =
       t?.meta?.cronKey ??
       t?.data?.meta?.cronKey ??
       t?.translation?.meta?.cronKey ?? // optional extra safety
       null;
+    console.log("CRONKEY -- getCronKey received " + k);
     return k == null ? "" : String(k).trim();
   };
 
   const nudgeCron = async (cronKey) => {
     const url = `/v2/translate/cron/${encodeURIComponent(cronKey)}`;
+    console.log("CRONKEY -- " + url);
     // Fire-and-forget, but await to surface network errors in logs;
     // we still continue polling even if this call fails.
     try {
@@ -82,13 +84,18 @@ export function pollTranslationUntilComplete({
     try {
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         // 1) Read current status/payload
-        const res = await http.get(apiUrl);
-        const data = res?.data;
-        const translation = extractTranslation(data);
-
+        const { data: resData } = await http.get(apiUrl);
+        const translation = extractTranslationPayload(resData);
+        if (!translation) {
+          throw new Error(
+            `[TranslationPollingService] Empty payload for ${apiUrl}`
+          );
+        }
         // 2) Complete? -> persist -> notify -> return
         if (isComplete(translation)) {
-          await dbSetter(hl, translation);
+          console.log("HL");
+          console.log(hl);
+          await dbSetter(translation);
           if (typeof storeSetter === "function") {
             try {
               storeSetter(translation);

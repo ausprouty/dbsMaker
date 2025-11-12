@@ -119,28 +119,29 @@ export async function getContentWithFallback(opts) {
 
   // 3) API load
   try {
-    const res = await http.get(apiUrl);
-    const data = extract(res?.data);
-    if (!data) {
+    const { data: resData } = await http.get(apiUrl);
+    const translation = extractTranslationPayload(resData);
+    if (!translation) {
       throw new Error(`[ContentLoaderService] Empty payload for ${key}`);
     }
 
     // persist to DB
     try {
-      await dbSetter(data);
+      console.log("DATA TO DB");
+      console.log(translation);
+      await dbSetter(translation);
     } catch (e) {
       console.warn("[ContentLoaderService] dbSetter threw (API path):", e);
     }
-
     // update store
     try {
-      storeSetter(store, data);
+      storeSetter(store, translation);
     } catch (e) {
       console.warn("[ContentLoaderService] storeSetter threw (API path):", e);
     }
 
     // 4) If not complete, start poll but return current data immediately
-    if (!isComplete(data)) {
+    if (!isComplete(translation)) {
       void startPoll({
         languageCodeHL,
         translationType,
@@ -154,7 +155,7 @@ export async function getContentWithFallback(opts) {
       });
     }
 
-    return data;
+    return translation;
   } catch (error) {
     console.error(`❌ Failed to load ${key} from API:`, error);
     console.error(apiUrl);

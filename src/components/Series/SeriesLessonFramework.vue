@@ -92,6 +92,7 @@ export default {
 
     return {
       lessonContent,
+      lessonLoading,
       lookBackNoteInstruction,
       lookUpNoteInstruction,
       lookForwardNoteInstruction,

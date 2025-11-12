@@ -1,7 +1,7 @@
 <script setup>
 import { computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import DbsSection from "src/components/series/DbsSection.vue";
+import DbsSection from "src/components/Series/DbsSection.vue";
 
 const props = defineProps({
   commonContent: { type: Object, required: true },
