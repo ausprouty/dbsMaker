@@ -4,6 +4,10 @@
 // No i18n/DOM logic here.
 
 import { http } from "src/lib/http";
+import {
+  extractTranslationPayload,
+  isComplete,
+} from "src/services/TranslationPayload";
 import { pollTranslationUntilComplete } from "src/services/TranslationPollingService";
 
 /**
@@ -60,9 +64,6 @@ export async function getContentWithFallback(opts) {
   ) {
     throw new Error("[ContentLoaderService] Missing required options");
   }
-
-  const isComplete = (t) => Boolean(t?.meta?.complete === true);
-  const extract = (d) => d?.payload ?? d?.translation ?? d ?? null;
 
   // 1) Store fast path
   try {

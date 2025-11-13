@@ -4,8 +4,9 @@ export function extractTranslationPayload(resData) {
   // Typical API shapes we’ve seen:
   // { data: { translation: {...} } } or { data: {...} } or direct object
   return (
+    root?.data ??
     root?.translation ??
-    root?.translations ?? // if your API returns a single object here, okay
+    root?.payload ?? // if your API returns a single object here, okay
     root ??
     null
   );

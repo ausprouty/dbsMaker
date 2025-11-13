@@ -50,6 +50,33 @@ export function pollTranslationUntilComplete({
   const hl = normId(languageCodeHL);
   const key = `${translationType}:${hl}:${apiUrl}`;
 
+  function withCacheBuster(apiUrl, attempt) {
+    // Keep this just for debugging
+    //console.log("withCacheBuster in:", apiUrl);
+
+    // Split into [base+path, hash]
+    const hashIndex = apiUrl.indexOf("#");
+    const beforeHash = hashIndex === -1 ? apiUrl : apiUrl.slice(0, hashIndex);
+    const hash = hashIndex === -1 ? "" : apiUrl.slice(hashIndex); // includes '#'
+
+    // Split into [base, query]
+    const qIndex = beforeHash.indexOf("?");
+    const base = qIndex === -1 ? beforeHash : beforeHash.slice(0, qIndex);
+    const query = qIndex === -1 ? "" : beforeHash.slice(qIndex + 1);
+
+    const params = new URLSearchParams(query);
+    params.set("cb", Date.now().toString());
+    if (Number.isFinite(attempt)) {
+      params.set("attempt", String(attempt));
+    }
+
+    const qs = params.toString();
+    const out = base + (qs ? "?" + qs : "") + hash;
+
+    //console.log("withCacheBuster out:", out);
+    return out;
+  }
+
   if (inFlight.has(key)) {
     return inFlight.get(key);
   }
@@ -68,13 +95,20 @@ export function pollTranslationUntilComplete({
     return k == null ? "" : String(k).trim();
   };
 
-  const nudgeCron = async (cronKey) => {
-    const url = `/v2/translate/cron/${encodeURIComponent(cronKey)}`;
+  const nudgeCron = async (cronKey, attempt = 0) => {
+    const apiUrl = `/v2/translate/cron/${encodeURIComponent(cronKey)}`;
+    const url = withCacheBuster(apiUrl, attempt);
     console.log("CRONKEY -- " + url);
     // Fire-and-forget, but await to surface network errors in logs;
     // we still continue polling even if this call fails.
     try {
-      await http.get(url);
+      await http.get(url, {
+        headers: {
+          "Cache-Control": "no-cache", // don’t serve from cache
+          Pragma: "no-cache",
+          "If-Modified-Since": "0",
+        },
+      });
     } catch (err) {
       console.warn("[TranslationPollingService] cron trigger failed:", err);
     }
@@ -84,8 +118,18 @@ export function pollTranslationUntilComplete({
     try {
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         // 1) Read current status/payload
-        const { data: resData } = await http.get(apiUrl);
+        console.log(apiUrl);
+        const url = withCacheBuster(apiUrl, attempt);
+        console.log(url);
+        const { data: resData } = await http.get(url, {
+          headers: {
+            "Cache-Control": "no-cache", // don’t serve from cache
+            Pragma: "no-cache",
+            "If-Modified-Since": "0",
+          },
+        });
         const translation = extractTranslationPayload(resData);
+        console.log(translation);
         if (!translation) {
           throw new Error(
             `[TranslationPollingService] Empty payload for ${apiUrl}`
