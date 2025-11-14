@@ -37,8 +37,8 @@ export async function getLessonContent(
   const contentStore = useContentStore();
 
   // Use one setter in both initial fetch and poll completion
-  const setter = (data) =>
-    contentStore.setLessonContent(studyId, hl, jf, lessonId, data);
+  const setter = (store, data) =>
+    store.setLessonContent(studyId, hl, jf, lessonId, data);
 
   return await getContentWithFallback({
     key,

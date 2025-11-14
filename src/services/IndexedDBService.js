@@ -1,11 +1,14 @@
+import * as ContentKeys from "src/utils/ContentKeyBuilder";
 const dbName = "MyBibleApp";
 const dbVersion = 3;
 let dbInstance = null;
-import * as ContentKeys from "src/utils/ContentKeyBuilder";
+
+// Vite/Quasar dev flag – safe in both dev and prod builds
+const IS_DEV = import.meta.env && import.meta.env.DEV;
 
 export function openDatabase() {
   if (typeof indexedDB === "undefined") {
-    console.warn(`IndexedDB not available — skipping cache read for ${key}`);
+    console.warn(`IndexedDB not available — skipping IndexedDB caching`);
     return Promise.resolve(null);
   }
 
@@ -17,7 +20,8 @@ export function openDatabase() {
     const request = indexedDB.open(dbName, dbVersion);
 
     request.onerror = (event) => {
-      reject("IndexedDB error:", event.target.error);
+      // Reject with the actual error object for better debugging
+      reject(event.target.error);
     };
 
     request.onsuccess = (event) => {
@@ -123,7 +127,7 @@ async function getItem(storeName, key, opts = {}) {
 
       // Treat true "missing key" as a normal cache miss, not a warning.
       if (val === undefined) {
-        if (process?.env?.NODE_ENV !== "production") {
+        if (IS_DEV) {
           console.debug("[IDB] cache miss for", String(key));
         }
         resolve(null);
@@ -299,6 +303,48 @@ export async function clearTable(tableName) {
 
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
+  });
+}
+
+// --- Clear Database  --------------------------------------
+
+export function clearDatabase() {
+  if (typeof indexedDB === "undefined") {
+    console.warn("IndexedDB not available — cannot clear MyBibleApp.");
+    return Promise.resolve(false);
+  }
+
+  return new Promise((resolve, reject) => {
+    // Close existing connection if we have one
+    try {
+      if (dbInstance) {
+        dbInstance.close();
+        dbInstance = null;
+      }
+    } catch (e) {
+      console.warn("Error closing existing IDB instance before delete:", e);
+    }
+
+    const req = indexedDB.deleteDatabase(dbName);
+
+    req.onsuccess = () => {
+      console.log(`IndexedDB database "${dbName}" deleted.`);
+      resolve(true);
+    };
+
+    req.onerror = (event) => {
+      console.warn(
+        `Failed to delete IndexedDB database "${dbName}":`,
+        event.target?.error
+      );
+      reject(event.target?.error || event);
+    };
+
+    req.onblocked = () => {
+      console.warn(
+        `Delete for IndexedDB database "${dbName}" is blocked (another tab open?).`
+      );
+    };
   });
 }
 

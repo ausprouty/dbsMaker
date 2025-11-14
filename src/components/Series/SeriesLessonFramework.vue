@@ -1,5 +1,5 @@
 <script>
-import { computed, watch, onMounted } from "vue";
+import { computed, watch, onMounted, toRaw } from "vue";
 import { useContentStore } from "stores/ContentStore";
 import { useI18n } from "vue-i18n";
 
@@ -24,12 +24,14 @@ export default {
     const { t } = useI18n({ useScope: "global" });
 
     const lessonContent = computed(function () {
-      return contentStore.lessonContentFor(
+      const val = contentStore.lessonContentFor(
         props.study,
         props.languageCodeHL,
         props.languageCodeJF,
         props.lesson
       );
+      console.log("[lessonContent computed] value:", toRaw(val));
+      return val || null;
     });
 
     // i18n-driven placeholders (reactive to locale)

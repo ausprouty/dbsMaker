@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 
 import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "src/stores/SettingsStore";
+
 import { DEFAULTS } from "src/constants/Defaults";
 import { storeToRefs } from "pinia";
 import { patchRouterForLogs } from "src/debug/patchRouterForLogs";
@@ -12,9 +13,9 @@ import { patchRouterForLogs } from "src/debug/patchRouterForLogs";
 import { useCommonContent } from "src/composables/useCommonContent";
 import { useProgressTracker } from "src/composables/useProgressTracker.js";
 import { useInitializeSettingsStore } from "src/composables/useInitializeSettingsStore.js";
-import SeriesPassageSelect from "src/components/series/SeriesPassageSelect.vue";
+import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 //import SeriesSegmentNavigator from "src/components/series/xSeriesSegmentNavigator.vue";
-import SeriesLessonFramework from "src/components/series/SeriesLessonFramework.vue";
+import SeriesLessonFramework from "src/components/Series/SeriesLessonFramework.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -28,15 +29,16 @@ const computedStudy = computed(function () {
 });
 
 const computedLessonNumber = computed(() => {
-  if (typeof settingsStore.lessonNumberForStudy === 'function') {
+  if (typeof settingsStore.lessonNumberForStudy === "function") {
     return settingsStore.lessonNumberForStudy(computedStudy.value);
   }
-  return typeof settingsStore.lessonNumber === 'number'
+  return typeof settingsStore.lessonNumber === "number"
     ? settingsStore.lessonNumber
     : 1;
 });
 
-const { languageCodeHLSelected, languageCodeJFSelected } = storeToRefs(settingsStore);
+const { languageCodeHLSelected, languageCodeJFSelected } =
+  storeToRefs(settingsStore);
 const computedLanguageHL = languageCodeHLSelected;
 const computedLanguageJF = languageCodeJFSelected;
 
@@ -53,7 +55,8 @@ const computedVariant = computed(function () {
 
 console.log(unref(computedStudy), unref(computedLanguageHL));
 
-// Load common content + progress
+// ---- Lesson content readiness ----
+
 const { commonContent, topics, loadCommonContent } = useCommonContent(
   computedStudy,
   computedLanguageHL,
@@ -84,14 +87,16 @@ const providedToggleRightDrawer = inject("toggleRightDrawer", null);
 const handleLanguageSelect = inject("handleLanguageSelect", null);
 const toggleRightDrawer =
   providedToggleRightDrawer ??
-  (handleLanguageSelect ? () => handleLanguageSelect() : () => {
-    // last-ditch: try store API if you have one, otherwise no-op
-    if (typeof settingsStore.setRightDrawerOpen === "function") {
-      settingsStore.setRightDrawerOpen(true);
-    } else {
-      console.warn("[SeriesMaster] No drawer toggler provided");
-    }
-  });
+  (handleLanguageSelect
+    ? () => handleLanguageSelect()
+    : () => {
+        // last-ditch: try store API if you have one, otherwise no-op
+        if (typeof settingsStore.setRightDrawerOpen === "function") {
+          settingsStore.setRightDrawerOpen(true);
+        } else {
+          console.warn("[SeriesMaster] No drawer toggler provided");
+        }
+      });
 
 onMounted(function () {
   try {
@@ -148,7 +153,9 @@ function updateLesson(nextLessonNumber) {
       <hr />
 
       <SeriesLessonFramework
-        :key="`${computedStudy}-${computedVariant || ''}-${computedLessonNumber}`"
+        :key="`${computedStudy}-${
+          computedVariant || ''
+        }-${computedLessonNumber}`"
         :languageCodeHL="computedLanguageHL"
         :languageCodeJF="computedLanguageJF"
         :study="computedStudy"
@@ -171,9 +178,7 @@ function updateLesson(nextLessonNumber) {
 
   <template v-else>
     <q-page padding>
-      <div class="text-negative text-h6">
-        Loading failed. Please try again later.
-      </div>
+      <div class="text-negative text-h6">Lesson Loading.</div>
     </q-page>
   </template>
 </template>

@@ -1,9 +1,9 @@
 <script setup>
 import { inject, computed, ref, watch } from "vue";
 import { useVideoMasterVM } from "src/composables/useVideoMasterVM";
-import VideoPlayer from "src/components/video/VideoPlayer.vue";
-import SeriesPassageSelect from "src/components/series/SeriesPassageSelect.vue";
-import VideoQuestions from "src/components/video/VideoQuestions.vue";
+import VideoPlayer from "src/components/Video/VideoPlayer.vue";
+import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
+import VideoQuestions from "src/components/Video/VideoQuestions.vue";
 
 function isObjectLike(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);
@@ -102,9 +102,7 @@ const hasTopicFallbackSelectRef = computed(function () {
 });
 
 const selectedLessonValueRef = ref(
-  Number(lesson.value) && Number(lesson.value) > 0
-    ? Number(lesson.value)
-    : 1
+  Number(lesson.value) && Number(lesson.value) > 0 ? Number(lesson.value) : 1
 );
 
 // Keep the fallback select in sync with the route/store lesson
@@ -139,7 +137,6 @@ const safeVideoSourceRef = computed(function () {
     const url = s && s.url != null ? toNonEmptyString(s.url) : "";
     // If either is present, pass the object through as-is so VideoPlayer can decide
     if (src || url) return s;
-
   }
   return null;
 });
@@ -179,8 +176,6 @@ function markThisLessonComplete(n) {
       @click="toggleRightDrawer()"
     />
 
-   
-
     <SeriesPassageSelect
       v-if="showSeriesPassage"
       :study="$route.params.study"
@@ -212,7 +207,7 @@ function markThisLessonComplete(n) {
       <VideoPlayer :source="safeVideoSourceRef" />
     </div>
     <q-banner v-else inline-actions class="bg-warning text-black q-mb-md">
-      {{$t('interface.videoUnavailable') || 'Video is not available.'}}
+      {{ $t("interface.videoUnavailable") || "Video is not available." }}
     </q-banner>
 
     <VideoQuestions
@@ -238,5 +233,7 @@ function markThisLessonComplete(n) {
 </template>
 
 <style>
-.q-page { background-color: white; }
+.q-page {
+  background-color: white;
+}
 </style>
