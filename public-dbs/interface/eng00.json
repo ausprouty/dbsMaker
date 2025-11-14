@@ -7,45 +7,45 @@
     "lastUpdated": "2025-08-16T14:00:00Z"
   },
   "interface": {
-      "changeLanguage": "Change language.",
-      "choosePlatform": "Choose a platform:",
-      "completed": "Completed",
-      "copied": "Link copied to clipboard!",
-      "copyFailed": "Failed to copy the link.",
-      "copyLink": "Copy link",
-      "language": "Select Language",
-	  "lessonLoading" : "Your lesson content is loading",
-      "lookBackNoteInstruction": "Write your notes for Look Back here",
-      "lookForwardNoteInstruction": "Write your notes for Look Forward here",
-      "lookUpNoteInstruction": "Write your notes for Look Up here",
-      "markCompleted": "Mark as completed",
-      "next": "Next",
-      "nextVideo": "Next Video",
-      "notCompleted": "Mark as completed",
-      "otherVideos": "Other Videos",
-      "previous": "Previous",
-      "read": "Read {0}",
-      "readMore": "Read More",
-      "readOrWatch": "Read or watch {0} two times as everyone listens",
-      "readPlain": "Read from the Bible",
-      "readTwice": "Read {0} two times as others listen.",
-      "select": "Select",
-      "selectPassage": "Select Passage",
-      "selectSegment": "Select Segment",
-      "share": "Share",
-      "shareFail": "Sharing failed!",
-      "shareFallback": "Sharing not supported. Using fallback.",
-      "shareOk": "Shared successfully!",
-      "shareVia": "Share via",
-      "summary": "Summary",
-      "teaching": "Teaching",
-      "timing": "(spend one third of your time on this section)",
-      "topic": "Topic",
-      "videoNoteInstruction": "Write your notes for this video here",
-      "videoSegment": "Video Segment",
-	  "videoUnavailable": "Video Unavailable"
-      "watchOnline": "Watch {0} online"
-    },
+    "changeLanguage": "Change language.",
+    "choosePlatform": "Choose a platform:",
+    "completed": "Completed",
+    "copied": "Link copied to clipboard!",
+    "copyFailed": "Failed to copy the link.",
+    "copyLink": "Copy link",
+    "language": "Select Language",
+    "lessonLoading": "Your lesson content is loading",
+    "lookBackNoteInstruction": "Write your notes for Look Back here",
+    "lookForwardNoteInstruction": "Write your notes for Look Forward here",
+    "lookUpNoteInstruction": "Write your notes for Look Up here",
+    "markCompleted": "Mark as completed",
+    "next": "Next",
+    "nextVideo": "Next Video",
+    "notCompleted": "Mark as completed",
+    "otherVideos": "Other Videos",
+    "previous": "Previous",
+    "read": "Read {0}",
+    "readMore": "Read More",
+    "readOrWatch": "Read or watch {0} two times as everyone listens",
+    "readPlain": "Read from the Bible",
+    "readTwice": "Read {0} two times as others listen.",
+    "select": "Select",
+    "selectPassage": "Select Passage",
+    "selectSegment": "Select Segment",
+    "share": "Share",
+    "shareFail": "Sharing failed!",
+    "shareFallback": "Sharing not supported. Using fallback.",
+    "shareOk": "Shared successfully!",
+    "shareVia": "Share via",
+    "summary": "Summary",
+    "teaching": "Teaching",
+    "timing": "(spend one third of your time on this section)",
+    "topic": "Topic",
+    "videoNoteInstruction": "Write your notes for this video here",
+    "videoSegment": "Video Segment",
+    "videoUnavailable": "Video Unavailable",
+    "watchOnline": "Watch {0} online"
+  },
 
   "index": {
     "para": {
@@ -54,10 +54,10 @@
     }
   },
   "review": {
-		"p1": "Before we begin, let’s take a moment to review what you committed to last time.",
-		"p2": "This helps us encourage each other and see how God is at work.",
-		"empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
-	},
+    "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
+    "p2": "This helps us encourage each other and see how God is at work.",
+    "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
+  },
   "jvideo": {
     "title": "The Life of Jesus",
     "summary": "See how Jesus’ actions and teachings challenged expectations, inspired hope, and still speak powerfully today.",
@@ -159,8 +159,4 @@
       "2": "The journey of trust begins as we turn from earning God's favor to receiving His mercy through Jesus. His life, death, and resurrection offer us a new beginning—not just life after death, but life with God now. Will you take the step from striving to trusting?"
     }
   }
-
-
-
 }
-
