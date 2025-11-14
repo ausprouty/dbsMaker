@@ -21,13 +21,13 @@ const topicLabel = computed(() => t("interface.topic"));
 
 // Normalize completed lessons once
 const completedSet = computed(
-  () => new Set((props.completedLessons || []).map(n => Number(n)))
+  () => new Set((props.completedLessons || []).map((n) => Number(n)))
 );
 
 // Options with completion flag (and numeric value)
 const markedTopics = computed(() => {
   const topics = Array.isArray(props.topics) ? props.topics : [];
-  return topics.map(topic => {
+  return topics.map((topic) => {
     const valueNum = Number(topic.value);
     return {
       ...topic,
@@ -53,7 +53,7 @@ const selectedLesson = computed({
 </script>
 
 <template>
-  <div>
+  <div v-if="markedTopics && markedTopics.length">
     <q-select
       filled
       v-model="selectedLesson"
@@ -74,7 +74,12 @@ const selectedLesson = computed({
             <div class="row items-center no-wrap">
               <div class="text-body1">{{ scope.opt.label }}</div>
               <div v-if="scope.opt.completed">
-                <q-icon name="check_circle" color="green" size="sm" class="q-ml-xs" />
+                <q-icon
+                  name="check_circle"
+                  color="green"
+                  size="sm"
+                  class="q-ml-xs"
+                />
               </div>
             </div>
           </q-item-section>
@@ -82,4 +87,5 @@ const selectedLesson = computed({
       </template>
     </q-select>
   </div>
+  <div v-else class="q-mb-md text-grey">Loading lessons…</div>
 </template>

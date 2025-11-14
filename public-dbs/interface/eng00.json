@@ -3,7 +3,7 @@
     "EnglishName": "English",
     "hlCode": "eng00",
     "google": "en",
-    "translationComplete": "true",
+    "translationComplete": "false",
     "lastUpdated": "2025-08-16T14:00:00Z"
   },
   "interface": {
@@ -14,6 +14,7 @@
       "copyFailed": "Failed to copy the link.",
       "copyLink": "Copy link",
       "language": "Select Language",
+	  "lessonLoading" : "Your lesson content is loading",
       "lookBackNoteInstruction": "Write your notes for Look Back here",
       "lookForwardNoteInstruction": "Write your notes for Look Forward here",
       "lookUpNoteInstruction": "Write your notes for Look Up here",
@@ -42,6 +43,7 @@
       "topic": "Topic",
       "videoNoteInstruction": "Write your notes for this video here",
       "videoSegment": "Video Segment",
+	  "videoUnavailable": "Video Unavailable"
       "watchOnline": "Watch {0} online"
     },
 

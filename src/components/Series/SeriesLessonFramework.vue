@@ -21,7 +21,8 @@ export default {
 
   setup(props) {
     const contentStore = useContentStore();
-    const { t } = useI18n({ useScope: "global" });
+    //const { t } = useI18n({ useScope: "global" });
+    const { t, locale, getLocaleMessage } = useI18n({ useScope: "global" });
 
     const lessonContent = computed(function () {
       const val = contentStore.lessonContentFor(
@@ -89,6 +90,22 @@ export default {
     );
 
     onMounted(function () {
+      const cur = locale.value;
+      console.log("Active locale:", cur);
+
+      const msg = getLocaleMessage(cur);
+      console.log("Full messages for current locale:", msg);
+
+      console.log(
+        "interface.lessonLoading (raw):",
+        msg.interface && msg.interface.lessonLoading
+      );
+
+      console.log(
+        't("interface.lessonLoading") →',
+        t("interface.lessonLoading")
+      );
+
       loadLessonContent();
     });
 

@@ -5,12 +5,12 @@
     "google": "en",
     "folder": "interface",
     "subfolder": "wisdom",
-    "translationComplete": "true",
+    "translationComplete": "false",
     "lastUpdated": "2025-08-06T14:00:00Z"
   },
   "index": {
     "para": {
-       "1": "In order to make any real progress in our spiritual life we know we need a reliable source of wisdom.",
+      "1": "In order to make any real progress in our spiritual life we know we need a reliable source of wisdom.",
       "2": "Clicking on the images below will start you on a path to discovering the eternal wisdom that God wants you to know and follow."
     }
   },
@@ -43,9 +43,7 @@
   "question": {
     "title": "Do you have a question?",
     "summary": "We welcome your comments or questions about God. "
-
   },
-
 
   "review": {
     "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
@@ -73,4 +71,3 @@
     "videoNoteInstruction": "Write your notes for this video here"
   }
 }
-

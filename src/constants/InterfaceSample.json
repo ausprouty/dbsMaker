@@ -3,7 +3,7 @@
     "EnglishName": "English",
     "hlCode": "eng00",
     "google": "en",
-    "translationComplete": "true",
+    "translationComplete": "false",
     "lastUpdated": "2025-08-06T14:00:00Z"
   },
   "menu": {
@@ -14,7 +14,7 @@
     "videoSegment": "Video Segment",
     "language": "Select Language",
     "topic": "Topic",
-    "changeLanguage":"Click the globe at the top of the page to choose a different language."
+    "changeLanguage": "Click the globe at the top of the page to choose a different language."
   },
   "lesson": {
     "completed": "Completed",
@@ -65,15 +65,14 @@
     }
   },
 
-"hope": {
-  "title": "Seven Stories of Hope",
-  "summary": "Seven encounters with Jesus that reveal His heart of compassion, forgiveness, and power to transform lives—even in the most unlikely situations.",
-  "para": {
-    "1": "In a world full of uncertainty, the stories of Jesus meeting real people offer a lifeline of hope. These seven powerful accounts from the Gospels show how Jesus responded to sin, shame, suffering, and doubt with love and restoration. They remind us that no one is too far from God’s reach.",
-    "2": "As you read each story, consider what they reveal about Jesus—and what they invite in your own life. Whether you feel broken, distant, or searching, these stories are for you. Hope is not just an idea; it is a person, and His name is Jesus."
-  }
-},
-
+  "hope": {
+    "title": "Seven Stories of Hope",
+    "summary": "Seven encounters with Jesus that reveal His heart of compassion, forgiveness, and power to transform lives—even in the most unlikely situations.",
+    "para": {
+      "1": "In a world full of uncertainty, the stories of Jesus meeting real people offer a lifeline of hope. These seven powerful accounts from the Gospels show how Jesus responded to sin, shame, suffering, and doubt with love and restoration. They remind us that no one is too far from God’s reach.",
+      "2": "As you read each story, consider what they reveal about Jesus—and what they invite in your own life. Whether you feel broken, distant, or searching, these stories are for you. Hope is not just an idea; it is a person, and His name is Jesus."
+    }
+  },
 
   "lead": {
     "title": "Discovering Leadership",
