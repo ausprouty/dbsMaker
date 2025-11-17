@@ -358,9 +358,14 @@ export default configure((ctx) => {
         const pwaId = definedOr(getIn(meta, ["pwa", "id"]), "HLDbs");
         const pwaName = definedOr(getIn(meta, ["pwa", "name"]), "DBS 2026");
         const pwaShort = definedOr(getIn(meta, ["pwa", "short_name"]), "DBS");
+        const pwaDescription = definedOr(
+          getIn(meta, ["pwa", "description"]),
+          "Discovering Spiritual Community"
+        );
         manifest.id = pwaId;
         manifest.name = pwaName;
         manifest.short_name = pwaShort;
+        manifest.description = pwaDescription;
 
         manifest.scope = base;
         manifest.start_url = base;
