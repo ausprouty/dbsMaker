@@ -15,7 +15,6 @@
     "VITE_LANGUAGE_CODE_JF": "529",
     "VITE_LANGUAGE_PICKER_TYPE": "radio",
     "VITE_LANGUAGE_DATA": "config/languages.json"
-
   },
   "dev": {
     "host": "localhost",
@@ -23,6 +22,7 @@
     "https": false
   },
   "pwa": {
+    "id": "HLGuru",
     "name": "Finding a Guru",
     "short_name": "Guru",
     "description": "Finding a guru worth following",

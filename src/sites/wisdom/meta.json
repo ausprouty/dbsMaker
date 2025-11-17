@@ -22,6 +22,7 @@
     "https": false
   },
   "pwa": {
+    "id": "HLWisdom",
     "name": "Finding Wisdom",
     "short_name": "wisdom",
     "description": "Grow in wisdom and your ability to relate to God",

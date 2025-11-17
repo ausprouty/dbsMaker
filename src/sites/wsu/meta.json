@@ -22,6 +22,7 @@
     "https": false
   },
   "pwa": {
+    "id": "HLWSU",
     "name": "Discover Hope",
     "short_name": "Discover Hope",
     "description": "Resources to Discover Hope",

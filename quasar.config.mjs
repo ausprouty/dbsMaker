@@ -355,8 +355,10 @@ export default configure((ctx) => {
 
       extendManifestJson(manifest) {
         // Prefer values in meta.pwa.*, but only fall back on undefined/null
+        const pwaId = definedOr(getIn(meta, ["pwa", "id"]), "HLDbs");
         const pwaName = definedOr(getIn(meta, ["pwa", "name"]), "DBS 2026");
-        const pwaShort = definedOr(getIn(meta, ["pwa", "shortName"]), "DBS");
+        const pwaShort = definedOr(getIn(meta, ["pwa", "short_name"]), "DBS");
+        manifest.id = pwaId;
         manifest.name = pwaName;
         manifest.short_name = pwaShort;
 
