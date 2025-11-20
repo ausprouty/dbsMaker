@@ -5,7 +5,7 @@
 // - Sets <html lang> and dir from meta
 // - Uses deletion-aware merge so local messages aren't clobbered
 
-import { i18n } from "src/lib/i18n";
+import { i18n } from "src/i18n/i18n";
 import { http } from "src/lib/http";
 import { pollTranslationUntilComplete } from "src/services/TranslationPollingService";
 import {

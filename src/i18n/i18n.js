@@ -1,6 +1,6 @@
-// src/lib/i18n.js
+// src/i18n/i18n.js
 import { createI18n } from "vue-i18n";
-import { applyDirection } from "src/utils/i18nDirection"; // <-- add this util
+import { applyDirection } from "src/i18n/i18nDirection"; // <-- add this util
 
 export const i18n = createI18n({
   legacy: false,

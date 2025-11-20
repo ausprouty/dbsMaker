@@ -1,5 +1,5 @@
 import { normJF, normHL, isHLCode } from "src/utils/normalize";
-import { detectDirection, applyDirection } from "src/utils/i18nDirection";
+import { detectDirection, applyDirection } from "src/i18n/i18nDirection";
 import { i18n } from "src/boot/i18n";
 import { useContentStore } from "src/stores/ContentStore";
 import { MAX_LESSON_NUMBERS } from "src/constants/Defaults";
