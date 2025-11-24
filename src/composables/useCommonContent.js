@@ -1,6 +1,7 @@
 // src/composables/useCommonContent.js
-import { computed, watch, unref, onMounted } from "vue";
+import { computed, watch, unref, ref, onMounted } from "vue";
 import { useContentStore } from "stores/ContentStore";
+import { buildCommonContentKey } from "src/utils/ContentKeyBuilder";
 import { DEFAULTS } from "src/constants/Defaults.js";
 import { normStudyKey, normHL, normVariant } from "src/utils/normalize.js";
 
@@ -18,32 +19,73 @@ export function useCommonContent(
   );
   const variant = computed(() => normVariant(variantRef)); // string or null
 
-  // ——— Read from store (sync). NOTE: order = (hl, study, variant) ———
+  //--debug
+
+  const key = buildCommonContentKey(study, languageCodeHL, variant);
+
+  console.log("[useCommonContent] setup", {
+    study: study,
+    hl: languageCodeHL,
+    variantRaw: variant,
+    key,
+  });
+
+  // end debug
+
+  // ——— Read from store (sync). NOTE: order = (study, hl, variant) ———
   const commonContent = computed(() => {
-    const resolvedHL = unref(languageCodeHL);
     const resolvedStudy = unref(study);
+    const resolvedHL = unref(languageCodeHL);
     const resolvedVariant = unref(variant);
+    console.log("In useCommonContent the resolvedStudy is " + resolvedStudy);
+    console.log("In useCommonContent the resolvedHL is " + resolvedHL);
+    console.log(
+      "In useCommonContent the resolvedVariant is " + resolvedVariant
+    );
     const cc = contentStore.commonContentFor(
       resolvedStudy,
       resolvedHL,
       resolvedVariant
     );
+    console.log(cc);
     return cc || {};
   });
 
-  // ——— Populate store (async) when needed ———
+  // ——— Populate store (async) when needed , but we do not do anything with this data ----
   async function loadCommonContent() {
     const resolvedStudy = unref(study);
     const resolvedHL = unref(languageCodeHL);
     const resolvedVariant = unref(variant);
+    // to debug
+    const key = buildCommonContentKey(
+      resolvedStudy,
+      resolvedHL,
+      resolvedVariant
+    );
+    console.log("[useCommonContent] loadCommonContent called", {
+      key,
+      study: resolvedStudy,
+      hl: resolvedHL,
+      variant: variant,
+    });
+
+    // end debug
     try {
-      await contentStore.loadCommonContent(
+      const data = await contentStore.loadCommonContent(
         resolvedStudy,
         resolvedHL,
         resolvedVariant
       );
+      console.log("[useCommonContent] load result", {
+        key,
+        hasData: !!data,
+        dataSample: data && Object.keys(data).slice(0, 5),
+      });
+
+      commonContent.value = data || {};
     } catch (err) {
       console.warn("[commonContent] load failed:", err);
+      commonContent.value = {};
     }
   }
 

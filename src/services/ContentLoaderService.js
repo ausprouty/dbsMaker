@@ -34,6 +34,10 @@ import { pollTranslationUntilComplete } from "src/services/TranslationPollingSer
  * @param {GetContentWithFallbackOptions} opts
  * @returns {Promise<any>} The best-available payload (even if not complete yet)
  */
+
+// Track active polls by a stable key to avoid duplicates.
+const activePolls = new Set();
+
 export async function getContentWithFallback(opts) {
   const {
     key,
@@ -183,6 +187,14 @@ function startPoll({
   maxAttempts,
   interval,
 }) {
+  const pollKey = `${translationType || unknown}:${apiUrl}`;
+
+  if (activePolls.has(pollKey)) {
+    console.log("[ContentLoaderService] Poll already active for", pollKey);
+    return;
+  }
+  activePolls.add(pollKey);
+
   pollTranslationUntilComplete({
     languageCodeHL,
     translationType,
@@ -193,10 +205,14 @@ function startPoll({
     requireCronKey,
     maxAttempts,
     interval,
-  }).catch((e) => {
-    console.warn(
-      "[ContentLoaderService] Polling ended with warning:",
-      e?.message || e
-    );
-  });
+  })
+    .catch((e) => {
+      console.warn(
+        "[ContentLoaderService] Polling ended with warning:",
+        e?.message || e
+      );
+    })
+    .finally(() => {
+      activePolls.delete(pollKey);
+    });
 }

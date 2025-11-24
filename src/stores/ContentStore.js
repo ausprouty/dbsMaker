@@ -29,6 +29,7 @@ export const useContentStore = defineStore("contentStore", {
   getters: {
     lessonContentFor: (state) => (study, hl, jf, lesson) => {
       const key = ContentKeys.buildLessonContentKey(study, hl, jf, lesson);
+      "LessonContentFor was asked for " + key;
       const value = state.lessonContent[key];
 
       if (!value) {
@@ -50,7 +51,10 @@ export const useContentStore = defineStore("contentStore", {
       (state) =>
       (study, hl, variant = null) => {
         const key = ContentKeys.buildCommonContentKey(study, hl, variant);
+        console.log("CommonContentFor was asked for " + key);
         const value = state.commonContent[key];
+        console.log(value);
+
         if (!value) {
           return null;
         }
@@ -164,6 +168,9 @@ export const useContentStore = defineStore("contentStore", {
     // either the database (if we can), or go to the API
     async loadCommonContent(study, hl, variant = null) {
       const data = await getCommonContent(study, hl, variant);
+      console.log(
+        "loadCommonContent returned with the following, but I did nothing with it"
+      );
       console.log(data);
       //this.setCommonContent(study, hl, data, variant);
       //getCommonContent already stores it via storeSetter/onInstall

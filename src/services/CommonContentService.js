@@ -8,7 +8,7 @@ import {
   saveCommonContentToDB,
 } from "./IndexedDBService";
 
-export async function getCommonContent(languageCodeHL, study) {
+export async function getCommonContent(study, languageCodeHL, variant = null) {
   const hl = normId(languageCodeHL);
   const studyId = normId(study);
   if (!studyId || !hl) {
