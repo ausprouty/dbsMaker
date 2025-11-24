@@ -71,6 +71,7 @@ export async function getContentWithFallback(opts) {
     if (fromStore) {
       // If incomplete, kick polling, but return immediately with current data.
       if (!isComplete(fromStore)) {
+        console.log("Is not complete in Store: " + apiUrl);
         void startPoll({
           languageCodeHL,
           translationType,
@@ -83,6 +84,8 @@ export async function getContentWithFallback(opts) {
           interval,
         });
       }
+      console.log("fromStore");
+      console.log(fromStore);
       return fromStore;
     }
   } catch (e) {
@@ -100,6 +103,7 @@ export async function getContentWithFallback(opts) {
         console.warn("[ContentLoaderService] storeSetter threw (DB path):", e);
       }
       if (!isComplete(fromDb)) {
+        console.log("Is not complete in Database: " + apiUrl);
         void startPoll({
           languageCodeHL,
           translationType,
@@ -112,6 +116,8 @@ export async function getContentWithFallback(opts) {
           interval,
         });
       }
+      console.log("fromDB");
+      console.log(fromDb);
       return fromDb;
     }
   } catch (e) {
@@ -143,6 +149,7 @@ export async function getContentWithFallback(opts) {
 
     // 4) If not complete, start poll but return current data immediately
     if (!isComplete(translation)) {
+      console.log("Is not complete from Api : " + apiUrl);
       void startPoll({
         languageCodeHL,
         translationType,
@@ -155,7 +162,7 @@ export async function getContentWithFallback(opts) {
         interval,
       });
     }
-
+    console.log(translation);
     return translation;
   } catch (error) {
     console.error(`❌ Failed to load ${key} from API:`, error);

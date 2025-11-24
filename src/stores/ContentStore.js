@@ -29,14 +29,39 @@ export const useContentStore = defineStore("contentStore", {
   getters: {
     lessonContentFor: (state) => (study, hl, jf, lesson) => {
       const key = ContentKeys.buildLessonContentKey(study, hl, jf, lesson);
-      return state.lessonContent[key] || null;
+      const value = state.lessonContent[key];
+
+      if (!value) {
+        return null;
+      }
+
+      if (typeof value !== "object") {
+        console.warn(
+          "[ContentStore.lessonContentFor] non-object value in store",
+          { key, study, hl, jf, lesson, value }
+        );
+        return null;
+      }
+
+      return value;
     },
 
     commonContentFor:
       (state) =>
-      (hl, study, variant = null) => {
+      (study, hl, variant = null) => {
         const key = ContentKeys.buildCommonContentKey(study, hl, variant);
-        return state.commonContent[key] || null;
+        const value = state.commonContent[key];
+        if (!value) {
+          return null;
+        }
+        if (typeof value !== "object") {
+          console.warn(
+            "[ContentStore.commonContentFor] non-object value in store",
+            { key, study, hl, variant, value }
+          );
+          return null;
+        }
+        return value;
       },
 
     videoUrlsFor: (state) => (study, jf) => {
@@ -65,24 +90,67 @@ export const useContentStore = defineStore("contentStore", {
       });
       return result; // { kind: "iframe", src: "...", poster?, title? }
     },
-    // moves retreived common content into Content Store
+
+    // moves retrieved common content into Content Store
     setCommonContent(study, hl, data, variant = null) {
       const key = ContentKeys.buildCommonContentKey(study, hl, variant);
-      if (key) {
-        this.commonContent[key] = data;
-      } else {
-        console.warn("commonContent key is null — skipping set.");
+
+      if (!key) {
+        console.warn(
+          "setCommonContent: commonContent key is null; skipping set.",
+          { study, hl, variant }
+        );
+        return;
       }
+
+      // Guard against accidentally storing the store itself
+      if (data && typeof data === "object" && data.$id === "contentStore") {
+        console.error(
+          "setCommonContent: BUG – received contentStore instance as data.",
+          { key, study, hl, variant }
+        );
+        return;
+      }
+
+      if (!data || typeof data !== "object") {
+        console.warn(
+          "setCommonContent: ignoring non-object commonContent payload.",
+          { key, study, hl, variant, data }
+        );
+        return;
+      }
+
+      this.commonContent[key] = data;
     },
+
     // moves retreived lesson content into Content Store
+    // moves retrieved lesson content into Content Store
     setLessonContent(study, hl, jf, lesson, data) {
       const key = ContentKeys.buildLessonContentKey(study, hl, jf, lesson);
-      if (key) {
-        this.lessonContent[key] = data;
-      } else {
-        console.warn("lessonContent key is null — skipping set.");
+
+      if (!key) {
+        console.warn(
+          "setLessonContent: lessonContent key is null; skipping set.",
+          { study, hl, jf, lesson }
+        );
+        return;
       }
+
+      if (!data || typeof data !== "object") {
+        console.warn("setLessonContent: ignoring non-object lesson payload.", {
+          key,
+          study,
+          hl,
+          jf,
+          lesson,
+          data,
+        });
+        return;
+      }
+
+      this.lessonContent[key] = data;
     },
+
     // moves retreived videoURLs  into Content Store which I plan to remove
     setVideoUrls(study, jf, data) {
       const key = ContentKeys.buildVideoUrlsKey(study, jf);
@@ -94,9 +162,11 @@ export const useContentStore = defineStore("contentStore", {
     },
     // this is the good stuff.  We get the common content from
     // either the database (if we can), or go to the API
-    async loadCommonContent(hl, study, variant = null) {
-      const data = await getCommonContent(hl, study, variant);
-      this.setCommonContent(study, hl, data, variant);
+    async loadCommonContent(study, hl, variant = null) {
+      const data = await getCommonContent(study, hl, variant);
+      console.log(data);
+      //this.setCommonContent(study, hl, data, variant);
+      //getCommonContent already stores it via storeSetter/onInstall
       return data;
     },
     //  We get the interface content from
@@ -108,7 +178,7 @@ export const useContentStore = defineStore("contentStore", {
 
     // We get the lesson content from
     // either the database (if we can), or go to the API
-    async loadLessonContent(hl, jf, study, lesson) {
+    async loadLessonContent(study, hl, jf, lesson) {
       const validated = validateLessonNumber(unref(lesson));
       if (validated === null) {
         console.warn(`Invalid lesson '${unref(lesson)}'`);

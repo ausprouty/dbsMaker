@@ -14,5 +14,10 @@ export function extractTranslationPayload(resData) {
 
 // Normalized “complete” flag check
 export function isComplete(t) {
-  return t?.meta?.translationComplete === true || t?.meta?.complete === true;
+  console.log(t?.meta);
+  const complete = t?.meta?.translationComplete === true;
+  console.log(
+    "IsComplete returned " + complete + " for " + t?.meta?.translationComplete
+  );
+  return complete;
 }

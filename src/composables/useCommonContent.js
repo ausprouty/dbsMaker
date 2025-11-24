@@ -4,12 +4,18 @@ import { useContentStore } from "stores/ContentStore";
 import { DEFAULTS } from "src/constants/Defaults.js";
 import { normStudyKey, normHL, normVariant } from "src/utils/normalize.js";
 
-export function useCommonContent(studyRef, languageCodeHLRef, variantRef = null) {
+export function useCommonContent(
+  studyRef,
+  languageCodeHLRef,
+  variantRef = null
+) {
   const contentStore = useContentStore();
 
   // ——— Normalised inputs (single source of truth) ———
   const study = computed(() => normStudyKey(studyRef) || DEFAULTS.study);
-  const languageCodeHL = computed(() => normHL(languageCodeHLRef) || DEFAULTS.languageCodeHL);
+  const languageCodeHL = computed(
+    () => normHL(languageCodeHLRef) || DEFAULTS.languageCodeHL
+  );
   const variant = computed(() => normVariant(variantRef)); // string or null
 
   // ——— Read from store (sync). NOTE: order = (hl, study, variant) ———
@@ -17,17 +23,25 @@ export function useCommonContent(studyRef, languageCodeHLRef, variantRef = null)
     const resolvedHL = unref(languageCodeHL);
     const resolvedStudy = unref(study);
     const resolvedVariant = unref(variant);
-    const cc = contentStore.commonContentFor(resolvedHL, resolvedStudy, resolvedVariant);
+    const cc = contentStore.commonContentFor(
+      resolvedStudy,
+      resolvedHL,
+      resolvedVariant
+    );
     return cc || {};
   });
 
   // ——— Populate store (async) when needed ———
   async function loadCommonContent() {
-    const resolvedHL = unref(languageCodeHL);
     const resolvedStudy = unref(study);
+    const resolvedHL = unref(languageCodeHL);
     const resolvedVariant = unref(variant);
     try {
-      await contentStore.loadCommonContent(resolvedHL, resolvedStudy, resolvedVariant);
+      await contentStore.loadCommonContent(
+        resolvedStudy,
+        resolvedHL,
+        resolvedVariant
+      );
     } catch (err) {
       console.warn("[commonContent] load failed:", err);
     }
@@ -44,7 +58,10 @@ export function useCommonContent(studyRef, languageCodeHLRef, variantRef = null)
       const k = keys[i];
       const index = parseInt(k, 10);
       if (!Number.isFinite(index)) continue;
-      result.push({ label: index + ". " + String(topicObject[k]), value: index });
+      result.push({
+        label: index + ". " + String(topicObject[k]),
+        value: index,
+      });
     }
     return result;
   });

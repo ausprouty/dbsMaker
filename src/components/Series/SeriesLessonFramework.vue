@@ -73,9 +73,9 @@ export default {
 
     async function loadLessonContent() {
       await contentStore.loadLessonContent(
+        props.study,
         props.languageCodeHL,
         props.languageCodeJF,
-        props.study,
         props.lesson
       );
     }

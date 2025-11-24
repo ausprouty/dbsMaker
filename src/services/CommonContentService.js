@@ -17,11 +17,12 @@ export async function getCommonContent(languageCodeHL, study) {
 
   // /api is prefixed by http.get
   const apiUrl = `/v2/translate/text/common/${studyId}/${hl}`;
+  console.log(apiUrl);
   const key = buildCommonContentKey(studyId, hl);
   const contentStore = useContentStore();
 
   // Use one setter for both initial load and poll completion
-  const setter = (data) => contentStore.setCommonContent(studyId, hl, data);
+  const setter = (store, data) => store.setCommonContent(studyId, hl, data);
 
   return await getContentWithFallback({
     key,

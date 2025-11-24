@@ -142,7 +142,7 @@ export function pollTranslationUntilComplete({
           await dbSetter(translation);
           if (typeof storeSetter === "function") {
             try {
-              storeSetter(translation);
+              storeSetter(store, translation);
             } catch (e) {
               console.warn("[TranslationPollingService] storeSetter threw:", e);
             }

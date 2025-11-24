@@ -186,9 +186,12 @@ export async function getTranslatedInterface(hlRaw, hasRetried = false) {
     console.log(res?.data);
     // Normalize: only accept status==='ok', flatten `data`, fold meta once.
     const payload = normalizeOkAndFlatten(res?.data);
+    console.log("payload to save to database");
     console.log(payload);
     if (isObj(payload)) {
+      console.log("about to save to database");
       await saveInterfaceToDB(hl, payload);
+      console.log("return from save to database");
       installInterfaceMergeOnly(hl, payload);
 
       void startPoll(hl);
@@ -211,7 +214,7 @@ export async function getTranslatedInterface(hlRaw, hasRetried = false) {
 /** Kick off background polling and re-install on completion */
 function startPoll(hlRaw) {
   const hl = normId(hlRaw);
-  console.log("start poll for interface for " + hl);
+  console.log("startPoll for interface for " + hl);
   // Use same path shape as initial fetch (requires app)
   const app = normId(import.meta.env.VITE_APP) || "default";
   const apiPath = buildInterfacePath(app, hl);
