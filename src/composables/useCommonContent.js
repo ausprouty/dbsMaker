@@ -81,11 +81,8 @@ export function useCommonContent(
         hasData: !!data,
         dataSample: data && Object.keys(data).slice(0, 5),
       });
-
-      commonContent.value = data || {};
     } catch (err) {
       console.warn("[commonContent] load failed:", err);
-      commonContent.value = {};
     }
   }
 

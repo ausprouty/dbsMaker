@@ -178,7 +178,7 @@ function updateLesson(nextLessonNumber) {
 
   <template v-else>
     <q-page padding>
-      <div class="text-negative text-h6">Lesson Loading.</div>
+      <div class="text-negative text-h6">Topic Loading.</div>
     </q-page>
   </template>
 </template>

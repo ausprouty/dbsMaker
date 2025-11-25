@@ -43,14 +43,19 @@ export default {
     // Hardened params as computeds
     const studyId = computed(() => normId(settingsStore.currentStudySelected));
     const lessonId = computed(() => {
-      const n = Number(normIntish(settingsStore.lessonNumberForStudy));
-      return Number.isInteger(n) && n > 0 ? String(n) : ""; // service expects strings
+      const n = settingsStore.lessonNumberForStudy(); // call the function
+      return Number.isInteger(n) && n > 0 ? String(n) : "";
     });
+
     const sectionId = computed(() => {
       const s = normId(props.section).toLowerCase();
       return ALLOWED_SECTIONS.has(s) ? s : "";
     });
-
+    console.log("NoteSection", {
+      studyId: studyId.value,
+      lessonId: lessonId.value,
+      sectionId: sectionId.value,
+    });
     const ready = computed(
       () => !!studyId.value && !!lessonId.value && !!sectionId.value
     );
@@ -89,7 +94,9 @@ export default {
     };
 
     const saveNoteContent = debounce(async (newVal) => {
+      console.log("saveNoteContent" + newVal);
       if (!ready.value) return;
+      console.log("saveNoteContentReady");
       try {
         await saveNote(
           studyId.value,
