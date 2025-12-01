@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, inject } from "vue";
 import { useSettingsStore } from "src/stores/SettingsStore";
+import { languageLabel } from "src/utils/languageLabel";
 
 const settingsStore = useSettingsStore();
 defineEmits(["select"]);
@@ -11,44 +12,70 @@ const languageOptions = computed(function () {
   const list = Array.isArray(settingsStore.languages)
     ? settingsStore.languages
     : [];
+
   return list.map(function (lang) {
-    const name = String(lang.name || "").trim();
-    const ethnic = String(lang.ethnicName || "").trim();
-    const label = ethnic ? name + " (" + ethnic + ")" : name || "Unknown";
-    return Object.assign({ label: label }, lang);
+    return {
+      label: languageLabel(lang),
+      value: lang.languageCodeHL,
+      lang: lang,
+    };
   });
 });
 
 const selectedLanguage = ref(null);
-
+// this function should return the underlying object
+// { languageCodeHL: "eng00", name: "English", ethnicName: "...", ... }
 function normalize(value) {
   if (!value) return null;
-  const hl = typeof value === "object"
-    ? String(value.languageCodeHL || "")
-    : String(value || "");
-  if (!hl) return null;
-  const opts = languageOptions.value;
-  for (var i = 0; i < opts.length; i++) {
-    if (String(opts[i].languageCodeHL || "") === hl) return opts[i];
+
+  // If it's already a "lang" object
+  if (typeof value === "object" && value.languageCodeHL) {
+    return value;
   }
+
+  // If it's an option from q-select: { label, value, lang }
+  if (typeof value === "object" && value.lang && value.lang.languageCodeHL) {
+    return value.lang;
+  }
+
+  // If it's just an HL code like "eng00"
+  const hl = String(value || "");
+  if (!hl) return null;
+
+  const src = Array.isArray(settingsStore.languages)
+    ? settingsStore.languages
+    : [];
+
+  for (let i = 0; i < src.length; i++) {
+    if (String(src[i].languageCodeHL || "") === hl) {
+      return src[i];
+    }
+  }
+
   return null;
 }
 
 const filteredOptions = ref([]);
 onMounted(function () {
   filteredOptions.value = languageOptions.value;
-  selectedLanguage.value =
-    normalize(settingsStore.languageObjectSelected || null);
+  selectedLanguage.value = normalize(
+    settingsStore.languageObjectSelected || null
+  );
 });
 watch(languageOptions, function (opts) {
   filteredOptions.value = opts;
-  selectedLanguage.value =
-    normalize(settingsStore.languageObjectSelected || null);
+  selectedLanguage.value = normalize(
+    settingsStore.languageObjectSelected || null
+  );
 });
 
 watch(
-  function () { return settingsStore.languageObjectSelected; },
-  function (val) { selectedLanguage.value = normalize(val); },
+  function () {
+    return settingsStore.languageObjectSelected;
+  },
+  function (val) {
+    selectedLanguage.value = normalize(val);
+  },
   { immediate: true }
 );
 
@@ -64,7 +91,9 @@ function onFilter(val, update) {
   });
 }
 
-function optionLabel(opt) { return opt && opt.label ? opt.label : ""; }
+function optionLabel(opt) {
+  return opt && opt.label ? opt.label : "";
+}
 
 function handleChange(value) {
   const lang = normalize(value);
@@ -110,11 +139,8 @@ const recents = computed(function () {
 });
 
 // Label helper for raw store objects (not necessarily option instances)
-function chipLabel(raw) {
-  if (!raw) return "";
-  const name = String(raw.name || "").trim();
-  const ethnic = String(raw.ethnicName || "").trim();
-  return ethnic ? name + " (" + ethnic + ")" : name || "Unknown";
+function chipLabel(lang) {
+  return languageLabel(lang);
 }
 </script>
 

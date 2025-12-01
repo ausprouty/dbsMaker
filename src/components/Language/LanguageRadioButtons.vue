@@ -1,43 +1,43 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch } from "vue";
+import { languageLabel } from "src/utils/languageLabel";
 
 const props = defineProps({
-  languages:   { type: Array,  default: () => [] }, // full catalog
-  recents:     { type: Array,  default: () => [] }, // MRU(2) [{...}]
-  selectedHL:  { type: String, default: '' },       // currently selected HL
-  labelMode:   { type: String, default: 'ethnicName (name)' },
-  recentLabel: { type: String, default: 'Frequently Used' },
+  languages: { type: Array, default: () => [] }, // full catalog
+  recents: { type: Array, default: () => [] }, // MRU(2) [{...}]
+  selectedHL: { type: String, default: "" }, // currently selected HL
+  labelMode: { type: String, default: "ethnicName (name)" },
+  recentLabel: { type: String, default: "Frequently Used" },
 });
-const emit = defineEmits(['select']);
+const emit = defineEmits(["select"]);
 
 // --- helpers ---
-function labelFor(lang) {
-  const ethnic = String(lang?.ethnicName || '').trim();
-  const name   = String(lang?.name || '').trim();
-  if (props.labelMode === 'ethnicName (name)' && ethnic) return `${ethnic} (${name})`;
-  return name || ethnic || 'Unknown';
-}
 function findByHL(hl) {
   const list = Array.isArray(props.languages) ? props.languages : [];
-  const key = String(hl || '');
+  const key = String(hl || "");
   for (let i = 0; i < list.length; i++) {
-    if (String(list[i].languageCodeHL || '') === key) return list[i];
+    if (String(list[i].languageCodeHL || "") === key) return list[i];
   }
   return null;
 }
 
 // --- radios use HL string as the value ---
-const model = ref(props.selectedHL || '');
+const model = ref(props.selectedHL || "");
 
 // keep in sync if parent changes selectedHL
-watch(() => props.selectedHL, (hl) => { model.value = String(hl || ''); });
+watch(
+  () => props.selectedHL,
+  (hl) => {
+    model.value = String(hl || "");
+  }
+);
 
 // build full options for catalog
 const options = computed(() => {
   const list = Array.isArray(props.languages) ? props.languages : [];
   return list.map((x) => ({
     label: labelFor(x),
-    value: String(x.languageCodeHL || ''),
+    value: String(x.languageCodeHL || ""),
   }));
 });
 
@@ -47,7 +47,7 @@ const recentChips = computed(() => {
   const src = Array.isArray(props.recents) ? props.recents : [];
   const out = [];
   for (let i = 0; i < src.length && out.length < 2; i++) {
-    const hl = String(src[i]?.languageCodeHL || '');
+    const hl = String(src[i]?.languageCodeHL || "");
     if (!hl || seen.has(hl)) continue;
     seen.add(hl);
     out.push(src[i]);
@@ -59,8 +59,8 @@ function pickHL(hl) {
   const lang = findByHL(hl);
   if (!lang) return;
   // update the radio selection to reflect chip click
-  model.value = String(lang.languageCodeHL || '');
-  emit('select', lang);
+  model.value = String(lang.languageCodeHL || "");
+  emit("select", lang);
 }
 
 function onRadioChange(hl) {
@@ -72,7 +72,9 @@ function onRadioChange(hl) {
   <div class="q-pa-md">
     <!-- MRU chips -->
     <div v-if="recentChips.length" class="q-mb-sm">
-      <div class="text-caption q-mb-xs"><strong>{{ recentLabel }}</strong></div>
+      <div class="text-caption q-mb-xs">
+        <strong>{{ recentLabel }}</strong>
+      </div>
       <q-chip
         v-for="lang in recentChips"
         :key="lang.languageCodeHL"
@@ -82,7 +84,7 @@ function onRadioChange(hl) {
         class="q-mr-sm q-mb-sm"
         @click="pickHL(lang.languageCodeHL)"
       >
-        {{ labelFor(lang) }}
+        {{ languageLabel(lang) }}
       </q-chip>
     </div>
 

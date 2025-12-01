@@ -2,30 +2,27 @@
 
 // called from MainLayout
 import { useI18n } from "vue-i18n";
-import { normHL } from "src/utils/normalize";
 
 export function useInterfaceLocale() {
   const { locale } = useI18n({ useScope: "global" });
 
   // Trust the language object from the store
   function isRTL(lang) {
-    const dir = String(
-      lang?.textDirection || lang?.direction || ""
-    ).toLowerCase();
+    const dir = String(lang?.textDirection || "").toLowerCase();
     return dir === "rtl";
   }
 
   function applyInterfaceLanguageToWebpage(lang) {
-    const isoCode = String(lang?.languageCodeIso || "").toLowerCase() || "en";
-    const iso = String(lang?.script || "").toLowerCase() || isoCode;
-    console.log("ApplyInterfaceLanguageToWebpage: " + iso);
+    const webLanguage =
+      String(lang?.languageCodeGoogle || "").toLowerCase() || "en";
+    console.log("ApplyInterfaceLanguageToWebpage: " + webLanguage);
     try {
-      document.documentElement.lang = iso;
+      document.documentElement.lang = webLanguage;
     } catch {}
     try {
       document.documentElement.dir = isRTL(lang) ? "rtl" : "ltr";
     } catch {}
-    return Promise.resolve(lang?.languageCodeHL);
+    return;
   }
 
   return { applyInterfaceLanguageToWebpage };

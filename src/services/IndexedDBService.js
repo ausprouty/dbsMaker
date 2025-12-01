@@ -43,9 +43,6 @@ export function openDatabase() {
 
       if (!db.objectStoreNames.contains("notes")) db.createObjectStore("notes");
 
-      if (!db.objectStoreNames.contains("completed_lessons"))
-        db.createObjectStore("completed_lessons");
-
       // ✅ NEW store for per-study tracking
       if (!db.objectStoreNames.contains("study_progress"))
         db.createObjectStore("study_progress");

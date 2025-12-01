@@ -43,20 +43,12 @@ async function handleLanguageSelect(languageObject) {
   try {
     // 1) Persist selection (MRU etc.)
     settingsStore.setLanguageObjectSelected(languageObject);
-    console.log("MainLayout setLanguageObjectSelected ✓");
-
     // 2) Ensure interface bundle is loaded for this HL
     await contentStore.loadInterface(hl);
-    console.log("MainLayout-47 loadInterface(%s) ✓", hl);
-
     // 3) Apply i18n + <html lang|dir>
-    await applyInterfaceLanguageToWebpage(languageObject);
-    console.log("MainLayout appied InterfaceLanguageToWebpage ✓");
-    console.log(languageObject);
-
+    applyInterfaceLanguageToWebpage(languageObject);
     // 4) Update the URL (guarded internally to avoid no-ops/loops)
     await changeLanguage(hl, jf);
-    console.log("MainLayout navigation ✓");
   } catch (e) {
     console.warn("MainLayout switch failed:", e);
   } finally {
@@ -122,7 +114,11 @@ const actionBtnColor = computed(() =>
 </script>
 
 <template>
-  <q-layout view="lHh lpr lFf">
+  <q-layout
+    view="lHh lpr lFf"
+    :dir="isRtl ? 'rtl' : 'ltr'"
+    :class="{ 'rtl-mode': isRtl }"
+  >
     <q-header
       :elevated="appbarStyle === 'surface' || scrolled"
       class="appbar"

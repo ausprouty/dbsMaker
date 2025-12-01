@@ -4,7 +4,6 @@ import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { getNote } from "src/services/NoteService";
 import { getStudyProgress } from "src/services/IndexedDBService";
-import { buildNotesKey } from "src/utils/ContentKeyBuilder";
 
 const { t } = useI18n();
 const settingsStore = useSettingsStore();
@@ -30,9 +29,7 @@ const loadPreviousNote = async () => {
       resetNote();
       return;
     }
-
-    const noteKey = buildNotesKey(study, lastLesson, "forward");
-    const note = await getNote(noteKey);
+    const note = await getNote(study, lastLesson, "look_forward");
 
     const trimmed = note?.trim();
     if (trimmed) {
@@ -117,4 +114,3 @@ watch(() => settingsStore.currentStudySelected, loadPreviousNote);
   line-height: 1.5;
 }
 </style>
-

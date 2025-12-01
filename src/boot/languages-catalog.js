@@ -1,70 +1,136 @@
 // src/boot/languages-catalog.js
-import { boot } from 'quasar/wrappers'
-import { useSettingsStore } from 'src/stores/SettingsStore'
-import bundledCatalog from 'src/i18n/metadata/languages.json' // ultimate fallback
+import { boot } from "quasar/wrappers";
+import { useSettingsStore } from "src/stores/SettingsStore";
+import bundledCatalog from "src/i18n/metadata/languages.json"; // ultimate fallback
 
+// Basic sanity check: must be a non-empty array with HL + JF codes present
 function isValidCatalog(list) {
-  return Array.isArray(list) && list.length > 0 && list.every(x =>
-    x && (x.languageCodeHL || x.hl) && (x.languageCodeJF || x.jf)
-  );
+  if (!Array.isArray(list) || list.length === 0) {
+    return false;
+  }
+
+  return list.every(function (x) {
+    if (!x) return false;
+
+    var hl = x.languageCodeHL || x.hl;
+    var jf = x.languageCodeJF || x.jf;
+
+    return !!hl && !!jf;
+  });
 }
 
+// Normalise direction: default to 'ltr'; accept 'rtl' / 'RTL' as rtl
+function normalizeDirection(raw) {
+  if (!raw) return "ltr";
+
+  var d = String(raw).trim().toLowerCase();
+  if (d === "rtl") return "rtl";
+
+  return "ltr";
+}
+
+// Map possible alt keys like "hl"/"jf"/"iso" to the expected shape
 function normalizeCatalog(list) {
-  // Map possible alt keys like "hl"/"jf" to the expected shape
-  return list.map(x => ({
-    languageCodeHL: x.languageCodeHL ?? x.hl ?? '',
-    languageCodeJF: x.languageCodeJF ?? x.jf ?? '',
-    name: x.name ?? x.displayName ?? String(x.languageCodeHL ?? x.hl ?? ''),
-    ethnicName: x.ethnicName ?? x.nativeName ?? '',
-    languageCodeIso: x.languageCodeIso ?? x.languageCodeISO ?? x.iso ?? '',
-    direction: x.direction || '',
-    ...x
-  }));
+  return list.map(function (x) {
+    var languageCodeHL = x.languageCodeHL || x.hl || "";
+    var languageCodeJF = x.languageCodeJF || x.jf || "";
+    var direction = normalizeDirection(x.direction);
+
+    // Spread original object first, then override with normalised fields
+    return {
+      ...x,
+      languageCodeHL: languageCodeHL,
+      languageCodeJF: languageCodeJF,
+      name: x.name || x.displayName || String(languageCodeHL || ""),
+      ethnicName: x.ethnicName || x.nativeName || "",
+      languageCodeIso: x.languageCodeIso || x.languageCodeISO || x.iso || "",
+      direction: direction,
+    };
+  });
 }
 
-export default boot(async () => {
+export default boot(async function () {
   const s = useSettingsStore();
-  if (Array.isArray(s.languages) && s.languages.length) return;
 
-  const base = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') + '/';
+  // If languages already in the store, don't refetch
+  if (Array.isArray(s.languages) && s.languages.length > 0) {
+    return;
+  }
 
-  // Try these in order
+  // Normalise base so we always end with a single slash
+  const base = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "") + "/";
+
+  // Figure out which build we are (guru, hope, jvideo, etc.)
+  // VITE_APP is set in .env.guru, .env.hope, etc.
+  const appBuild = (
+    import.meta.env.VITE_APP ||
+    import.meta.env.VITE_SITE_MODE ||
+    ""
+  ).trim();
+
+  // Dev-only quirk: per-build folder like
+  // public-guru/config/languages.json
+  const devBuildCatalog =
+    import.meta.env.DEV && appBuild
+      ? base + "public-" + appBuild + "/config/languages.json"
+      : null;
+
+  // Optional override via env (absolute or relative URL)
+  const overrideCatalog = import.meta.env.VITE_LANG_CONFIG_PATH || null;
+
+  // Order matters: first match that returns a valid catalog wins
   const candidates = [
-    // primary (prod & dev when served from /public or site root)
-    `${base}config/languages.json`,
-    // dev-only quirk (you mentioned it lives here during dev)
-    `${base}public-guru/config/languages.json`,
-    // optional override via env if you want
-    import.meta.env.VITE_LANG_CONFIG_PATH || null,
-  ].filter(Boolean);
+    // Primary (prod & dev when served from /public or site root)
+    base + "config/languages.json",
+    // Dev-only per-build path (public-guru, public-hope, etc.)
+    devBuildCatalog,
+    // Optional explicit override
+    overrideCatalog,
+  ].filter(Boolean); // drop null/empty entries
 
   let loaded = null;
-  let from = 'bundled';
+  let from = "bundled";
 
   for (const url of candidates) {
     try {
-      console.log (url)
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) continue;
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) {
+        if (import.meta.env.DEV) {
+          console.warn("[languages] HTTP " + res.status + " for " + url);
+        }
+        continue;
+      }
+
       const json = await res.json();
-      console.log (json)
-      if (!isValidCatalog(json)) continue;
+      if (!isValidCatalog(json)) {
+        if (import.meta.env.DEV) {
+          console.warn("[languages] invalid catalog at " + url);
+        }
+        continue;
+      }
+
       loaded = normalizeCatalog(json);
       from = url;
-      console.log (from)
       break;
-    } catch {
-      // try next
+    } catch (err) {
+      if (import.meta.env.DEV) {
+        console.warn("[languages] error loading " + url, err);
+      }
+      // try next candidate
     }
   }
 
+  // If nothing loaded from HTTP, fall back to bundled catalog
   if (!loaded) {
     loaded = normalizeCatalog(bundledCatalog);
+    from = "bundled (in-app)";
   }
 
   s.setLanguages(loaded);
 
   if (import.meta.env.DEV) {
-    console.log(`[languages] loaded ${loaded.length} entries from: ${from}`);
+    console.log(
+      "[languages] loaded " + loaded.length + " entries from: " + from
+    );
   }
 });

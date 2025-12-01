@@ -13,7 +13,7 @@
   {
     "id": 2,
     "name": "English",
-    "ethnicName": "English",
+    "ethnicName": "",
     "languageCodeHL": "eng00",
     "languageCodeJF": "529",
     "languageCodeBrowser": "en",
@@ -79,7 +79,7 @@
   {
     "id": 8,
     "name": "Punjabi",
-    "ethnicName": "Punjabi",
+    "ethnicName": "",
     "languageCodeHL": "pan19",
     "languageCodeJF": "46771",
     "languageCodeBrowser": "pa",
@@ -87,17 +87,17 @@
     "font": "akaash",
     "fontData": "{\"akaash\": {\"B\": \"akaash_bold.ttf\", \"R\": \"akaash.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
   },
-{
-	  "id": 9,
-	  "name": "Marathi",
-	  "ethnicName": "मराठी",
-	  "languageCodeHL": "mrt00",
-	  "languageCodeJF": "6174",
-	  "languageCodeBrowser": "mr",
-	  "direction": "",
-	  "font": "arialuni",
-	 "fontData": "{\"arialuni\": {\"R\": \"arialuni.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
-	},
+  {
+    "id": 9,
+    "name": "Marathi",
+    "ethnicName": "मराठी",
+    "languageCodeHL": "mrt00",
+    "languageCodeJF": "6174",
+    "languageCodeBrowser": "mr",
+    "direction": "",
+    "font": "arialuni",
+    "fontData": "{\"arialuni\": {\"R\": \"arialuni.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
+  },
 
   {
     "id": 10,

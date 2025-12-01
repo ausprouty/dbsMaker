@@ -9,9 +9,6 @@
 
 @import "./appbar.scss";
 
-
-
-
 /* ----------------------
    General Layout
 ----------------------- */
@@ -286,10 +283,9 @@ td[clickable]:active::after {
   color: var(--color-on-accent);
 }
 
-.language-select{
-  color:var(--color-primary);
+.language-select {
+  color: var(--color-primary);
   font-size: 18px;
-
 }
 
 /* ----------------------
@@ -320,11 +316,9 @@ td[clickable]:active::after {
   color: var(--color-on-positive);
 }
 
-
 .accent {
   color: var(--color-accent);
 }
-
 
 /* ----------------------
    Mark Complete
@@ -340,4 +334,26 @@ td[clickable]:active::after {
   &:hover {
     filter: brightness(0.88);
   }
+}
+
+/* ----------------------
+   Right to Left
+----------------------- */
+
+body.rtl-mode {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Lists: move padding to the right for Arabic */
+body.rtl-mode ul,
+body.rtl-mode ol {
+  padding-right: 1.5rem;
+  padding-left: 0;
+}
+
+/* Optional: card / callout alignment */
+body.rtl-mode .card,
+body.rtl-mode .q-card {
+  text-align: right;
 }
