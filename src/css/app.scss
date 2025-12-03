@@ -266,16 +266,30 @@ td[clickable]:active::after {
 /* Toggle Button */
 .toggle-button {
   width: 100%;
-  text-align: left;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
   padding: 12px;
   border: none;
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   border-radius: 6px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* icon before text in LTR */
+.toggle-icon {
+  margin-right: 0.5rem;
+}
+
+/* in RTL, push icon to the other side + flip arrow */
+[dir="rtl"] .toggle-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+  transform: scaleX(-1);
 }
 
 .toggle-button:hover {
@@ -356,4 +370,88 @@ body.rtl-mode ol {
 body.rtl-mode .card,
 body.rtl-mode .q-card {
   text-align: right;
+}
+
+/* ----------------------
+    Numbers for Lists
+------------------------- */
+
+/* latn: Western (Latin) digits 0–9 */
+.nums-latn {
+  list-style-type: decimal;
+}
+
+/* arab: Arabic-Indic ٠١٢٣٤٥٦٧٨٩ */
+.nums-arab {
+  list-style-type: arabic-indic;
+}
+
+/* arabext: Eastern Arabic-Indic ۰۱۲۳۴۵۶۷۸۹ (Persian/Urdu style) */
+.nums-arabext {
+  list-style-type: persian;
+}
+
+/* beng: Bengali digits */
+.nums-beng {
+  list-style-type: bengali;
+}
+
+/* deva: Devanagari digits (Hindi, Marathi, etc.) */
+.nums-deva {
+  list-style-type: devanagari;
+}
+
+/* gujr: Gujarati digits */
+.nums-gujr {
+  list-style-type: gujarati;
+}
+
+/* guru: Gurmukhi digits (Punjabi) */
+.nums-guru {
+  list-style-type: gurmukhi;
+}
+
+/* khmr: Khmer digits */
+.nums-khmr {
+  list-style-type: khmer;
+}
+
+/* knda: Kannada digits */
+.nums-knda {
+  list-style-type: kannada;
+}
+
+/* laoo: Lao digits */
+.nums-laoo {
+  list-style-type: lao;
+}
+
+/* mlym: Malayalam digits */
+.nums-mlym {
+  list-style-type: malayalam;
+}
+
+/* mymr: Myanmar digits */
+.nums-mymr {
+  list-style-type: myanmar;
+}
+
+/* orya: Odia/Oriya digits */
+.nums-orya {
+  list-style-type: oriya;
+}
+
+/* tamldec: Tamil decimal digits */
+.nums-tamldec {
+  list-style-type: tamil;
+}
+
+/* telu: Telugu digits */
+.nums-telu {
+  list-style-type: telugu;
+}
+
+/* thai: Thai digits */
+.nums-thai {
+  list-style-type: thai;
 }

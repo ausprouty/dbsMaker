@@ -7,7 +7,7 @@ const { t, te, locale } = useI18n({ useScope: "global" });
 
 // allow null to avoid Vue "Expected Object, got Null" warning
 const props = defineProps({
-  passage: { default: null }
+  passage: { default: null },
 });
 
 const { passage } = toRefs(props);
@@ -44,7 +44,13 @@ const readLabel = computed(() => {
         @click="isVisible = !isVisible"
         :aria-expanded="isVisible ? 'true' : 'false'"
       >
-        {{ isVisible ? "▼" : "►" }} {{ readLabel }}
+        <span class="toggle-icon" aria-hidden="true">
+          {{ isVisible ? "▼" : "►" }}
+        </span>
+
+        <span class="toggle-label" dir="auto">
+          {{ readLabel }}
+        </span>
       </button>
 
       <div v-show="isVisible" class="bible-section">
@@ -75,21 +81,38 @@ const readLabel = computed(() => {
 }
 .toggle-button {
   width: 100%;
-  text-align: left;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
   padding: 12px;
   border: none;
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   border-radius: 6px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-start; /* default LTR layout */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-.toggle-button:hover {
-  background-color: var(--color-accent);
-  color: var(--color-on-accent);
+
+/* icon before text in LTR */
+.toggle-icon {
+  margin-right: 0.5rem;
 }
+
+/* RTL: right-align content, label then icon, and flip the arrow */
+[dir="rtl"] .toggle-button {
+  flex-direction: row-reverse; /* label then icon */
+  justify-content: flex-end; /* hug the right edge */
+}
+
+[dir="rtl"] .toggle-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+  transform: scaleX(-1); /* ► looks like ◄ in RTL */
+}
+
 .bible-section {
   margin-top: 12px;
   background-color: color-mix(in srgb, var(--color-minor1) 85%, white);

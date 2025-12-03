@@ -1,5 +1,6 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
+import { useNumeralClass } from "src/composables/useNumeralClass";
 import BibleText from "src/components/Bible/BibleTextBar.vue";
 import VideoBar from "src/components/Video/VideoBar.vue";
 import NoteSection from "src/components/Notes/NoteSection.vue";
@@ -8,15 +9,22 @@ const props = defineProps({
   section: { type: String, required: true },
   commonContent: { type: Object, required: true },
   lessonContent: { type: Object, required: true },
-  placeholder: { type: String, default: "Write your notes here" },
-  timing: { type: String, default: "Spend 20 to 30 minutes on this section" },
+  placeholder: {
+    type: String,
+    default: "Write your notes here",
+  },
+  timing: {
+    type: String,
+    default: "Spend 20 to 30 minutes on this section",
+  },
 });
+const { numeralClass } = useNumeralClass();
 </script>
 <template>
   <section v-if="commonContent">
     <h2 class="ltr dbs">{{ commonContent.title }}</h2>
     <p class="timing">{{ timing }}</p>
-    <ol class="ltr dbs">
+    <ol :class="['dbs', numeralClass]">
       <li
         v-for="(item, index) in commonContent.instruction"
         :key="'instruction-' + index"
@@ -36,7 +44,7 @@ const props = defineProps({
       :videoTitle="lessonContent.passage.referenceLocalLanguage"
     />
 
-    <ol class="ltr dbs">
+    <ol :class="`dbs numeralClass}`">
       <li
         v-for="(item, index) in commonContent.question"
         :key="'question-' + index"

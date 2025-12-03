@@ -6,7 +6,8 @@
     "languageCodeHL": "tj00",
     "languageCodeGoogle": "ace",
     "languageCodeJF": 17688,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 10,
@@ -15,7 +16,8 @@
     "languageCodeHL": "afk00",
     "languageCodeGoogle": "af",
     "languageCodeJF": 1444,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 15,
@@ -24,7 +26,8 @@
     "languageCodeHL": "aln00",
     "languageCodeGoogle": "sq",
     "languageCodeJF": 20526,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 20,
@@ -33,7 +36,8 @@
     "languageCodeHL": "amh00",
     "languageCodeGoogle": "am",
     "languageCodeJF": 4791,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 25,
@@ -42,7 +46,8 @@
     "languageCodeHL": "arq00",
     "languageCodeGoogle": "ar",
     "languageCodeJF": 13562,
-    "textDirection": "rtl"
+    "textDirection": "rtl",
+    "numeralSet": "arab"
   },
   {
     "id": 30,
@@ -51,7 +56,8 @@
     "languageCodeHL": "arm00",
     "languageCodeGoogle": "hy",
     "languageCodeJF": 20550,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 35,
@@ -60,7 +66,8 @@
     "languageCodeHL": "asm25",
     "languageCodeGoogle": "as",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 40,
@@ -69,7 +76,8 @@
     "languageCodeHL": "awd00",
     "languageCodeGoogle": "awa",
     "languageCodeJF": 5603,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 45,
@@ -78,7 +86,8 @@
     "languageCodeHL": "aze00",
     "languageCodeGoogle": "az",
     "languageCodeJF": 689,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 50,
@@ -87,7 +96,8 @@
     "languageCodeHL": "azb21",
     "languageCodeGoogle": "azb",
     "languageCodeJF": 355,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 55,
@@ -96,7 +106,8 @@
     "languageCodeHL": "bra00",
     "languageCodeGoogle": "bm",
     "languageCodeJF": 2075,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 60,
@@ -105,7 +116,8 @@
     "languageCodeHL": "bba00",
     "languageCodeGoogle": "bba",
     "languageCodeJF": 1294,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 65,
@@ -114,7 +126,8 @@
     "languageCodeHL": "bas29",
     "languageCodeGoogle": "eu",
     "languageCodeJF": 23514,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 70,
@@ -123,7 +136,8 @@
     "languageCodeHL": "bng00",
     "languageCodeGoogle": "bn",
     "languageCodeJF": 139081,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "beng"
   },
   {
     "id": 75,
@@ -132,7 +146,8 @@
     "languageCodeHL": "ben25",
     "languageCodeGoogle": "bn",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "beng"
   },
   {
     "id": 80,
@@ -141,7 +156,8 @@
     "languageCodeHL": "blg00",
     "languageCodeGoogle": "bg",
     "languageCodeJF": 1964,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 85,
@@ -150,7 +166,8 @@
     "languageCodeHL": "bms00",
     "languageCodeGoogle": "my",
     "languageCodeJF": 1254,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "mymr"
   },
   {
     "id": 90,
@@ -159,7 +176,8 @@
     "languageCodeHL": "yuh00",
     "languageCodeGoogle": "zh-CN",
     "languageCodeJF": 20601,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 95,
@@ -168,7 +186,8 @@
     "languageCodeHL": "cat24",
     "languageCodeGoogle": "ca",
     "languageCodeJF": 531,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 100,
@@ -177,7 +196,8 @@
     "languageCodeHL": "ceb00",
     "languageCodeGoogle": "ceb",
     "languageCodeJF": 12784,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 105,
@@ -186,7 +206,8 @@
     "languageCodeHL": "rus*1",
     "languageCodeGoogle": "ru",
     "languageCodeJF": 20899,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 110,
@@ -195,7 +216,8 @@
     "languageCodeHL": "hne00",
     "languageCodeGoogle": "hne",
     "languageCodeJF": 6463,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 115,
@@ -204,7 +226,8 @@
     "languageCodeHL": "nyj00",
     "languageCodeGoogle": "ny",
     "languageCodeJF": 20857,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 120,
@@ -213,7 +236,8 @@
     "languageCodeHL": "cnh20",
     "languageCodeGoogle": "cnh",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 125,
@@ -222,7 +246,8 @@
     "languageCodeHL": "chn06",
     "languageCodeGoogle": "zh-CN",
     "languageCodeJF": 20615,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 130,
@@ -231,7 +256,8 @@
     "languageCodeHL": "chn-s",
     "languageCodeGoogle": "zh-CN",
     "languageCodeJF": 20615,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 135,
@@ -240,7 +266,8 @@
     "languageCodeHL": "cmn25",
     "languageCodeGoogle": "zh-CN",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 140,
@@ -249,7 +276,8 @@
     "languageCodeHL": "crh00",
     "languageCodeGoogle": "crh",
     "languageCodeJF": 22335,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 145,
@@ -258,7 +286,8 @@
     "languageCodeHL": "hrv00",
     "languageCodeGoogle": "hr",
     "languageCodeJF": 1109,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 150,
@@ -267,7 +296,8 @@
     "languageCodeHL": "czc00",
     "languageCodeGoogle": "cs",
     "languageCodeJF": 4432,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 155,
@@ -276,7 +306,8 @@
     "languageCodeHL": "dan99",
     "languageCodeGoogle": "da",
     "languageCodeJF": 4454,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 160,
@@ -285,7 +316,8 @@
     "languageCodeHL": "dut99",
     "languageCodeGoogle": "nl",
     "languageCodeJF": 1269,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 165,
@@ -294,7 +326,8 @@
     "languageCodeHL": "eng00",
     "languageCodeGoogle": "en",
     "languageCodeJF": 529,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 170,
@@ -303,7 +336,8 @@
     "languageCodeHL": "eng25",
     "languageCodeGoogle": "en",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 175,
@@ -312,7 +346,8 @@
     "languageCodeHL": "ibo25",
     "languageCodeGoogle": "ibo",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 180,
@@ -321,7 +356,8 @@
     "languageCodeHL": "epo19",
     "languageCodeGoogle": "eo",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 185,
@@ -330,7 +366,8 @@
     "languageCodeHL": "pes00",
     "languageCodeGoogle": "fa",
     "languageCodeJF": 6788,
-    "textDirection": "rtl"
+    "textDirection": "rtl",
+    "numeralSet": "arabext"
   },
   {
     "id": 190,
@@ -339,7 +376,8 @@
     "languageCodeHL": "fji00",
     "languageCodeGoogle": "fj",
     "languageCodeJF": 20665,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 195,
@@ -348,7 +386,8 @@
     "languageCodeHL": "fin00",
     "languageCodeGoogle": "fi",
     "languageCodeJF": 4820,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 200,
@@ -357,7 +396,8 @@
     "languageCodeHL": "frn00",
     "languageCodeGoogle": "fr",
     "languageCodeJF": 496,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 205,
@@ -366,7 +406,8 @@
     "languageCodeHL": "fra25",
     "languageCodeGoogle": "fr",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 210,
@@ -375,7 +416,8 @@
     "languageCodeHL": "adl00",
     "languageCodeGoogle": "tl",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 215,
@@ -384,7 +426,8 @@
     "languageCodeHL": "geo00",
     "languageCodeGoogle": "ka",
     "languageCodeJF": 5112,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 220,
@@ -393,7 +436,8 @@
     "languageCodeHL": "ger00",
     "languageCodeGoogle": "de",
     "languageCodeJF": 1106,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 225,
@@ -402,7 +446,8 @@
     "languageCodeHL": "grk00",
     "languageCodeGoogle": "el",
     "languageCodeJF": 483,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 230,
@@ -411,7 +456,8 @@
     "languageCodeHL": "gjr00",
     "languageCodeGoogle": "gu",
     "languageCodeJF": 6600,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "gujr"
   },
   {
     "id": 235,
@@ -420,7 +466,8 @@
     "languageCodeHL": "hat00",
     "languageCodeGoogle": "ht",
     "languageCodeJF": 4473,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 240,
@@ -429,7 +476,8 @@
     "languageCodeHL": "hak25",
     "languageCodeGoogle": "zh-TW",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 245,
@@ -438,7 +486,8 @@
     "languageCodeHL": "hua00",
     "languageCodeGoogle": "ha",
     "languageCodeJF": 1341,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 250,
@@ -447,7 +496,8 @@
     "languageCodeHL": "haw98",
     "languageCodeGoogle": "haw",
     "languageCodeJF": 184517,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 255,
@@ -456,7 +506,8 @@
     "languageCodeHL": "hbr00",
     "languageCodeGoogle": "iw",
     "languageCodeJF": 6930,
-    "textDirection": "rtl"
+    "textDirection": "rtl",
+    "numeralSet": "latn"
   },
   {
     "id": 260,
@@ -465,7 +516,8 @@
     "languageCodeHL": "hnd00",
     "languageCodeGoogle": "hi",
     "languageCodeJF": 53300,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "deva"
   },
   {
     "id": 265,
@@ -474,7 +526,8 @@
     "languageCodeHL": "hnj20",
     "languageCodeGoogle": "hmn",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 270,
@@ -483,7 +536,8 @@
     "languageCodeHL": "hng00",
     "languageCodeGoogle": "hu",
     "languageCodeJF": 1107,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 275,
@@ -492,7 +546,8 @@
     "languageCodeHL": "ice99",
     "languageCodeGoogle": "is",
     "languageCodeJF": 5563,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 280,
@@ -501,7 +556,8 @@
     "languageCodeHL": "igr00",
     "languageCodeGoogle": "ig",
     "languageCodeJF": 9774,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 285,
@@ -510,7 +566,8 @@
     "languageCodeHL": "inz00",
     "languageCodeGoogle": "id",
     "languageCodeJF": 16639,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 290,
@@ -519,7 +576,8 @@
     "languageCodeHL": "itn00",
     "languageCodeGoogle": "it",
     "languageCodeJF": 4415,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 295,
@@ -528,7 +586,8 @@
     "languageCodeHL": "jpn00",
     "languageCodeGoogle": "ja",
     "languageCodeJF": 7083,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 300,
@@ -537,7 +596,8 @@
     "languageCodeHL": "jan00",
     "languageCodeGoogle": "jw",
     "languageCodeJF": 13195,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 305,
@@ -546,7 +606,8 @@
     "languageCodeHL": "kjv00",
     "languageCodeGoogle": "kn",
     "languageCodeJF": 6318,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "knda"
   },
   {
     "id": 310,
@@ -555,7 +616,8 @@
     "languageCodeHL": "kaz00",
     "languageCodeGoogle": "kk",
     "languageCodeJF": 371,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 315,
@@ -564,7 +626,8 @@
     "languageCodeHL": "kaz99",
     "languageCodeGoogle": "kk",
     "languageCodeJF": 371,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 320,
@@ -573,7 +636,8 @@
     "languageCodeHL": "kmr00",
     "languageCodeGoogle": "km",
     "languageCodeJF": 14384,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "khmr"
   },
   {
     "id": 325,
@@ -582,7 +646,8 @@
     "languageCodeHL": "rua00",
     "languageCodeGoogle": "rw",
     "languageCodeJF": 20900,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 330,
@@ -591,7 +656,8 @@
     "languageCodeHL": "kkn00",
     "languageCodeGoogle": "ko",
     "languageCodeJF": 24000,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 335,
@@ -600,7 +666,8 @@
     "languageCodeHL": "ckb25",
     "languageCodeGoogle": "cbk",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 340,
@@ -609,7 +676,8 @@
     "languageCodeHL": "lat777",
     "languageCodeGoogle": "la",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 345,
@@ -618,7 +686,8 @@
     "languageCodeHL": "lat00",
     "languageCodeGoogle": "lv",
     "languageCodeJF": 7519,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 350,
@@ -627,7 +696,8 @@
     "languageCodeHL": "lin00",
     "languageCodeGoogle": "ln",
     "languageCodeJF": 4344,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 355,
@@ -636,7 +706,8 @@
     "languageCodeHL": "lit00",
     "languageCodeGoogle": "lt",
     "languageCodeJF": 7698,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 360,
@@ -645,7 +716,8 @@
     "languageCodeHL": "lap00",
     "languageCodeGoogle": "lg",
     "languageCodeJF": 20675,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 365,
@@ -654,7 +726,8 @@
     "languageCodeHL": "mkj00",
     "languageCodeGoogle": "mk",
     "languageCodeJF": 20796,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 370,
@@ -663,7 +736,8 @@
     "languageCodeHL": "plt00",
     "languageCodeGoogle": "mg",
     "languageCodeJF": 7761,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 375,
@@ -672,7 +746,8 @@
     "languageCodeHL": "mli00",
     "languageCodeGoogle": "ms",
     "languageCodeJF": 14386,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 380,
@@ -681,7 +756,8 @@
     "languageCodeHL": "mjs00",
     "languageCodeGoogle": "ml",
     "languageCodeJF": 19985,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "mlym"
   },
   {
     "id": 385,
@@ -690,7 +766,8 @@
     "languageCodeHL": "mal25",
     "languageCodeGoogle": "ml",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "mlym"
   },
   {
     "id": 390,
@@ -699,7 +776,8 @@
     "languageCodeHL": "mnr00",
     "languageCodeGoogle": "mni-Mtei",
     "languageCodeJF": 20823,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 395,
@@ -708,7 +786,8 @@
     "languageCodeHL": "mbf00",
     "languageCodeGoogle": "mi",
     "languageCodeJF": 9198,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 400,
@@ -717,7 +796,8 @@
     "languageCodeHL": "mrt00",
     "languageCodeGoogle": "mr",
     "languageCodeJF": 6174,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "deva"
   },
   {
     "id": 405,
@@ -726,7 +806,8 @@
     "languageCodeHL": "mar99",
     "languageCodeGoogle": "mh",
     "languageCodeJF": 7889,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 410,
@@ -735,7 +816,8 @@
     "languageCodeHL": "mpu00",
     "languageCodeGoogle": "min",
     "languageCodeJF": 17695,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 415,
@@ -744,7 +826,8 @@
     "languageCodeHL": "khk00",
     "languageCodeGoogle": "mn",
     "languageCodeJF": 18259,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 420,
@@ -753,7 +836,8 @@
     "languageCodeHL": "khk20",
     "languageCodeGoogle": "mn",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 425,
@@ -762,7 +846,8 @@
     "languageCodeHL": "nep00",
     "languageCodeGoogle": "ne",
     "languageCodeJF": 1370,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "deva"
   },
   {
     "id": 430,
@@ -771,7 +856,8 @@
     "languageCodeHL": "nor99",
     "languageCodeGoogle": "no",
     "languageCodeJF": 10393,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 435,
@@ -780,7 +866,8 @@
     "languageCodeHL": "ory00",
     "languageCodeGoogle": "or",
     "languageCodeJF": 5983,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "orya"
   },
   {
     "id": 440,
@@ -789,7 +876,8 @@
     "languageCodeHL": "pbu00",
     "languageCodeGoogle": "ps",
     "languageCodeJF": 374,
-    "textDirection": "rtl"
+    "textDirection": "rtl",
+    "numeralSet": "arab"
   },
   {
     "id": 445,
@@ -798,7 +886,8 @@
     "languageCodeHL": "pql00",
     "languageCodeGoogle": "pl",
     "languageCodeJF": 4451,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 450,
@@ -807,7 +896,8 @@
     "languageCodeHL": "por05",
     "languageCodeGoogle": "pt",
     "languageCodeJF": 1872,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 455,
@@ -816,7 +906,8 @@
     "languageCodeHL": "pan19",
     "languageCodeGoogle": "pa",
     "languageCodeJF": 46771,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "guru"
   },
   {
     "id": 460,
@@ -825,7 +916,8 @@
     "languageCodeHL": "pnj00",
     "languageCodeGoogle": "pa",
     "languageCodeJF": 46771,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "guru"
   },
   {
     "id": 465,
@@ -834,7 +926,8 @@
     "languageCodeHL": "qed00",
     "languageCodeGoogle": "qu",
     "languageCodeJF": 12399,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 470,
@@ -843,7 +936,8 @@
     "languageCodeHL": "rum00",
     "languageCodeGoogle": "ro",
     "languageCodeJF": 5546,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 475,
@@ -852,7 +946,8 @@
     "languageCodeHL": "rus00",
     "languageCodeGoogle": "ru",
     "languageCodeJF": 1944,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 480,
@@ -861,7 +956,8 @@
     "languageCodeHL": "smy00",
     "languageCodeGoogle": "sm",
     "languageCodeJF": 530,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 485,
@@ -870,7 +966,8 @@
     "languageCodeHL": "saj00",
     "languageCodeGoogle": "sg",
     "languageCodeJF": 3156,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 490,
@@ -879,7 +976,8 @@
     "languageCodeHL": "sdd00",
     "languageCodeGoogle": "sr",
     "languageCodeJF": 5541,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 495,
@@ -888,7 +986,8 @@
     "languageCodeHL": "sot01",
     "languageCodeGoogle": "st",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 500,
@@ -897,7 +996,8 @@
     "languageCodeHL": "shd00",
     "languageCodeGoogle": "sn",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 505,
@@ -906,7 +1006,8 @@
     "languageCodeHL": "sin99",
     "languageCodeGoogle": "si",
     "languageCodeJF": 13172,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 510,
@@ -915,7 +1016,8 @@
     "languageCodeHL": "swz00",
     "languageCodeGoogle": "ss",
     "languageCodeJF": 20947,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 515,
@@ -924,7 +1026,8 @@
     "languageCodeHL": "slo00",
     "languageCodeGoogle": "sk",
     "languageCodeJF": 5545,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 520,
@@ -933,7 +1036,8 @@
     "languageCodeHL": "slv00",
     "languageCodeGoogle": "sl",
     "languageCodeJF": 1112,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 525,
@@ -942,7 +1046,8 @@
     "languageCodeHL": "som00",
     "languageCodeGoogle": "so",
     "languageCodeJF": 4466,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 530,
@@ -951,7 +1056,8 @@
     "languageCodeHL": "srt00",
     "languageCodeGoogle": "nso",
     "languageCodeJF": 13465,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 535,
@@ -960,7 +1066,8 @@
     "languageCodeHL": "spn00",
     "languageCodeGoogle": "es",
     "languageCodeJF": 21028,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 540,
@@ -969,7 +1076,8 @@
     "languageCodeHL": "swc00",
     "languageCodeGoogle": "sw",
     "languageCodeJF": 23178,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 545,
@@ -978,7 +1086,8 @@
     "languageCodeHL": "swe99",
     "languageCodeGoogle": "sv",
     "languageCodeJF": 4823,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 550,
@@ -987,7 +1096,8 @@
     "languageCodeHL": "pet00",
     "languageCodeGoogle": "tg",
     "languageCodeJF": null,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 555,
@@ -996,7 +1106,8 @@
     "languageCodeHL": "tcv00",
     "languageCodeGoogle": "ta",
     "languageCodeJF": 5871,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "tamldec"
   },
   {
     "id": 560,
@@ -1005,7 +1116,8 @@
     "languageCodeHL": "ttr00",
     "languageCodeGoogle": "tt",
     "languageCodeJF": 411,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 565,
@@ -1014,7 +1126,8 @@
     "languageCodeHL": "tcw00",
     "languageCodeGoogle": "te",
     "languageCodeJF": 5848,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "telu"
   },
   {
     "id": 570,
@@ -1023,7 +1136,8 @@
     "languageCodeHL": "thj00",
     "languageCodeGoogle": "th",
     "languageCodeJF": 13169,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "thai"
   },
   {
     "id": 575,
@@ -1032,7 +1146,8 @@
     "languageCodeHL": "tov00",
     "languageCodeGoogle": "to",
     "languageCodeJF": 14509,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 580,
@@ -1041,7 +1156,8 @@
     "languageCodeHL": "tso00",
     "languageCodeGoogle": "ts",
     "languageCodeJF": 8494,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 585,
@@ -1050,7 +1166,8 @@
     "languageCodeHL": "tsw00",
     "languageCodeGoogle": "tn",
     "languageCodeJF": 1479,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 590,
@@ -1059,7 +1176,8 @@
     "languageCodeHL": "trk00",
     "languageCodeGoogle": "tr",
     "languageCodeJF": 1942,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 595,
@@ -1068,7 +1186,8 @@
     "languageCodeHL": "tck00",
     "languageCodeGoogle": "tk",
     "languageCodeJF": 420,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 600,
@@ -1077,7 +1196,8 @@
     "languageCodeHL": "tws03",
     "languageCodeGoogle": "ak",
     "languageCodeJF": 20525,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 605,
@@ -1086,7 +1206,8 @@
     "languageCodeHL": "ukr00",
     "languageCodeGoogle": "uk",
     "languageCodeJF": 12876,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 610,
@@ -1095,7 +1216,8 @@
     "languageCodeHL": "urd00",
     "languageCodeGoogle": "ur",
     "languageCodeJF": 407,
-    "textDirection": "rtl"
+    "textDirection": "rtl",
+    "numeralSet": "arabext"
   },
   {
     "id": 615,
@@ -1104,7 +1226,8 @@
     "languageCodeHL": "uzb00",
     "languageCodeGoogle": "uz",
     "languageCodeJF": 3888,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 620,
@@ -1113,7 +1236,8 @@
     "languageCodeHL": "vie00",
     "languageCodeGoogle": "vi",
     "languageCodeJF": 22500,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 625,
@@ -1122,7 +1246,8 @@
     "languageCodeHL": "wls00",
     "languageCodeGoogle": "cy",
     "languageCodeJF": 14815,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 630,
@@ -1131,7 +1256,8 @@
     "languageCodeHL": "xos00",
     "languageCodeGoogle": "xh",
     "languageCodeJF": 13408,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 635,
@@ -1140,7 +1266,8 @@
     "languageCodeHL": "yor00",
     "languageCodeGoogle": "yo",
     "languageCodeJF": 1308,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   },
   {
     "id": 640,
@@ -1149,6 +1276,7 @@
     "languageCodeHL": "zuu00",
     "languageCodeGoogle": "zu",
     "languageCodeJF": 7547,
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "latn"
   }
 ]

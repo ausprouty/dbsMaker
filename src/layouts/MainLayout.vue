@@ -1,6 +1,5 @@
 <script setup>
 import { ref, provide, computed, onMounted, onBeforeUnmount, watch } from "vue";
-import { attachDebug } from "src/utils/debugHooks"; // tiny helper below
 import LanguageOptions from "src/components/Language/LanguageOptions.vue";
 import ShareLink from "src/components/ShareLink.vue";
 import { useContentStore } from "src/stores/ContentStore";
@@ -13,7 +12,10 @@ const router = useRouter();
 const route = useRoute();
 const settingsStore = useSettingsStore();
 const contentStore = useContentStore();
-const { applyInterfaceLanguageToWebpage } = useInterfaceLocale();
+
+const { isRTL, applyInterfaceLanguageToWebpage } = useInterfaceLocale();
+const isRtl = computed(() => isRTL(settingsStore.languageObjectSelected));
+console.log("isRTL =", isRTL);
 
 const brandTitle = computed(() => settingsStore.brandTitle || "Not Set");
 

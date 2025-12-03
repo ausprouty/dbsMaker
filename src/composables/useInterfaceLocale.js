@@ -4,6 +4,7 @@
 import { useI18n } from "vue-i18n";
 
 export function useInterfaceLocale() {
+  console.log("DEBUG: useInterfaceLocale version 2025-12-01C");
   const { locale } = useI18n({ useScope: "global" });
 
   // Trust the language object from the store
@@ -25,5 +26,5 @@ export function useInterfaceLocale() {
     return;
   }
 
-  return { applyInterfaceLanguageToWebpage };
+  return { isRTL, applyInterfaceLanguageToWebpage };
 }
