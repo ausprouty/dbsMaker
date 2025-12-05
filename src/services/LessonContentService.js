@@ -36,16 +36,28 @@ export async function getLessonContent(
   const key = buildLessonContentKey(studyId, hl, jf, lessonId);
   const contentStore = useContentStore();
 
-  // Use one setter in both initial fetch and poll completion
-  const setter = (store, data) =>
+  // Setter used when getContentWithFallback has direct access to the store.
+  // Signature: (store, data)
+  const setter = (store, data) => {
     store.setLessonContent(studyId, hl, jf, lessonId, data);
+  };
+
+  // Handler used by TranslationPollingService when a poll completes.
+  // Its signature there is: (hlFromPoll, data)
+  const handleInstall = (hlFromPoll, data) => {
+    // Use the hl provided by the poller if present,
+    // otherwise fall back to the hl we closed over.
+    const effectiveHl = hlFromPoll || hl;
+
+    contentStore.setLessonContent(studyId, effectiveHl, jf, lessonId, data);
+  };
 
   return await getContentWithFallback({
     key,
     store: contentStore,
     storeGetter: (s) => s.lessonContentFor(studyId, hl, jf, lessonId),
     storeSetter: setter,
-    onInstall: setter, // <-- ensure the poller completion updates the store identically
+    onInstall: handleInstall, // ensure poll completion updates the store
     dbGetter: () => getLessonContentFromDB(studyId, hl, jf, lessonId),
     dbSetter: (data) => saveLessonContentToDB(studyId, hl, jf, lessonId, data),
     apiUrl: url,

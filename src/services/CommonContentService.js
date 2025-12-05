@@ -21,15 +21,25 @@ export async function getCommonContent(study, languageCodeHL, variant = null) {
   const key = buildCommonContentKey(studyId, hl);
   const contentStore = useContentStore();
 
-  // Use one setter for both initial load and poll completion
-  const setter = (store, data) => store.setCommonContent(studyId, hl, data);
+  // Setter used when getContentWithFallback has direct access to the store.
+  // Signature: (store, data)
+  const setter = (store, data) => {
+    store.setCommonContent(studyId, hl, data);
+  };
+
+  // Handler used by TranslationPollingService when a poll completes.
+  // Signature there is: (hlFromPoll, data)
+  const handleInstall = (hlFromPoll, data) => {
+    const effectiveHl = hlFromPoll || hl;
+    contentStore.setCommonContent(studyId, effectiveHl, data);
+  };
 
   return await getContentWithFallback({
     key,
     store: contentStore,
     storeGetter: (s) => s.commonContentFor(studyId, hl),
     storeSetter: setter,
-    onInstall: setter, // ensure poll completion updates store the same way
+    onInstall: handleInstall, // ensure poll completion updates store the same way
     dbGetter: () => getCommonContentFromDB(studyId, hl),
     dbSetter: (data) => saveCommonContentToDB(studyId, hl, data),
     apiUrl,
