@@ -1,19 +1,19 @@
 // src/composables/useNumeralClass.js
 import { computed } from "vue";
-import { useStore } from "vuex";
-import { listClassForLanguage } from "src/utils/numerals";
+import { storeToRefs } from "pinia";
+import { useSettingsStore } from "src/stores/SettingsStore";
 
 export function useNumeralClass() {
-  const store = useStore();
+  const settingsStore = useSettingsStore();
+  const { languageObjectSelected } = storeToRefs(settingsStore);
+  const numeralClass = computed(() => {
+    // Prefer the richer object from SettingsStore
+    const lang = languageObjectSelected.value || {};
 
-  const languageSelected = computed(() => store.getters.languageSelected);
+    const numeralSet = lang.numeralSet || "latn";
 
-  const numeralClass = computed(() =>
-    listClassForLanguage(languageSelected.value)
-  );
+    return "nums-" + numeralSet;
+  });
 
-  return {
-    languageSelected,
-    numeralClass,
-  };
+  return numeralClass;
 }

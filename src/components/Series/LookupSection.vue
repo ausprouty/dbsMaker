@@ -18,7 +18,7 @@ const props = defineProps({
     default: "Spend 20 to 30 minutes on this section",
   },
 });
-const { numeralClass } = useNumeralClass();
+const numeralClass = useNumeralClass();
 </script>
 <template>
   <section v-if="commonContent">
@@ -44,7 +44,7 @@ const { numeralClass } = useNumeralClass();
       :videoTitle="lessonContent.passage.referenceLocalLanguage"
     />
 
-    <ol :class="`dbs numeralClass}`">
+    <ol :class="['dbs', numeralClass]">
       <li
         v-for="(item, index) in commonContent.question"
         :key="'question-' + index"

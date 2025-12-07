@@ -3,7 +3,7 @@ import { ref, computed, toRefs } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBibleReference } from "src/composables/useBibleReference";
 
-const { t, te, locale } = useI18n({ useScope: "global" });
+const { t, te } = useI18n({ useScope: "global" });
 
 // allow null to avoid Vue "Expected Object, got Null" warning
 const props = defineProps({
@@ -14,14 +14,50 @@ const { passage } = toRefs(props);
 const { cleanReference } = useBibleReference();
 
 const isVisible = ref(false);
+const hasPassage = computed(() => {
+  return !!(passage.value && typeof passage.value === "object");
+});
+
+const hasText = computed(() => {
+  if (!hasPassage.value) return false;
+  const raw = String(passage.value.passageText || "");
+  return raw.trim().length > 0;
+});
+
+const hasUrl = computed(() => {
+  if (!hasPassage.value) return false;
+  const raw = String(passage.value.passageUrl || "");
+  return raw.trim().length > 0;
+});
+
+const linkText = computed(() => {
+  if (hasText.value) {
+    // We have Bible text here, so this is a "read more" link.
+    return t("interface.readMore");
+  }
+
+  if (hasUrl.value && te("interface.bibleExternal")) {
+    // No text, but we do have a URL. This should be your
+    // "this passage opens on another site" style message.
+    return t("interface.bibleExternal");
+  }
+
+  if (te("interface.openLink")) {
+    return t("interface.openLink");
+  }
+
+  return "Open Bible passage";
+});
 
 const readLabel = computed(() => {
-  // keep reactive to locale changes
-  // eslint-disable-next-line no-unused-expressions
-  locale.value;
-
   const p = passage.value;
-  const raw = String((p && p.referenceLocalLanguage) || "");
+  if (!p) {
+    if (te("interface.readPlain")) {
+      return t("interface.readPlain");
+    }
+    return "Read from the Bible";
+  }
+  const raw = String(p.referenceLocalLanguage || "");
   const firstLine =
     raw
       .split(/\r?\n|\r/)
@@ -29,14 +65,20 @@ const readLabel = computed(() => {
       .find(Boolean) || "";
   const title = cleanReference(firstLine);
 
-  if (title && te("interface.read")) return t("interface.read", [title]);
-  if (te("interface.readPlain")) return t("interface.readPlain");
+  if (title && te("interface.read")) {
+    return t("interface.read", [title]);
+  }
+
+  if (te("interface.readPlain")) {
+    return t("interface.readPlain");
+  }
+
   return "Read from the Bible";
 });
 </script>
 
 <template>
-  <div v-if="passage">
+  <div v-if="hasPassage">
     <div class="bible-container">
       <button
         type="button"
@@ -54,15 +96,20 @@ const readLabel = computed(() => {
       </button>
 
       <div v-show="isVisible" class="bible-section">
-        <div v-html="passage.passageText" class="bible-text"></div>
+        <div
+          v-if="hasText"
+          v-html="passage.passageText"
+          class="bible-text"
+        ></div>
+
         <a
-          v-if="passage && passage.passageUrl"
+          v-if="hasUrl"
           :href="passage.passageUrl"
           class="readmore-button"
           target="_blank"
           rel="noopener"
         >
-          {{ t("interface.readMore") }}
+          {{ linkText }}
         </a>
       </div>
     </div>

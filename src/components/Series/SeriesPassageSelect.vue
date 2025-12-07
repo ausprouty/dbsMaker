@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from "vue";
+import { useLocalizedDigits } from "src/composables/useLocalizedDigits";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { useI18n } from "vue-i18n";
 
@@ -33,6 +34,20 @@ const markedTopics = computed(() => {
       ...topic,
       value: valueNum,
       completed: completedSet.value.has(valueNum),
+    };
+  });
+});
+// localize Digits
+const { toLocalizedDigits } = useLocalizedDigits();
+const lessonOptions = computed(function () {
+  return props.topics.map(function (topic) {
+    const lessonNumber = topic.lesson;
+    const baseLabel = topic.label || topic.title || String(lessonNumber);
+
+    return {
+      ...topic,
+      value: lessonNumber,
+      label: toLocalizedDigits(baseLabel),
     };
   });
 });

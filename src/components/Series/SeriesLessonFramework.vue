@@ -125,10 +125,8 @@ export default {
 </script>
 
 <template>
-  <div v-if="!lessonContent">
-    <h2 class="warning">{{ lessonLoading }}</h2>
-  </div>
-  <div v-else>
+  <div>
+    <h2 v-if="!lessonContent" class="warning">{{ lessonLoading }}</h2>
     <h1 class="title dbs">{{ lessonContent.title }}</h1>
     <SeriesReviewLastLesson />
     <DbsSection

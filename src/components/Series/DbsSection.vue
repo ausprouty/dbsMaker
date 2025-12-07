@@ -17,7 +17,7 @@ const props = defineProps({
   },
 });
 
-const { numeralClass } = useNumeralClass();
+const numeralClass = useNumeralClass();
 </script>
 <template>
   <section v-if="content">
