@@ -1,49 +1,57 @@
 <script setup>
-import { computed, onMounted, watch, unref, inject } from "vue";
-import { useRoute } from "vue-router";
-import { useRouter } from "vue-router";
-
+import { computed, onMounted, watch, inject } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useSettingsStore } from "src/stores/SettingsStore";
-
-import { DEFAULTS } from "src/constants/Defaults";
 import { storeToRefs } from "pinia";
+
+import { useSettingsStore } from "src/stores/SettingsStore";
+import { DEFAULTS } from "src/constants/Defaults";
 import { patchRouterForLogs } from "src/debug/patchRouterForLogs";
 
 import { useCommonContent } from "src/composables/useCommonContent";
 import { useProgressTracker } from "src/composables/useProgressTracker.js";
 import { useInitializeSettingsStore } from "src/composables/useInitializeSettingsStore.js";
+
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
-//import SeriesSegmentNavigator from "src/components/series/xSeriesSegmentNavigator.vue";
 import SeriesLessonFramework from "src/components/Series/SeriesLessonFramework.vue";
 
 const route = useRoute();
 const router = useRouter();
-const { t } = useI18n({ useScope: "global" });
-const settingsStore = useSettingsStore();
 
+const { t, tm, locale } = useI18n({ useScope: "global" });
+
+const settingsStore = useSettingsStore();
 useInitializeSettingsStore(route, settingsStore);
 
-const computedStudy = computed(function () {
-  return settingsStore.currentStudySelected || "dbs";
-});
+console.log("[SeriesMaster] interface locale on mount:", locale.value);
+
+const { languageCodeHLSelected, languageCodeJFSelected } =
+  storeToRefs(settingsStore);
+
+console.log(
+  "[SeriesMaster] settings HL on mount:",
+  languageCodeHLSelected.value
+);
+
+const computedStudy = computed(
+  () => settingsStore.currentStudySelected || "dbs"
+);
 
 const computedLessonNumber = computed(() => {
   if (typeof settingsStore.lessonNumberForStudy === "function") {
     return settingsStore.lessonNumberForStudy(computedStudy.value);
   }
+
   return typeof settingsStore.lessonNumber === "number"
     ? settingsStore.lessonNumber
     : 1;
 });
 
-const { languageCodeHLSelected, languageCodeJFSelected } =
-  storeToRefs(settingsStore);
 const computedLanguageHL = languageCodeHLSelected;
 const computedLanguageJF = languageCodeJFSelected;
 
-// Optional variant (?variant=wsu). Accept "variant" or misspelled "varient".
-const computedVariant = computed(function () {
+// Optional variant (?variant=wsu). Accept "variant" or "varient".
+const computedVariant = computed(() => {
   const q = route.query;
   const v = q && (q.variant != null ? q.variant : q.varient);
   const raw = Array.isArray(v) ? v[0] : v;
@@ -53,7 +61,11 @@ const computedVariant = computed(function () {
   return clean || null;
 });
 
-console.log(unref(computedStudy), unref(computedLanguageHL));
+console.log(
+  "[SeriesMaster] study/langHL:",
+  computedStudy.value,
+  computedLanguageHL.value
+);
 
 // ---- Lesson content readiness ----
 
@@ -70,8 +82,8 @@ const {
   loadProgress,
 } = useProgressTracker(computedStudy);
 
-// ---- UI: Language selector button  drawer toggle ----
-// Prefer a store flag; fall back to DEFAULTS; else default true
+// ---- UI: Language selector / drawer toggle ----
+
 const showLanguageSelect = computed(() => {
   const v = settingsStore.showLanguageSelect;
   if (typeof v === "boolean") return v;
@@ -82,15 +94,14 @@ const showLanguageSelect = computed(() => {
 });
 
 // Try to get a toggler from the layout via provide/inject.
-// Support either `toggleRightDrawer` or older `handleLanguageSelect`.
 const providedToggleRightDrawer = inject("toggleRightDrawer", null);
 const handleLanguageSelect = inject("handleLanguageSelect", null);
+
 const toggleRightDrawer =
   providedToggleRightDrawer ??
   (handleLanguageSelect
     ? () => handleLanguageSelect()
     : () => {
-        // last-ditch: try store API if you have one, otherwise no-op
         if (typeof settingsStore.setRightDrawerOpen === "function") {
           settingsStore.setRightDrawerOpen(true);
         } else {
@@ -98,11 +109,13 @@ const toggleRightDrawer =
         }
       });
 
-onMounted(function () {
+onMounted(() => {
   try {
     loadProgress();
     loadCommonContent();
-    if (import.meta.env.DEV) patchRouterForLogs(router);
+    if (import.meta.env.DEV) {
+      patchRouterForLogs(router);
+    }
   } catch (err) {
     console.error("❌ Could not load common content", err);
   }
@@ -111,10 +124,15 @@ onMounted(function () {
 // Reload when study/languages/variant change
 watch(
   [computedLanguageHL, computedLanguageJF, computedStudy, computedVariant],
-  function () {
+  () => {
     loadCommonContent();
   }
 );
+
+// Log locale changes
+watch(locale, (newVal, oldVal) => {
+  console.log("[SeriesMaster] interface locale changed:", oldVal, "→", newVal);
+});
 
 // Child -> parent lesson change
 function updateLesson(nextLessonNumber) {
@@ -125,15 +143,17 @@ function updateLesson(nextLessonNumber) {
 <template>
   <template v-if="commonContent">
     <q-page padding>
-      <h1 class="dbs">{{ t(`${computedStudy}.title`) }}</h1>
+      <h1 class="dbs">
+        {{ t(`${computedStudy}.title`) }}
+      </h1>
 
-      <p v-for="(para, index) in $tm(`${computedStudy}.para`)" :key="index">
+      <p v-for="(para, index) in tm(`${computedStudy}.para`)" :key="index">
         {{ para }}
       </p>
 
       <q-btn
         v-if="showLanguageSelect"
-        :label="$t('interface.changeLanguage')"
+        :label="t('interface.changeLanguage')"
         icon="language"
         no-caps
         class="mark-complete-btn q-mb-md"
@@ -150,6 +170,7 @@ function updateLesson(nextLessonNumber) {
         @updateLesson="updateLesson"
         class="q-mb-md"
       />
+
       <hr />
 
       <SeriesLessonFramework

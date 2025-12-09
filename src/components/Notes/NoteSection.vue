@@ -23,7 +23,7 @@ const ALLOWED_SECTIONS = new Set([
 export default {
   name: "NoteSection",
   props: {
-    section: {
+    studySection: {
       type: String,
       required: true,
       validator: (v) =>
@@ -48,7 +48,7 @@ export default {
     });
 
     const sectionId = computed(() => {
-      const s = normId(props.section).toLowerCase();
+      const s = normId(props.studySection).toLowerCase();
       return ALLOWED_SECTIONS.has(s) ? s : "";
     });
     console.log("NoteSection", {

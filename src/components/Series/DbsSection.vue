@@ -1,4 +1,5 @@
 <script setup>
+import { toRefs, watch } from "vue";
 import NoteSection from "src/components/Notes/NoteSection.vue";
 import { useNumeralClass } from "src/composables/useNumeralClass";
 
@@ -8,28 +9,38 @@ defineOptions({
 });
 
 const props = defineProps({
-  section: { type: String, required: true }, // e.g. "back, up, forward"
-  content: { type: Object, default: () => ({}) }, // safe fallback
+  studySection: { type: String, required: true }, // e.g. "look_back" or "look_forward"
+  sectionContent: { type: Object, default: () => ({}) }, // safe fallback
   placeholder: { type: String, default: "Write your notes here" },
   timing: {
     type: String,
     default: "Spend 20 to 30 minutes on this section",
   },
 });
-
+const { sectionContent } = toRefs(props);
 const numeralClass = useNumeralClass();
+watch(
+  sectionContent,
+  (val) => {
+    console.log("DbsSection sectionContent changed:", val);
+  },
+  { immediate: true }
+);
 </script>
 <template>
-  <section v-if="content">
-    <h2 class="ltr dbs">{{ content.title }}</h2>
+  <section v-if="sectionContent && sectionContent.title">
+    <h2 class="ltr dbs">{{ sectionContent.title }}</h2>
     <p class="timing">{{ timing }}</p>
     <ol :class="['dbs', numeralClass]">
-      <li v-for="(item, index) in content.question" :key="'question-' + index">
+      <li
+        v-for="(item, index) in sectionContent.question"
+        :key="'question-' + index"
+      >
         {{ item }}
       </li>
     </ol>
 
-    <NoteSection :section="section" :placeholder="placeholder" />
+    <NoteSection :studySection="studySection" :placeholder="placeholder" />
   </section>
 </template>
 <style>

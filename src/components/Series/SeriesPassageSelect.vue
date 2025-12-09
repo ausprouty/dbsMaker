@@ -16,6 +16,7 @@ const props = defineProps({
 const emit = defineEmits(["updateLesson"]);
 const settingsStore = useSettingsStore();
 const { t } = useI18n({ useScope: "global" });
+const { toLocalizedDigits } = useLocalizedDigits();
 
 // Label reacts to locale changes
 const topicLabel = computed(() => t("interface.topic"));
@@ -25,29 +26,32 @@ const completedSet = computed(
   () => new Set((props.completedLessons || []).map((n) => Number(n)))
 );
 
-// Options with completion flag (and numeric value)
-const markedTopics = computed(() => {
+// Build options: normalise value, mark completed, localise label digits
+const selectOptions = computed(() => {
   const topics = Array.isArray(props.topics) ? props.topics : [];
-  return topics.map((topic) => {
-    const valueNum = Number(topic.value);
-    return {
-      ...topic,
-      value: valueNum,
-      completed: completedSet.value.has(valueNum),
-    };
-  });
-});
-// localize Digits
-const { toLocalizedDigits } = useLocalizedDigits();
-const lessonOptions = computed(function () {
-  return props.topics.map(function (topic) {
-    const lessonNumber = topic.lesson;
-    const baseLabel = topic.label || topic.title || String(lessonNumber);
+
+  return topics.map((topic, index) => {
+    // Work out a numeric value for the lesson
+    const valueNum = Number(
+      topic.value != null
+        ? topic.value
+        : topic.lesson != null
+        ? topic.lesson
+        : index + 1
+    );
+
+    const lessonNumber = valueNum;
+
+    const baseLabel =
+      topic.label ||
+      topic.title ||
+      t("interface.lessonNumber", { n: lessonNumber });
 
     return {
       ...topic,
-      value: lessonNumber,
+      value: valueNum,
       label: toLocalizedDigits(baseLabel),
+      completed: completedSet.value.has(valueNum),
     };
   });
 });
@@ -68,11 +72,11 @@ const selectedLesson = computed({
 </script>
 
 <template>
-  <div v-if="markedTopics && markedTopics.length">
+  <div v-if="selectOptions && selectOptions.length">
     <q-select
       filled
       v-model="selectedLesson"
-      :options="markedTopics"
+      :options="selectOptions"
       option-label="label"
       option-value="value"
       emit-value
@@ -87,7 +91,9 @@ const selectedLesson = computed({
         >
           <q-item-section>
             <div class="row items-center no-wrap">
-              <div class="text-body1">{{ scope.opt.label }}</div>
+              <div class="text-body1">
+                {{ scope.opt.label }}
+              </div>
               <div v-if="scope.opt.completed">
                 <q-icon
                   name="check_circle"

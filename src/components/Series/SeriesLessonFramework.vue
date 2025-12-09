@@ -1,6 +1,5 @@
 <script>
 import { computed, watch, onMounted, toRaw } from "vue";
-import { useContentStore } from "stores/ContentStore";
 import { useI18n } from "vue-i18n";
 
 import DbsSection from "src/components/Series/DbsSection.vue";
@@ -20,20 +19,7 @@ export default {
   },
 
   setup(props) {
-    const contentStore = useContentStore();
-    //const { t } = useI18n({ useScope: "global" });
     const { t, locale, getLocaleMessage } = useI18n({ useScope: "global" });
-
-    const lessonContent = computed(function () {
-      const val = contentStore.lessonContentFor(
-        props.study,
-        props.languageCodeHL,
-        props.languageCodeJF,
-        props.lesson
-      );
-      console.log("[lessonContent computed] value:", toRaw(val));
-      return val || null;
-    });
 
     // i18n-driven placeholders (reactive to locale)
     const lookBackNoteInstruction = computed(function () {
@@ -44,9 +30,6 @@ export default {
     });
     const lookForwardNoteInstruction = computed(function () {
       return t("interface.lookForwardNoteInstruction");
-    });
-    const lessonLoading = computed(function () {
-      return t("interface.lessonLoading");
     });
 
     // Safe fallbacks for template (no optional chaining)
@@ -71,23 +54,9 @@ export default {
         : "";
     });
 
-    async function loadLessonContent() {
-      await contentStore.loadLessonContent(
-        props.study,
-        props.languageCodeHL,
-        props.languageCodeJF,
-        props.lesson
-      );
-    }
-
-    watch(
-      function () {
-        return [props.lesson, props.languageCodeHL, props.languageCodeJF];
-      },
-      async function () {
-        await loadLessonContent();
-      }
-    );
+    watch(function () {
+      return [props.commonContent, props.languageCodeHL, props.languageCodeJF];
+    });
 
     onMounted(function () {
       const cur = locale.value;
@@ -105,13 +74,9 @@ export default {
         't("interface.lessonLoading") →',
         t("interface.lessonLoading")
       );
-
-      loadLessonContent();
     });
 
     return {
-      lessonContent,
-      lessonLoading,
       lookBackNoteInstruction,
       lookUpNoteInstruction,
       lookForwardNoteInstruction,
@@ -126,27 +91,28 @@ export default {
 
 <template>
   <div>
-    <h2 v-if="!lessonContent" class="warning">{{ lessonLoading }}</h2>
-    <h1 class="title dbs">{{ lessonContent.title }}</h1>
     <SeriesReviewLastLesson />
     <DbsSection
-      section="look_back"
-      :content="ccLookBack"
+      studySection="look_back"
+      :sectionContent="ccLookBack"
       :placeholder="lookBackNoteInstruction"
       :timing="ccTiming"
     />
 
     <LookupSection
-      section="look_up"
-      :commonContent="ccLookUp"
-      :lessonContent="lessonContent"
+      studySection="look_up"
+      :sectionContent="ccLookUp"
       :placeholder="lookUpNoteInstruction"
+      :languageCodeHL="languageCodeHL"
+      :languageCodeJF="languageCodeJF"
+      :study="study"
+      :lesson="lesson"
       :timing="ccTiming"
     />
 
     <DbsSection
-      section="look_forward"
-      :content="ccLookForward"
+      studySection="look_forward"
+      :sectionContent="ccLookForward"
       :placeholder="lookForwardNoteInstruction"
       :timing="ccTiming"
     />
