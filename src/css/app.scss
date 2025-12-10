@@ -372,6 +372,29 @@ body.rtl-mode .q-card {
   text-align: right;
 }
 
+.select-rtl-menu .q-item,
+.select-rtl-menu .q-item__section,
+.select-rtl-menu .q-item__label {
+  text-align: right;
+}
+.topic-select-wrapper--rtl {
+  direction: rtl;
+}
+
+/* Right-align the floating label */
+.topic-select-wrapper--rtl .q-field__label {
+  text-align: right;
+  left: auto;
+  right: 0;
+}
+
+/* Right-align the displayed value in the field */
+.topic-select-wrapper--rtl .q-field__native,
+.topic-select-wrapper--rtl .q-field__control {
+  text-align: right;
+  justify-content: flex-end;
+}
+
 /* ----------------------
     Numbers for Lists
 ------------------------- */

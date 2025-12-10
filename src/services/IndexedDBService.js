@@ -74,8 +74,8 @@ async function saveItem(storeName, key, value, opts = {}) {
 
   // Block empties (and optionally delete existing)
   if (!allowEmpty && !isMeaningful(value)) {
-    console.warn(`⚠️ Empty/meaningless value for "${key}" — not saving.`);
-    console.warn(value);
+    console.log(`Empty/meaningless value for "${key}" — not saving.`);
+    console.log(value);
     if (deleteOnEmpty) {
       return new Promise((resolve, reject) => {
         const tx = db.transaction(storeName, "readwrite");

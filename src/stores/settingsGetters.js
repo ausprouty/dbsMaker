@@ -3,11 +3,10 @@ import { DEFAULTS, MAX_LESSON_NUMBERS } from "src/constants/Defaults.js";
 import { normHL, normJF } from "src/utils/normalize.js";
 
 export const settingsGetters = {
-
   currentLanguage(state) {
-      // If you like this alias, keep it—but it’s redundant with languageSelected
-      return state.languageObjectSelected;
-    },
+    // If you like this alias, keep it—but it’s redundant with languageSelected
+    return state.languageObjectSelected;
+  },
 
   currentStudySelected(state) {
     var s = state.currentStudy;
@@ -21,17 +20,26 @@ export const settingsGetters = {
     var raw = dict instanceof Map ? dict.get(study) : dict[study];
     var lesson = Number(raw);
 
-    var maxRaw = (MAX_LESSON_NUMBERS &&
-      Object.prototype.hasOwnProperty.call(MAX_LESSON_NUMBERS, study))
-      ? MAX_LESSON_NUMBERS[study]
-      : undefined;
+    var maxRaw =
+      MAX_LESSON_NUMBERS &&
+      Object.prototype.hasOwnProperty.call(MAX_LESSON_NUMBERS, study)
+        ? MAX_LESSON_NUMBERS[study]
+        : undefined;
     var max = Number(maxRaw);
 
-    if (!Number.isFinite(lesson) || lesson < 1 ||
-        !Number.isFinite(max) || max < 1) {
+    if (
+      !Number.isFinite(lesson) ||
+      lesson < 1 ||
+      !Number.isFinite(max) ||
+      max < 1
+    ) {
       console.warn(
-        "isAtMaxLesson: Invalid values for '" + study +
-        "'. lesson=" + lesson + ", max=" + max
+        "isAtMaxLesson: Invalid values for '" +
+          study +
+          "'. lesson=" +
+          lesson +
+          ", max=" +
+          max
       );
       return false;
     }
@@ -49,7 +57,6 @@ export const settingsGetters = {
     return c || DEFAULTS.languageCodeHL; // e.g., "eng00"
   },
 
-
   languageCodeJFSelected(state) {
     var ls = state.languageObjectSelected || {};
     var raw = ls.languageCodeJF != null ? String(ls.languageCodeJF) : "";
@@ -58,8 +65,8 @@ export const settingsGetters = {
   },
   languageDirection(state) {
     const ls = state.languageObjectSelected || {};
-    const dir = (ls.textDirection || '').toLowerCase();
-    return dir === 'rtl' ? 'rtl' : 'ltr';
+    const dir = (ls.textDirection || "").toLowerCase();
+    return dir === "rtl" ? "rtl" : "ltr";
   },
 
   languageIdSelected(state) {
@@ -69,14 +76,15 @@ export const settingsGetters = {
   },
 
   // Always safe to read: returns selected object or a fallback stub
-    languageSelected(state) {
-      const ls = state.languageObjectSelected || {};
-      if (ls.languageCodeHL || ls.languageCodeJF) return ls;
-      return {
-        languageCodeHL: DEFAULTS.languageCodeHL,
-        languageCodeJF: DEFAULTS.languageCodeJF,
-      };
-    },
+  languageSelected(state) {
+    const ls = state.languageObjectSelected || {};
+    if (ls.languageCodeHL || ls.languageCodeJF) return ls;
+    console.log("returning defaults in languageSelected");
+    return {
+      languageCodeHL: DEFAULTS.languageCodeHL,
+      languageCodeJF: DEFAULTS.languageCodeJF,
+    };
+  },
 
   // Getter that returns a function
   lessonNumberForStudy(state) {
@@ -84,9 +92,10 @@ export const settingsGetters = {
       var study = studyArg || state.currentStudy || "dbs";
 
       var dict = state.lessonNumber || {};
-      var has = dict instanceof Map
-        ? dict.has(study)
-        : Object.prototype.hasOwnProperty.call(dict, study);
+      var has =
+        dict instanceof Map
+          ? dict.has(study)
+          : Object.prototype.hasOwnProperty.call(dict, study);
 
       if (!has) {
         console.warn('[store] "' + study + '" not found. Returning 1.');
@@ -96,7 +105,9 @@ export const settingsGetters = {
       var raw = dict instanceof Map ? dict.get(study) : dict[study];
       var lesson = Number(raw);
       if (!Number.isFinite(lesson) || lesson < 1) {
-        console.warn('[store] "' + study + '" invalid lesson "' + raw + '". Returning 1.');
+        console.warn(
+          '[store] "' + study + '" invalid lesson "' + raw + '". Returning 1.'
+        );
         return 1;
       }
       return lesson;
@@ -105,14 +116,18 @@ export const settingsGetters = {
 
   maxLesson(state) {
     var study = state.currentStudy || DEFAULTS.study;
-    if (!MAX_LESSON_NUMBERS ||
-        !Object.prototype.hasOwnProperty.call(MAX_LESSON_NUMBERS, study)) {
+    if (
+      !MAX_LESSON_NUMBERS ||
+      !Object.prototype.hasOwnProperty.call(MAX_LESSON_NUMBERS, study)
+    ) {
       console.warn("maxLesson: '" + study + "' not found. Returning 1.");
       return 1;
     }
     var max = Number(MAX_LESSON_NUMBERS[study]);
     if (!Number.isFinite(max) || max < 1) {
-      console.warn("maxLesson: '" + study + "' invalid max '" + max + "'. Returning 1.");
+      console.warn(
+        "maxLesson: '" + study + "' invalid max '" + max + "'. Returning 1."
+      );
       return 1;
     }
     return max;

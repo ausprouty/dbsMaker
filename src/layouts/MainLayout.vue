@@ -6,16 +6,17 @@ import { useContentStore } from "src/stores/ContentStore";
 import { useInterfaceLocale } from "src/composables/useInterfaceLocale";
 import { useLanguageRouting } from "src/composables/useLanguageRouting";
 import { useSettingsStore } from "src/stores/SettingsStore";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 
-const router = useRouter();
 const route = useRoute();
 const settingsStore = useSettingsStore();
 const contentStore = useContentStore();
 
 const { isRTL, applyInterfaceLanguageToWebpage } = useInterfaceLocale();
+const { locale } = useI18n();
 const isRtl = computed(() => isRTL(settingsStore.languageObjectSelected));
-console.log("isRTL =", isRTL);
+console.log("isRtl =", isRtl.value);
 
 const brandTitle = computed(() => settingsStore.brandTitle || "Not Set");
 
@@ -33,6 +34,37 @@ provide("toggleRightDrawer", toggleRightDrawer);
 const { changeLanguage } = useLanguageRouting(); // CHANGED: use composable
 console.log("changeLanguage", changeLanguage);
 
+// Keep vue-i18n + <html lang|dir> in sync with the selected language object.
+// This runs on initial load and whenever languageObjectSelected changes.
+watch(
+  () => settingsStore.languageObjectSelected,
+  async (langObj) => {
+    if (!langObj) return;
+
+    const hl = String(langObj.languageCodeHL || "");
+    if (!hl) return;
+
+    console.log("[MainLayout] languageObjectSelected changed:", hl);
+
+    try {
+      // Ensure the interface bundle for this HL is loaded
+      await contentStore.loadInterface(hl);
+    } catch (err) {
+      console.warn("[MainLayout] loadInterface failed for", hl, err);
+    }
+
+    // Set the actual i18n locale if needed
+    if (locale.value !== hl) {
+      console.log("[MainLayout] setting i18n locale to:", hl);
+      locale.value = hl;
+    }
+
+    // Apply <html lang|dir> and any other document-level tweaks
+    applyInterfaceLanguageToWebpage(langObj);
+  },
+  { immediate: true, deep: true }
+);
+
 async function handleLanguageSelect(languageObject) {
   console.log("MainLayout handleLanguageSelect →", languageObject);
   const hl = String(languageObject?.languageCodeHL || "");
@@ -45,11 +77,8 @@ async function handleLanguageSelect(languageObject) {
   try {
     // 1) Persist selection (MRU etc.)
     settingsStore.setLanguageObjectSelected(languageObject);
-    // 2) Ensure interface bundle is loaded for this HL
-    await contentStore.loadInterface(hl);
-    // 3) Apply i18n + <html lang|dir>
-    applyInterfaceLanguageToWebpage(languageObject);
-    // 4) Update the URL (guarded internally to avoid no-ops/loops)
+    // 2) Update the URL (guarded internally to avoid no-ops/loops).
+    //    The watcher above will handle loadInterface + locale + html dir/lang.
     await changeLanguage(hl, jf);
   } catch (e) {
     console.warn("MainLayout switch failed:", e);
@@ -113,6 +142,27 @@ onBeforeUnmount(() => {
 const actionBtnColor = computed(() =>
   appbarStyle.value === "primary" ? "white" : "primary"
 );
+
+// to help debug interface language
+
+const interfaceLanguageLabel = computed(() => {
+  const lang = settingsStore.languageObjectSelected;
+  if (!lang) return "";
+
+  // Use whatever combo you like here
+  const parts = [];
+
+  if (lang.ethnicName && lang.ethnicName !== lang.name) {
+    parts.push(lang.ethnicName);
+  }
+
+  if (lang.name) {
+    parts.push(lang.name);
+  }
+
+  // e.g. "العربية / Arabic" or just "العربية" if only one name
+  return parts.join(" / ");
+});
 </script>
 
 <template>
@@ -136,7 +186,10 @@ const actionBtnColor = computed(() =>
         </q-toolbar-title>
 
         <q-space />
-
+        <span v-if="interfaceLanguageLabel" class="interface-lang">
+          {{ interfaceLanguageLabel }}
+        </span>
+        <q-space />
         <ShareLink />
 
         <q-btn

@@ -69,10 +69,18 @@ const selectedLesson = computed({
     emit("updateLesson", v);
   },
 });
+
+// text direction
+const isRtl = computed(
+  () => settingsStore.languageObjectSelected?.textDirection === "rtl"
+);
 </script>
 
 <template>
-  <div v-if="selectOptions && selectOptions.length">
+  <div
+    v-if="selectOptions && selectOptions.length"
+    :dir="isRtl ? 'rtl' : 'ltr'"
+  >
     <q-select
       filled
       v-model="selectedLesson"
@@ -83,14 +91,21 @@ const selectedLesson = computed({
       map-options
       :label="topicLabel"
       class="select"
+      :input-class="isRtl ? 'text-right' : ''"
     >
       <template #option="scope">
         <q-item
           v-bind="scope.itemProps"
-          :class="{ 'completed-option': scope.opt.completed }"
+          :class="[
+            { 'completed-option': scope.opt.completed },
+            isRtl ? 'text-right justify-end' : '',
+          ]"
         >
-          <q-item-section>
-            <div class="row items-center no-wrap">
+          <q-item-section :class="isRtl ? 'text-right' : ''">
+            <div
+              class="row items-center no-wrap"
+              :class="isRtl ? 'justify-end' : ''"
+            >
               <div class="text-body1">
                 {{ scope.opt.label }}
               </div>
@@ -99,7 +114,7 @@ const selectedLesson = computed({
                   name="check_circle"
                   color="green"
                   size="sm"
-                  class="q-ml-xs"
+                  :class="isRtl ? 'q-mr-xs' : 'q-ml-xs'"
                 />
               </div>
             </div>
@@ -110,3 +125,24 @@ const selectedLesson = computed({
   </div>
   <div v-else class="q-mb-md text-grey">Loading lessons…</div>
 </template>
+
+<style scoped>
+.topic-select--rtl {
+  direction: rtl;
+}
+
+/* Move the floating label to the right */
+.topic-select--rtl :deep(.q-field__label) {
+  left: auto !important;
+  right: 0.75rem;
+  text-align: right;
+  transform-origin: right top;
+}
+
+/* Right-align the displayed value inside the field */
+.topic-select--rtl :deep(.q-field__control),
+.topic-select--rtl :deep(.q-field__native) {
+  justify-content: flex-end;
+  text-align: right;
+}
+</style>

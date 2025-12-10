@@ -24,13 +24,13 @@ export function useInitializeSettingsStore(route, settingsStore) {
     ls.languageCodeHL ||
     DEFAULTS.languageCodeHL;
 
-  var initialJF =
-    ls.languageCodeJF || DEFAULTS.languageCodeJF;
+  var initialJF = ls.languageCodeJF || DEFAULTS.languageCodeJF;
 
   // --- Apply to store ---
+
   settingsStore.setCurrentStudy(initialStudy);
   settingsStore.setLessonNumber(initialStudy, initialLessonNumber);
 
-  // Prefer one atomic update so object stays consistent
+  console.log("useInitializeSettingsStore HL:", initialHL);
   settingsStore.setLanguageCodes({ hl: initialHL, jf: initialJF });
 }

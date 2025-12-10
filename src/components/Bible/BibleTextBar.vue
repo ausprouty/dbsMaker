@@ -7,13 +7,14 @@ const { t, te } = useI18n({ useScope: "global" });
 
 // allow null to avoid Vue "Expected Object, got Null" warning
 const props = defineProps({
-  passage: { default: null },
+  passage: { type: Object, default: null },
 });
 
 const { passage } = toRefs(props);
 const { cleanReference } = useBibleReference();
 
 const isVisible = ref(false);
+
 const hasPassage = computed(() => {
   return !!(passage.value && typeof passage.value === "object");
 });
@@ -30,50 +31,59 @@ const hasUrl = computed(() => {
   return raw.trim().length > 0;
 });
 
-const linkText = computed(() => {
-  if (hasText.value) {
-    // We have Bible text here, so this is a "read more" link.
-    return t("interface.readMore");
+function getReadPlainFallback() {
+  if (te("interface.readPlain")) {
+    return t("interface.readPlain");
   }
+  return "Read from the Bible";
+}
 
-  if (hasUrl.value && te("interface.bibleExternal")) {
-    // No text, but we do have a URL. This should be your
-    // "this passage opens on another site" style message.
-    return t("interface.bibleExternal");
-  }
-
-  if (te("interface.openLink")) {
-    return t("interface.openLink");
-  }
-
-  return "Open Bible passage";
-});
-
-const readLabel = computed(() => {
+const cleanedTitle = computed(() => {
   const p = passage.value;
-  if (!p) {
-    if (te("interface.readPlain")) {
-      return t("interface.readPlain");
-    }
-    return "Read from the Bible";
+  if (!p || typeof p !== "object") {
+    return "";
   }
+
   const raw = String(p.referenceLocalLanguage || "");
   const firstLine =
     raw
       .split(/\r?\n|\r/)
       .map((s) => s.trim())
       .find(Boolean) || "";
-  const title = cleanReference(firstLine);
 
-  if (title && te("interface.read")) {
+  return cleanReference(firstLine);
+});
+
+const readLabel = computed(() => {
+  // If there is no passage at all, just use the plain fallback
+  if (!hasPassage.value) {
+    return getReadPlainFallback();
+  }
+
+  const title = cleanedTitle.value;
+
+  // Only show "Read {title}" if we actually have inline text
+  if (hasText.value && title && te("interface.read")) {
     return t("interface.read", [title]);
   }
 
-  if (te("interface.readPlain")) {
-    return t("interface.readPlain");
+  return getReadPlainFallback();
+});
+
+const linkText = computed(() => {
+  const p = passage.value;
+  if (!p) {
+    return getReadPlainFallback();
   }
 
-  return "Read from the Bible";
+  const title = cleanedTitle.value;
+
+  // If you want a separate text for the button that opens Bible text:
+  if (title && te("interface.bibleExternal")) {
+    return t("interface.bibleExternal", [title]);
+  }
+
+  return getReadPlainFallback();
 });
 </script>
 
