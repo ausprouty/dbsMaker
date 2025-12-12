@@ -2,6 +2,8 @@
 import { computed } from "vue";
 import { useSettingsStore } from "src/stores/SettingsStore";
 
+const ARABIC_FULL_STOP = "\u06D4"; // Arabic full stop (looks like ".")
+
 /**
  * Map of Unicode decimal digit sets by numeral system code.
  * Keys should match hl_languages.numeralSet / numeral_systems.code.
@@ -60,6 +62,44 @@ const digitMaps = {
 };
 
 /**
+ * For Arabic-family numeral systems in RTL languages, normalise dots
+ * so that "digits + '.'" and sentence-ending '.' behave nicely in bidi.
+ *
+ * Example (after digit localisation):
+ *   "۱۰. متن ..." -> "۱۰۔ متن ..."
+ *   "...است."     -> "...است۔"
+ */
+function applyRtlDotFix(str, numeralCode, lang) {
+  if (numeralCode !== "arab" && numeralCode !== "arabext") {
+    return str;
+  }
+
+  const dir = String(lang && lang.textDirection ? lang.textDirection : "")
+    .toLowerCase()
+    .trim();
+
+  if (dir !== "rtl") {
+    return str;
+  }
+
+  let out = str;
+
+  // 1) Fix leading "digits + '.'"
+  out = out.replace(
+    /^(\s*[\u0660-\u0669\u06F0-\u06F9]+)\./,
+    "$1" + ARABIC_FULL_STOP
+  );
+
+  // 2) Fix sentence-ending '.' after RTL letters/digits
+  out = out.replace(
+    /([\u0600-\u06FF\u0660-\u0669\u06F0-\u06F9])\.(?=\s|$)/g,
+    "$1" + ARABIC_FULL_STOP
+  );
+
+  return out;
+}
+
+/**
  * Composable for converting Latin digits 0–9 into the
  * correct numeral set for the current language.
  *
@@ -68,7 +108,7 @@ const digitMaps = {
 export function useLocalizedDigits() {
   const settingsStore = useSettingsStore();
 
-  const numeralSet = computed(function () {
+  const numeralSet = computed(() => {
     const lang = settingsStore.languageObjectSelected;
     if (lang && lang.numeralSet) {
       return lang.numeralSet;
@@ -76,7 +116,7 @@ export function useLocalizedDigits() {
     return "latn";
   });
 
-  const activeDigitMap = computed(function () {
+  const activeDigitMap = computed(() => {
     const code = numeralSet.value;
     if (digitMaps[code]) {
       return digitMaps[code];
@@ -93,6 +133,12 @@ export function useLocalizedDigits() {
     const str = String(value);
 
     const code = overrideSetCode || numeralSet.value;
+
+    // Fast path: do nothing for plain Latin numerals
+    if (code === "latn") {
+      return str;
+    }
+
     const map = digitMaps[code] || digitMaps.latn;
 
     let out = "";
@@ -100,12 +146,17 @@ export function useLocalizedDigits() {
       const ch = str[i];
 
       if (ch >= "0" && ch <= "9") {
-        const index = ch.charCodeAt(0) - 48; // "0" => 0
+        const index = ch.charCodeAt(0) - 48; // "0" -> 0
         out += map[index];
       } else {
         out += ch;
       }
     }
+
+    // Bidi-friendly dot normalisation for Arabic/Farsi etc.
+    const lang = settingsStore.languageObjectSelected || null;
+    out = applyRtlDotFix(out, code, lang);
+
     return out;
   }
 
@@ -117,15 +168,13 @@ export function useLocalizedDigits() {
     if (!Array.isArray(list)) {
       return list;
     }
-    return list.map(function (item) {
-      return toLocalizedDigits(item, overrideSetCode);
-    });
+    return list.map((item) => toLocalizedDigits(item, overrideSetCode));
   }
 
   return {
-    numeralSet, // computed current code, e.g. "tamldec"
-    activeDigitMap, // computed array of digits for that set
-    toLocalizedDigits, // main converter
-    localizeArray, // helper for arrays
+    numeralSet, // e.g. "latn", "arabext"
+    activeDigitMap, // array of digits for that set
+    toLocalizedDigits,
+    localizeArray,
   };
 }

@@ -71,9 +71,10 @@ const selectedLesson = computed({
 });
 
 // text direction
-const isRtl = computed(
-  () => settingsStore.languageObjectSelected?.textDirection === "rtl"
-);
+const isRtl = computed(() => settingsStore.languageDirection === "rtl");
+
+console.log("LANGUAGE", settingsStore.languageObjectSelected);
+console.log("OPTIONS", selectOptions.value);
 </script>
 
 <template>
@@ -90,8 +91,9 @@ const isRtl = computed(
       emit-value
       map-options
       :label="topicLabel"
-      class="select"
+      :class="['select', isRtl ? 'topic-select--rtl' : '']"
       :input-class="isRtl ? 'text-right' : ''"
+      :popup-content-class="isRtl ? 'topic-select-menu--rtl' : ''"
     >
       <template #option="scope">
         <q-item
@@ -102,10 +104,7 @@ const isRtl = computed(
           ]"
         >
           <q-item-section :class="isRtl ? 'text-right' : ''">
-            <div
-              class="row items-center no-wrap"
-              :class="isRtl ? 'justify-end' : ''"
-            >
+            <div class="row items-center no-wrap">
               <div class="text-body1">
                 {{ scope.opt.label }}
               </div>
@@ -123,7 +122,6 @@ const isRtl = computed(
       </template>
     </q-select>
   </div>
-  <div v-else class="q-mb-md text-grey">Loading lessons…</div>
 </template>
 
 <style scoped>
@@ -131,18 +129,28 @@ const isRtl = computed(
   direction: rtl;
 }
 
-/* Move the floating label to the right */
+/* Label on the right */
 .topic-select--rtl :deep(.q-field__label) {
-  left: auto !important;
+  left: auto;
   right: 0.75rem;
   text-align: right;
   transform-origin: right top;
 }
 
-/* Right-align the displayed value inside the field */
-.topic-select--rtl :deep(.q-field__control),
+/* Move the dropdown arrow to the left */
+.topic-select--rtl :deep(.q-field__control) {
+  flex-direction: row-reverse;
+}
+
+/* Right-align the displayed value */
 .topic-select--rtl :deep(.q-field__native) {
-  justify-content: flex-end;
+  flex: 1 1 auto;
+  justify-content: flex-end !important;
+}
+
+/* Make the text itself right-aligned */
+.topic-select--rtl :deep(.q-field__native .ellipsis) {
+  width: 100%;
   text-align: right;
 }
 </style>

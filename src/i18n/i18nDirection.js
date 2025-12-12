@@ -1,35 +1,24 @@
 //src/i18n/i18nDirection
 
 // Minimal, dependency-free RTL/LTR helpers
+// Your source of truth is languageObject.textDirection.
+// This helper just normalises that value to "rtl" or "ltr".
 
-// Return "rtl" or "ltr" based on your language object.
-// Priority:
-// 1) explicit lang.direction ('rtl' | 'ltr')
-// 2) ISO code heuristic (common RTL languages)
-// 3) default 'ltr'
 export function detectDirection(lang) {
-  const explicit = String(lang?.direction || "").toLowerCase();
-  if (explicit === "rtl" || explicit === "ltr") return explicit;
+  if (!lang || typeof lang !== "object") {
+    return "ltr";
+  }
 
-  // Try ISO(639) code (adjust property name if yours differs)
-  const iso = String(
-    lang?.languageCodeIso || lang?.iso || lang?.hl || ""
-  ).toLowerCase();
-  const RTL = new Set([
-    "ar",
-    "fa",
-    "he",
-    "ur",
-    "ps",
-    "sd",
-    "ug",
-    "yi",
-    "ku",
-    "ckb",
-    "dv",
-    "ks",
-  ]);
-  return RTL.has(iso) ? "rtl" : "ltr";
+  const raw = String(lang.textDirection || "")
+    .toLowerCase()
+    .trim();
+
+  if (raw === "rtl") {
+    return "rtl";
+  }
+
+  // Anything else (including blank) is treated as LTR.
+  return "ltr";
 }
 
 // Apply direction to the document safely.

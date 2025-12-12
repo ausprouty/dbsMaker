@@ -95,9 +95,7 @@ const videoTitle = computed(() => {
       {{ item }}
     </li>
   </ol>
-  <p>This is a change from 
-    Bob
-  </p>
+
   <div
     v-if="isLessonLoading"
     class="lesson-loading-banner"
@@ -129,34 +127,34 @@ const videoTitle = computed(() => {
     </li>
   </ol>
   <NoteSection :studySection="studySection" :placeholder="placeholder" />
-
-  <style scoped>
-    textarea {
-      width: 100%;
-      max-width: 640px;
-      height: 100px;
-      margin-top: 8px;
-    }
-    .lesson-loading-banner {
-      margin-top: 20px;
-      padding: 12px 16px;
-      border-radius: 6px;
-
-      background-color: var(--color-primary);
-      color: var(--color-on-primary);
-
-      font-size: 16px;
-      font-weight: 600;
-
-      box-shadow: 0 2px 6px var(--color-shadow);
-
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-    }
-
-    .lesson-loading-label {
-      line-height: 1.4;
-    }
-  </style>
 </template>
+
+<style scoped>
+textarea {
+  width: 100%;
+  max-width: 640px;
+  height: 100px;
+  margin-top: 8px;
+}
+.lesson-loading-banner {
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: 6px;
+
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+
+  font-size: 16px;
+  font-weight: 600;
+
+  box-shadow: 0 2px 6px var(--color-shadow);
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.lesson-loading-label {
+  line-height: 1.4;
+}
+</style>

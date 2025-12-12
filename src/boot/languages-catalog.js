@@ -19,8 +19,8 @@ function isValidCatalog(list) {
   });
 }
 
-// Normalise direction: default to 'ltr'; accept 'rtl' / 'RTL' as rtl
-function normalizeDirection(raw) {
+// Normalise textDirection: default to 'ltr'; accept 'rtl' / 'RTL' as rtl
+function normalizeTextDirection(raw) {
   if (!raw) return "ltr";
 
   var d = String(raw).trim().toLowerCase();
@@ -34,7 +34,8 @@ function normalizeCatalog(list) {
   return list.map(function (x) {
     var languageCodeHL = x.languageCodeHL || x.hl || "";
     var languageCodeJF = x.languageCodeJF || x.jf || "";
-    var direction = normalizeDirection(x.direction);
+    // Prefer textDirection; fall back to legacy "direction" if present
+    var textDirection = normalizeTextDirection(x.textDirection || x.direction);
 
     // Spread original object first, then override with normalised fields
     return {
@@ -44,7 +45,7 @@ function normalizeCatalog(list) {
       name: x.name || x.displayName || String(languageCodeHL || ""),
       ethnicName: x.ethnicName || x.nativeName || "",
       languageCodeIso: x.languageCodeIso || x.languageCodeISO || x.iso || "",
-      direction: direction,
+      textDirection: textDirection,
     };
   });
 }

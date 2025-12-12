@@ -395,6 +395,24 @@ body.rtl-mode .q-card {
   justify-content: flex-end;
 }
 
+.topic-select-menu--rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* you don’t have q-item__label, so target your content: */
+.topic-select-menu--rtl .q-item {
+  direction: rtl;
+}
+
+.topic-select-menu--rtl .text-body1 {
+  text-align: right;
+}
+
+.topic-select-menu--rtl .text-body1 {
+  text-align: right;
+}
+
 /* ----------------------
     Numbers for Lists
 ------------------------- */

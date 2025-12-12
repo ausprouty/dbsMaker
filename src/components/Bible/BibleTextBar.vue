@@ -73,16 +73,16 @@ const readLabel = computed(() => {
 const linkText = computed(() => {
   const p = passage.value;
   if (!p) {
-    return getReadPlainFallback();
+    return "";
   }
-
+  if (hasText.value) {
+    return t("interface.readMore");
+  }
   const title = cleanedTitle.value;
-
   // If you want a separate text for the button that opens Bible text:
   if (title && te("interface.bibleExternal")) {
     return t("interface.bibleExternal", [title]);
   }
-
   return getReadPlainFallback();
 });
 </script>
