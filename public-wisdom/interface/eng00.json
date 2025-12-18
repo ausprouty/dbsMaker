@@ -1,14 +1,19 @@
 {
   "meta": {
-    "EnglishName": "English",
-    "hlCode": "eng00",
-    "google": "en",
-    "folder": "interface",
-    "subfolder": "wisdom",
-    "translationComplete": "false",
-    "lastUpdated": "2025-08-06T14:00:00Z"
+    "schema": "interface.v1",
+    "kind": "interface",
+    "subject": "wisdom",
+    "variant": null,
+    "parent": {
+      "kind": "interface",
+      "subject": "root"
+    },
+    "languageCodeHL": "eng00",
+    "namespace": "interface.wisdom",
+    "updatedAt": "2025-09-03T00:00:00Z"
   },
   "interface": {
+    "bibleExternal": "This Bible text opens on another site. Please read verses {0} and return here to continue your conversation",
     "changeLanguage": "Change language.",
     "choosePlatform": "Choose a platform:",
     "completed": "Completed",
@@ -24,6 +29,7 @@
     "next": "Next",
     "nextVideo": "Next Video",
     "notCompleted": "Mark as completed",
+    "openLink": "Open Bible passage",
     "otherVideos": "Other Videos",
     "previous": "Previous",
     "read": "Read {0}",
@@ -45,46 +51,45 @@
     "topic": "Topic",
     "videoNoteInstruction": "Write your notes for this video here",
     "videoSegment": "Video Segment",
+    "videoUnavailable": "Video Unavailable",
     "watchOnline": "Watch {0} online"
-  },
-  "index": {
-    "para": {
-      "1": "In order to make any real progress in our spiritual life we know we need a reliable source of wisdom.",
-      "2": "Clicking on the images below will start you on a path to discovering the eternal wisdom that God wants you to know and follow."
-    }
   },
   "review": {
     "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
     "p2": "This helps us encourage each other and see how God is at work.",
     "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
   },
-  "jvideo": {
-    "title": "The Source of Wisdom",
-    "summary": "The Source of Wisdom invites you to encounter Jesus and see why His message is still the foundation for life today",
+  "index": {
     "para": {
-      "1": "Jesus is the source of eternal wisdom. As you watch the video, ask yourself \"What did Jesus do and teach? How is his wisdom different from what others have said.\""
+      "1": "Many people pause at the start of a new season to reflect on life, relationships, and the direction they are heading.",
+      "2": "This site invites you to explore a collection of ancient stories and recorded teachings that have shaped how many people understand wisdom, purpose, and the way to live well."
+    }
+  },
+  "jvideo": {
+    "title": "Exploring the Source",
+    "summary": "Short videos introduce Jesus and invite you to observe his teachings and actions.",
+    "para": {
+      "1": "As you watch, notice what Jesus says and does. Consider how his approach to wisdom compares with other voices and traditions you are familiar with."
     }
   },
   "ctc": {
-    "title": "The Grand Story of Wisdom",
-    "summary": "This story starts with the time before there were any people. It then tells the story of how the first two people interacted with God.",
+    "title": "The Larger Story",
+    "summary": "These stories trace a larger narrative that begins before people appear.",
     "para": {
-      "1": "This story starts with the time before there were any people. It then tells the story of how the first two people interacted with God.",
-      "2": "Gather your friends and read how God prepared people for the arrival of Jesus and his Wisdom."
+      "1": "The stories present wisdom through a connected account of people, choices, and relationships with God over time.",
+      "2": "You are invited to read these stories together and reflect on what they suggest about life, meaning, and responsibility."
     }
   },
-
   "life": {
-    "title": "Wisdom for Life",
-    "summary": "Discover practical wisdom from Jesus and his early followers that still transforms lives today.",
+    "title": "Wisdom for Everyday Life",
+    "summary": "These passages explore practical themes such as relationships, integrity, forgiveness, and decision-making.",
     "para": {
-      "1": "These are some of the things that Jesus and his early followers taught.",
-      "2": "Many people have seen their lives transformed as they asked Jesus to give them the power to put these teachings into action.",
-      "3": "Gather your friends and see what you discover as you discuss the following questions."
+      "1": "Jesus and his early followers spoke about everyday issues that many people still face today.",
+      "2": "As you read and discuss these passages, consider what stands out to you and whether any of these ideas connect with your own experience of life."
     }
   },
   "question": {
-    "title": "Do you have a question?",
-    "summary": "We welcome your comments or questions about Wisdom and God. "
+    "title": "Questions and Conversation",
+    "summary": "If you have questions or would like to share your thoughts, you are welcome to start a conversation."
   }
 }

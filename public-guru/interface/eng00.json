@@ -2,35 +2,23 @@
   "meta": {
     "schema": "interface.v1",
     "kind": "interface",
-    "subject": "root",
+    "subject": "guru",
     "variant": null,
-
-    "languageName": "English",
+    "parent": {
+      "kind": "interface",
+      "subject": "root"
+    },
     "languageCodeHL": "eng00",
-    "languageCodeISO": "en",
-    "direction": "ltr",
-    "numeralSet": "western",
-    "font": "Open Sans",
-
-    "translationComplete": false,
-    "keysTotal": 0,
-    "keysMissing": 0,
-    "keysFuzzy": 0,
-
-    "sourceOfTruth": "hl-api",
-    "sourceCommit": "abcdef0",
-    "toolVersion": "ml-dbs-translate@2025.09.03",
-
-    "version": 3,
-    "createdAt": "2025-08-30T03:12:00Z",
-    "updatedAt": "2025-09-03T04:05:00Z",
-    "updatedBy": "build-bot",
-
-    "license": "CC BY-SA 4.0",
-    "notes": ""
+    "languageCodeGoogle": "en",
+    "namespace": "interface.guru",
+    "sourceOfTruth": "human",
+    "translator": "Bob Prouty",
+    "notes": "Interface summaries are displayed in the UI. interface.study.summary is usually not displayed and is retained for reuse and as a writing reference.",
+    "version": 2,
+    "updatedAt": "2025-09-03T00:00:00Z"
   },
-
   "interface": {
+    "bibleExternal": "This Bible text opens on another site. Please read verses {0} and return here to continue your conversation",
     "changeLanguage": "Change language.",
     "choosePlatform": "Choose a platform:",
     "completed": "Completed",
@@ -46,6 +34,7 @@
     "next": "Next",
     "nextVideo": "Next Video",
     "notCompleted": "Mark as completed",
+    "openLink": "Open Bible passage",
     "otherVideos": "Other Videos",
     "previous": "Previous",
     "read": "Read {0}",
@@ -67,6 +56,7 @@
     "topic": "Topic",
     "videoNoteInstruction": "Write your notes for this video here",
     "videoSegment": "Video Segment",
+    "videoUnavailable": "Video Unavailable",
     "watchOnline": "Watch {0} online"
   },
   "review": {
@@ -74,7 +64,6 @@
     "p2": "This helps us encourage each other and see how God is at work.",
     "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
   },
-
   "index": {
     "para": {
       "1": "Making real progress in our spiritual life rarely happens on our own. Across cultures, people have looked for a guide — someone with wisdom they can trust, who can show the way, challenge assumptions, and help others grow.",
@@ -85,37 +74,30 @@
     "title": "The Life of the Guru",
     "summary": "Watch key moments from the life of Lord Jesus and see how his words and actions shaped the people who followed him — and why his influence continues today."
   },
-
   "mountain": {
     "title": "The Mountain of God",
     "summary": "Some say there are many paths to the top of the mountain. This short story invites you to consider how guides, paths, and destinations are connected."
   },
-
   "wisemen": {
     "title": "Birth of the Guru",
-    "summary": "Astrologers from the east notice a sign in the sky and set out on a long journey. Follow their search and discover why they believed a child born under this star was worth honoring."
+    "summary": "Astrologers from the East notice a sign in the sky and set out on a long journey. Follow their search and discover why they believed a child born under this star was worth honoring."
   },
-
   "life": {
     "title": "His Teachings",
     "summary": "What did Lord Jesus teach his followers as they walked with him? Explore his words and stories and consider how they speak to everyday life."
   },
-
   "ctc": {
     "title": "His Holy Book",
     "summary": "Journey through the Holy Book to see how people across history searched for God, struggled, failed, and found hope along the way."
   },
-
   "following": {
     "title": "Following Him",
     "summary": "Watch friends discover who Lord Jesus is, how to talk with him in prayer, and how his way of life spreads naturally through relationships."
   },
-
   "deepavali": {
     "title": "Light for the Soul",
     "summary": "During Deepavali, many reflect on light and hope. Explore how the light of Lord Jesus speaks into the heart with peace and freedom."
   },
-
   "karma": {
     "title": "Escaping Karma",
     "summary": "Many long to escape the cycle of cause and effect. Discover how Lord Jesus offers forgiveness, restoration, and a new beginning."

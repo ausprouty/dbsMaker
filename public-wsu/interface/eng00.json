@@ -1,19 +1,24 @@
 {
-  "language": {
-    "EnglishName": "English",
-    "hlCode": "eng00",
-    "google": "en",
-    "folder": "interface",
-    "subfolder": "dbs",
-    "translationComplete": "false",
-    "lastUpdated": "2025-08-06T14:00:00Z"
+  "meta": {
+    "schema": "interface.v1",
+    "kind": "interface",
+    "subject": "wsu",
+    "variant": null,
+    "parent": {
+      "kind": "interface",
+      "subject": "root"
+    },
+    "languageCodeHL": "eng00",
+    "namespace": "interface.wsu",
+    "updatedAt": "2025-09-03T00:00:00Z"
   },
   "interface": {
-    "changeLanguage": "Change language",
+    "bibleExternal": "This Bible text opens on another site. Please read verses {0} and return here to continue your conversation",
+    "changeLanguage": "Change language.",
     "choosePlatform": "Choose a platform:",
     "completed": "Completed",
     "copied": "Link copied to clipboard!",
-    "copyFailed": "Failed to copy the link",
+    "copyFailed": "Failed to copy the link.",
     "copyLink": "Copy link",
     "language": "Select Language",
     "lessonLoading": "Your content is loading",
@@ -24,6 +29,7 @@
     "next": "Next",
     "nextVideo": "Next Video",
     "notCompleted": "Mark as completed",
+    "openLink": "Open Bible passage",
     "otherVideos": "Other Videos",
     "previous": "Previous",
     "read": "Read {0}",
@@ -45,56 +51,38 @@
     "topic": "Topic",
     "videoNoteInstruction": "Write your notes for this video here",
     "videoSegment": "Video Segment",
+    "videoUnavailable": "Video Unavailable",
     "watchOnline": "Watch {0} online"
-  },
-  "index": {
-    "para": {
-      "1": "Spiritual growth isn’t a solo journey — it happens in community. We all need wisdom we can trust and people who encourage us along the way. The lessons below will help you discover how God’s wisdom shapes lives, builds genuine relationships, and reveals His love and care for you.",
-      "2": "Gather your friends and start exploring! Click on the images below to begin your journey — discovering not just wisdom, but a relationship with God and the spiritual community He invites you into."
-    }
-  },
-  "jvideo": {
-    "title": "The Life of Jesus",
-    "summary": "See how Jesus’ actions and teachings challenged expectations, inspired hope, and still speak powerfully today.",
-    "para": {
-      "1": "Jesus' words and actions have shaped history, offering a wisdom that stands apart. As you watch this video, ask yourself: What did Jesus teach? How does his wisdom compare to what others have said — and what could it mean for you?"
-    }
   },
   "review": {
     "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
     "p2": "This helps us encourage each other and see how God is at work.",
     "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
   },
+  "index": {
+    "para": {
+      "1": "Most of us do not figure life out on our own. We look for people we can learn from, voices we can trust, and communities where questions and growth are welcome.",
+      "2": "This site invites you to explore a series of stories and conversations drawn from the life and teachings of Jesus, and to consider whether they have anything to say about wisdom, relationships, and real life today."
+    }
+  },
   "hope": {
     "title": "Seven Stories of Hope",
-    "summary": "Seven encounters with Jesus that reveal His heart of compassion, forgiveness, and power to transform lives—even in the most unlikely situations.",
+    "summary": "Seven stories that describe encounters between Jesus and ordinary people facing real-life situations.",
     "para": {
-      "1": "In a world full of uncertainty, the stories of Jesus meeting real people offer a lifeline of hope. These seven powerful accounts from the Gospels show how Jesus responded to sin, shame, suffering, and doubt with love and restoration. They remind us that no one is too far from God’s reach.",
-      "2": "As you read each story, consider what they reveal about Jesus—and what they invite in your own life. Whether you feel broken, distant, or searching, these stories are for you. Hope is not just an idea; it is a person, and His name is Jesus."
-    }
-  },
-  "life": {
-    "title": "Life Issues",
-    "summary": "Discover practical wisdom from Jesus and his early followers that still transforms lives today.",
-    "para": {
-      "1": "Life Issues explores the practical teachings of Jesus and his early followers — wisdom that has changed lives for centuries. Many have experienced transformation by inviting Jesus to help them live out these truths. Could this be true for you too?",
-      "2": "Gather your friends and discover what these timeless truths could mean for your life today."
-    }
-  },
-  "tips": {
-    "title": "Facilitator's Tips",
-    "summary": "Here are some ideas to help you effectively lead a Discovery Bible Study",
-    "para": {
-      "1": "Many people have found these guildelines helpful in facilitating discussion",
-      "2": "We know this is different from how a typical Bible study group works, and we have found that this method helps people hear directly from God."
+      "1": "Each story records an interaction between Jesus and a person or group dealing with pressure, need, or uncertainty.",
+      "2": "As you read these stories together, you are invited to notice what stands out, reflect on the responses of the people involved, and consider whether any of these accounts connect with your own experience of life."
     }
   },
   "outline": {
     "title": "DBS Outline",
-    "summary": "An outline you can use to lead a Discovery Bible Study with any passage",
+    "summary": "An outline you can use to lead a Discovery Bible Study with any passage"
+  },
+  "tips": {
+    "title": "Discussion Tips",
+    "summary": "Simple guidance to help group discussions work well",
     "para": {
-      "1": "What will you discover about God today?",
-      "2": "Who can you share your discoveries with?"
+      "1": "These guidelines are designed to help groups have open, respectful conversations where everyone has space to share and listen.",
+      "2": "You do not need to be an expert or have all the answers. The focus is on reading together, noticing what stands out, and learning from one another."
     }
   }
 }

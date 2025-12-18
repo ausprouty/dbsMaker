@@ -1,12 +1,19 @@
 {
-  "language": {
-    "EnglishName": "English",
-    "hlCode": "eng00",
-    "google": "en",
-    "translationComplete": "false",
-    "lastUpdated": "2025-08-16T14:00:00Z"
+  "meta": {
+    "schema": "interface.v1",
+    "kind": "interface",
+    "subject": "dbs",
+    "variant": null,
+    "parent": {
+      "kind": "interface",
+      "subject": "root"
+    },
+    "languageCodeHL": "eng00",
+    "namespace": "interface.dbs",
+    "updatedAt": "2025-09-03T00:00:00Z"
   },
   "interface": {
+    "bibleExternal": "This Bible text opens on another site. Please read verses {0} and return here to continue your conversation",
     "changeLanguage": "Change language.",
     "choosePlatform": "Choose a platform:",
     "completed": "Completed",
@@ -22,6 +29,7 @@
     "next": "Next",
     "nextVideo": "Next Video",
     "notCompleted": "Mark as completed",
+    "openLink": "Open Bible passage",
     "otherVideos": "Other Videos",
     "previous": "Previous",
     "read": "Read {0}",
@@ -46,117 +54,110 @@
     "videoUnavailable": "Video Unavailable",
     "watchOnline": "Watch {0} online"
   },
-
-  "index": {
-    "para": {
-      "1": "Spiritual growth isn’t a solo journey — it happens in community. We all need wisdom we can trust and people who encourage us along the way. The lessons below will help you discover how God’s wisdom shapes lives, builds genuine relationships, and reveals His love and care for you.",
-      "2": "Gather your friends and start exploring! Click on the images below to begin your journey — discovering not just wisdom, but a relationship with God and the spiritual community He invites you into."
-    }
-  },
   "review": {
     "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
     "p2": "This helps us encourage each other and see how God is at work.",
     "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
   },
-  "jvideo": {
-    "title": "The Life of Jesus",
-    "summary": "See how Jesus’ actions and teachings challenged expectations, inspired hope, and still speak powerfully today.",
+  "index": {
     "para": {
-      "1": "Jesus' words and actions have shaped history, offering a wisdom that stands apart. As you watch this video, ask yourself: What did Jesus teach? How does his wisdom compare to what others have said — and what could it mean for you?"
+      "1": "Most people do not explore life’s big questions on their own. We look for insight we can trust and communities where reflection and honest conversation are welcome.",
+      "2": "This site invites you to explore a range of stories and themes drawn from the life and teachings of Jesus, and to consider whether they have anything to say about wisdom, relationships, and everyday life."
     }
   },
   "ctc": {
     "title": "Discovering Spiritual Community",
-    "summary": "Discover how God prepared people for Jesus and the spiritual community He began — and what that means for us today.",
+    "summary": "A series of stories that explore community, belonging, and shared life as described in the accounts of Jesus and those around him.",
     "para": {
-      "1": "Discovering Spiritual Community takes you on a journey through history, exploring how people connected with God through challenges, questions, and life-changing moments. If you're curious about faith, purpose, and belonging, this series is a great place to start.",
-      "2": "Gather your friends to explore how God prepared people for the arrival of Jesus and the spiritual community he began."
+      "1": "Across history, people have searched for meaningful connection and a sense of belonging.",
+      "2": "These stories invite you to observe how community forms around shared values, trust, and commitment, and to reflect on what that might mean today."
     }
   },
   "disciple": {
-    "title": "Disciple",
-    "summary": "God calls every follower of Jesus to guide others toward Him. Disciples aren’t spectators—we are made to multiply.",
+    "title": "Passing It On",
+    "summary": "Stories and conversations about learning, growth, and influence through relationships.",
     "para": {
-      "1": "God’s plan to reach the world doesn’t depend on experts but on ordinary people—people like you—who follow Jesus and point others to Him. Making disciples isn’t optional; it’s a natural part of loving God and obeying Jesus. We were born again to reproduce spiritually.",
-      "2": "Discipleship is about passing on what God has entrusted to us—experience, skills, and faith—to others. As we grow, we realize it’s not about us but about guiding others to know and follow Jesus. We’re invited into His mission of making disciple-making disciples across the earth."
+      "1": "Many of Jesus’ conversations focused on learning through example, practice, and shared life.",
+      "2": "As you explore these passages, consider how learning is passed from one person to another and how influence is shaped through everyday relationships."
     }
   },
-
   "give": {
-    "title": "Give",
-    "summary": "God’s generosity toward us inspires a life of joyful giving. We reflect His heart when we invest His resources for His mission.",
+    "title": "Giving and Generosity",
+    "summary": "Stories that explore money, priorities, and generosity in everyday life.",
     "para": {
-      "1": "Jesus taught that we cannot serve both God and money, revealing a deep trust issue in the human heart. In a world that idolizes wealth and comfort, giving becomes an act of trust in God—the ultimate giver of every good thing. Generosity realigns our hearts with His kingdom.",
-      "2": "When we give extravagantly, we reflect God's extravagant love. He invites us to manage His resources, not for selfish gain, but for eternal impact. Giving isn’t just about finances—it’s a privilege to partner with God and show that He, not money, truly owns our hearts."
+      "1": "Questions about money and possessions often reveal what people value most.",
+      "2": "These passages invite reflection on generosity, trust, and how choices about resources shape both individuals and communities."
     }
   },
-
   "hope": {
     "title": "Seven Stories of Hope",
-    "summary": "Seven encounters with Jesus that reveal His heart of compassion, forgiveness, and power to transform lives—even in the most unlikely situations.",
+    "summary": "Seven stories that describe encounters between Jesus and people facing real-life situations.",
     "para": {
-      "1": "In a world full of uncertainty, the stories of Jesus meeting real people offer a lifeline of hope. These seven powerful accounts from the Gospels show how Jesus responded to sin, shame, suffering, and doubt with love and restoration. They remind us that no one is too far from God’s reach.",
-      "2": "As you read each story, consider what they reveal about Jesus—and what they invite in your own life. Whether you feel broken, distant, or searching, these stories are for you. Hope is not just an idea; it is a person, and His name is Jesus."
+      "1": "Each story records an interaction with someone experiencing pressure, loss, uncertainty, or change.",
+      "2": "As you read together, notice what happens in each encounter and consider whether any of these stories connect with your own experience of life."
     }
   },
-
-  "lead": {
-    "title": "Discovering Leadership",
-    "summary": "Discover how Jesus shaped leaders to serve with purpose, humility, and courage.",
+  "jvideo": {
+    "title": "The Life of Jesus",
+    "summary": "Short videos that introduce Jesus through recorded stories and events from his life.",
     "para": {
-      "1": "Discovering Leadership explores the principles Jesus taught his leaders — wisdom that has shaped servant-hearted leadership for generations. Many have experienced transformation by relying on Jesus to help them lead with purpose and integrity. Could this shape your leadership too?",
-      "2": "Gather your friends and explore what leadership through Jesus' eyes might look like."
+      "1": "As you watch, pay attention to what Jesus says and does, and reflect on how his approach compares with other voices you have encountered."
+    }
+  },
+  "lead": {
+    "title": "Leadership",
+    "summary": "Exploring leadership through the words and actions of Jesus.",
+    "para": {
+      "1": "The accounts of Jesus present a distinctive approach to leadership shaped by service, responsibility, and care for others.",
+      "2": "These passages invite reflection on what leadership looks like in everyday life and influence."
     }
   },
   "life": {
     "title": "Life Issues",
-    "summary": "Discover practical wisdom from Jesus and his early followers that still transforms lives today.",
+    "summary": "Stories and teachings that address practical questions about relationships, decisions, and purpose.",
     "para": {
-      "1": "Life Issues explores the practical teachings of Jesus and his early followers — wisdom that has changed lives for centuries. Many have experienced transformation by inviting Jesus to help them live out these truths. Could this be true for you too?",
-      "2": "Gather your friends and discover what these timeless truths could mean for your life today."
+      "1": "Many of the topics Jesus addressed relate to challenges people still face today.",
+      "2": "As you explore these passages, consider what stands out and whether any of these ideas connect with your own questions about life."
     }
   },
   "obey": {
-    "title": "Obey",
-    "summary": "Explore how obedience to Jesus flows from trust and transforms our hearts, shaping us into people who live by what God says.",
+    "title": "Responding to What You Read",
+    "summary": "Reflecting on response and action in everyday life.",
     "para": {
-      "1": "God invites us into a face-to-face relationship where we move from being self-hearted to soft-hearted. As we confess our selfish desires and allow the Bible to reshape our thinking, obedience becomes a sign of our love and allegiance to Jesus. This isn’t about legalism but about responding to His grace.",
-      "2": "Obeying Jesus’ commands doesn’t just affirm that we are saved—it shows we’ve chosen to follow Him. As we align our personal patterns with God’s truth, our hearts are softened, and our lives are transformed. What God says ought to matter most. Are you ready to let His words guide your life?"
+      "1": "Every Bible passage invites readers to consider response, whether through reflection, conversation, or changes in attitude or action.",
+      "2": "These conversations create space to think about how ideas move from words on a page into everyday choices and relationships."
     }
   },
-
   "relate": {
-    "title": "Relate",
-    "summary": "We were created for meaningful community. Life change happens best in authentic, accountable relationships rooted in God’s design.",
+    "title": "Relationships",
+    "summary": "Exploring connection, honesty, and shared life.",
     "para": {
-      "1": "Though we live in an age of constant connectivity, many still experience deep isolation. We were made in the image of a relational God, designed to grow, heal, and thrive through deep connections with others. True spiritual growth happens in the context of community, not in isolation.",
-      "2": "When we build honest, grace-filled relationships, we experience the kind of life God intended—one where we share our burdens, celebrate together, and walk with each other in faith. In these authentic connections, our lives become a reflection of Jesus' love and the strength of His body, the Church."
+      "1": "Although people are often connected digitally, many still experience isolation.",
+      "2": "These passages invite reflection on relationships, trust, and how people support one another through life."
     }
   },
   "serve": {
-    "title": "Serve",
-    "summary": "Jesus came to serve, not to be served—and we discover life as we follow His example and use our gifts to bless others.",
+    "title": "Serving Others",
+    "summary": "Stories that explore service, responsibility, and care for others.",
     "para": {
-      "1": "Jesus, though fully God, chose a life of humility and service. He calls us to adopt the same mindset—not chasing comfort or status, but pouring out our time and talents for others. Life, as He taught, is found not in keeping but in giving.",
-      "2": "Each of us has been given unique gifts by God, meant to be used for the good of others and the growth of His kingdom. Serving isn’t just about helping others—it’s a vital part of our own spiritual formation. Where is God calling you to serve today?"
+      "1": "Jesus is often shown serving others in practical and unexpected ways.",
+      "2": "These accounts invite reflection on how service shapes communities and personal values."
     }
   },
-
   "share": {
-    "title": "Share",
-    "summary": "Experience the joy of sharing your journey with Jesus—not by pressure, but through authentic, relational living that points others to God.",
+    "title": "Sharing Stories",
+    "summary": "Conversations about sharing experiences and insights with others.",
     "para": {
-      "1": "When we truly grasp what God has done for us, it becomes natural to share that hope with others. Rather than pressuring people to believe, we invite them to witness the transformation happening in our lives. Our faith becomes visible through the way we live, love, and relate.",
-      "2": "Sharing is not about rehearsed speeches but about real relationships. Like one beggar showing another where to find bread, we invite friends, family, and neighbors into our journey. As we live openly and honestly, we provide a platform to explore God’s Word together and discover His heart for them."
+      "1": "Ideas often spread through relationships and everyday conversations.",
+      "2": "These passages invite reflection on how stories are shared and how understanding grows through dialogue."
     }
   },
-
   "trust": {
     "title": "Trust",
-    "summary": "Discover how moving from self-reliance to trusting in Jesus transforms your relationship with God and invites you into His family.",
+    "summary": "Exploring trust, reliance, and confidence through recorded stories of Jesus.",
     "para": {
-      "1": "Although we are created in God’s image and made to center our lives on Him, our rebellious hearts have led us to trust in ourselves and substitute gods. This misplaced trust has broken not just God's law but His heart. Yet God, in His deep love, sent Jesus to restore what was lost.",
-      "2": "The journey of trust begins as we turn from earning God's favor to receiving His mercy through Jesus. His life, death, and resurrection offer us a new beginning—not just life after death, but life with God now. Will you take the step from striving to trusting?"
+      "1": "Many of these accounts describe moments where people must decide what or whom they trust.",
+      "2": "As you read, consider how trust is formed, tested, and expressed in real life."
     }
   }
 }
