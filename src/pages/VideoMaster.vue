@@ -211,11 +211,11 @@ function markThisLessonComplete(n) {
     </q-banner>
 
     <VideoQuestions
-      v-if="sectionKey && lesson"
+      v-if="lesson"
       :commonContent="commonContent"
       :languageCodeHL="languageCodeHL"
       :lesson="lesson"
-      :sectionKey="sectionKey"
+      sectionKey="question"
       class="q-mt-md"
     />
 

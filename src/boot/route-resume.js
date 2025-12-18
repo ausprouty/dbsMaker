@@ -8,6 +8,10 @@ const APP_VER = String(import.meta.env.VITE_APP_VERSION || "dev").trim();
 const APP_SITE = String(import.meta.env.VITE_APP || "default").trim();
 const STALE_MS = 28 * 24 * 60 * 60 * 1000; // 28 days
 
+function isHomePath(path) {
+  return path === "/" || path === "/index";
+}
+
 function saveLastGood(path) {
   const rec = { path, ver: APP_VER, site: APP_SITE, ts: Date.now() };
   try {
@@ -22,15 +26,17 @@ function readLastGood() {
     const rec = JSON.parse(raw);
     if (!rec || typeof rec.path !== "string") return null;
 
-    // version/site must match; avoid resurrecting old layouts
-    if (rec.ver !== APP_VER || rec.site !== APP_SITE) return null;
+    // Site must match; avoid resuming into a different build target.
+    // Do not block on APP_VER because many deployments bump it often.
+    // Route validity is checked later via router.resolve().
+    if (rec.site !== APP_SITE) return null;
 
     // ignore stale entries
     if (typeof rec.ts === "number" && Date.now() - rec.ts > STALE_MS)
       return null;
 
     // basic sanity
-    if (rec.path === "/" || rec.path === "/index") return null;
+    if (isHomePath(rec.path)) return null;
     return rec;
   } catch {
     return null;
@@ -54,7 +60,7 @@ export default boot(({ router }) => {
   // On first load, if user landed on '/', try to resume
   router.isReady().then(() => {
     const here = router.currentRoute.value;
-    if (here.path !== "/") return;
+    if (!isHomePath(here.path)) return;
 
     // If a hard reset just happened, do not resume (one-shot flag)
     try {
@@ -68,7 +74,7 @@ export default boot(({ router }) => {
     const fromStore = settings.currentPath;
     const fromRec = readLastGood();
     const candidate =
-      (fromStore && fromStore !== "/" && fromStore !== "/index" && fromStore) ||
+      (fromStore && !isHomePath(fromStore) && fromStore) ||
       (fromRec && fromRec.path);
 
     if (!candidate) return;

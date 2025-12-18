@@ -50,6 +50,31 @@ function normalizeCatalog(list) {
   });
 }
 
+function looksLikeJsonResponse(res) {
+  var ct =
+    res.headers && res.headers.get
+      ? String(res.headers.get("content-type") || "")
+      : "";
+  ct = ct.toLowerCase();
+  return ct.indexOf("application/json") !== -1 || ct.indexOf("+json") !== -1;
+}
+
+function resolveCandidateUrl(raw, base) {
+  if (!raw) return null;
+
+  var s = String(raw).trim();
+  if (!s) return null;
+
+  // Absolute URL (http/https)
+  if (/^https?:\/\//i.test(s)) return s;
+
+  // Root-relative
+  if (s.charAt(0) === "/") return s;
+
+  // Relative to Vite base
+  return base + s.replace(/^\/+/, "");
+}
+
 export default boot(async function () {
   const s = useSettingsStore();
 
@@ -77,7 +102,10 @@ export default boot(async function () {
       : null;
 
   // Optional override via env (absolute or relative URL)
-  const overrideCatalog = import.meta.env.VITE_LANG_CONFIG_PATH || null;
+  const overrideCatalog = resolveCandidateUrl(
+    import.meta.env.VITE_LANG_CONFIG_PATH || null,
+    base
+  );
 
   // Order matters: first match that returns a valid catalog wins
   const candidates = [
@@ -98,6 +126,14 @@ export default boot(async function () {
       if (!res.ok) {
         if (import.meta.env.DEV) {
           console.warn("[languages] HTTP " + res.status + " for " + url);
+        }
+        continue;
+      }
+
+      // Avoid trying to parse index.html (SPA fallback) as JSON
+      if (!looksLikeJsonResponse(res)) {
+        if (import.meta.env.DEV) {
+          console.warn("[languages] non-JSON response for " + url);
         }
         continue;
       }

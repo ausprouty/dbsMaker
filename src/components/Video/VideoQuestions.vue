@@ -27,7 +27,7 @@ watch(
   <div>
     <DbsSection
       :content="commonContent"
-      :section="sectionKey"
+      section="question"
       :placeholder="videoNoteInstruction"
       timing=""
     />

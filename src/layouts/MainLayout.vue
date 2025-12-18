@@ -142,27 +142,6 @@ onBeforeUnmount(() => {
 const actionBtnColor = computed(() =>
   appbarStyle.value === "primary" ? "white" : "primary"
 );
-
-// to help debug interface language
-
-const interfaceLanguageLabel = computed(() => {
-  const lang = settingsStore.languageObjectSelected;
-  if (!lang) return "";
-
-  // Use whatever combo you like here
-  const parts = [];
-
-  if (lang.ethnicName && lang.ethnicName !== lang.name) {
-    parts.push(lang.ethnicName);
-  }
-
-  if (lang.name) {
-    parts.push(lang.name);
-  }
-
-  // e.g. "العربية / Arabic" or just "العربية" if only one name
-  return parts.join(" / ");
-});
 </script>
 
 <template>
@@ -185,10 +164,6 @@ const interfaceLanguageLabel = computed(() => {
           </router-link>
         </q-toolbar-title>
 
-        <q-space />
-        <span v-if="interfaceLanguageLabel" class="interface-lang">
-          {{ interfaceLanguageLabel }}
-        </span>
         <q-space />
         <ShareLink />
 
