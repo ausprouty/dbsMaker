@@ -14,10 +14,10 @@ import debounce from "lodash.debounce";
 import { normId, normIntish } from "src/utils/normalize";
 
 const ALLOWED_SECTIONS = new Set([
-  "video",
   "look_back",
   "look_up",
   "look_forward",
+  "response",
 ]);
 
 export default {

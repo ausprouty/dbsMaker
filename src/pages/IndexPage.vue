@@ -1,26 +1,33 @@
 <script setup>
-  import { computed, onMounted, watch } from "vue"
-  import { useRouter } from "vue-router"
-  import { useI18n } from "vue-i18n"
-  import { useSettingsStore } from "src/stores/SettingsStore"
+import { computed, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { useSettingsStore } from "src/stores/SettingsStore";
 
-  const router = useRouter()
-  const { t, te, locale } = useI18n({ useScope: "global" })
-  const settingsStore = useSettingsStore()
+const router = useRouter();
+const { t, te, locale } = useI18n({ useScope: "global" });
+const settingsStore = useSettingsStore();
 
-  const loading = computed(
-    () =>
-      settingsStore.menuStatus === "loading" &&
-      (!settingsStore.menu || settingsStore.menu.length === 0)
-  )
-  const error = computed(() => settingsStore.menuError)
-  const menuItems = computed(() => settingsStore.menu ?? [])
+const loading = computed(
+  () =>
+    settingsStore.menuStatus === "loading" &&
+    (!settingsStore.menu || settingsStore.menu.length === 0)
+);
+const error = computed(() => settingsStore.menuError);
+const menuItems = computed(() => settingsStore.menu ?? []);
 
-  const handleImageClick = (to) => { if (to) router.push(to) }
-
-
+const handleImageClick = (to) => {
+  if (to) router.push(to);
+};
+const menuItemsWithRoute = computed(function () {
+  return menuItems.value.filter(function (i) {
+    if (!i) return false;
+    if (typeof i.route === "string") return i.route.length > 0;
+    if (typeof i.route === "object" && i.route !== null) return true; // e.g. { name, params }
+    return false;
+  });
+});
 </script>
-
 
 <template>
   <q-page class="bg-white q-pa-md">
@@ -33,7 +40,7 @@
 
       <div v-else class="menu-grid">
         <div
-          v-for="item in menuItems"
+          v-for="item in menuItemsWithRoute"
           :key="item.key"
           class="menu-col"
           @click="handleImageClick(item.route)"
@@ -41,11 +48,22 @@
           <div class="menu-card hoverable">
             <img :src="item.image" class="menu-picture" />
             <div class="menu-label">
-               <h6>{{ t((String(item.key) || "").toLowerCase() + ".title", item.title || item.key) }}</h6>
+              <h6>
+                {{
+                  t(
+                    (String(item.key) || "").toLowerCase() + ".title",
+                    item.title || item.key
+                  )
+                }}
+              </h6>
 
               <p class="menu-explanation">
-                 {{ t((String(item.key) || "").toLowerCase() + ".summary", item.summary || "") }}
-
+                {{
+                  t(
+                    (String(item.key) || "").toLowerCase() + ".summary",
+                    item.summary || ""
+                  )
+                }}
               </p>
             </div>
           </div>

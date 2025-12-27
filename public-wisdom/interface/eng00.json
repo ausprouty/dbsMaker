@@ -59,33 +59,41 @@
     "p2": "This helps us encourage each other and see how God is at work.",
     "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
   },
+  "seasonal": {
+    "title": "Lunar New Year",
+    "summary": "Wishing you peace, joy, and a good new beginning.",
+    "para": {
+      "1": "As you celebrate with family and friends, you are welcome to explore these series and consider what they might mean for your own life."
+    }
+  },
+
   "index": {
     "para": {
       "1": "Many people pause at the start of a new season to reflect on life, relationships, and the direction they are heading.",
-      "2": "This site invites you to explore a collection of ancient stories and recorded teachings that have shaped how many people understand wisdom, purpose, and the way to live well."
+      "2": "This site invites you to explore ancient stories and recorded teachings that have shaped how many people understand wisdom, purpose, and the way to live well."
     }
   },
   "jvideo": {
-    "title": "Exploring the Source",
+    "title": "Meeting Jesus",
     "summary": "Short videos introduce Jesus and invite you to observe his teachings and actions.",
     "para": {
-      "1": "As you watch, notice what Jesus says and does. Consider how his approach to wisdom compares with other voices and traditions you are familiar with."
+      "1": "As you watch, notice what Jesus says and does. Consider how his approach to wisdom compares with other voices and traditions you already know."
     }
   },
   "ctc": {
-    "title": "The Larger Story",
-    "summary": "These stories trace a larger narrative that begins before people appear.",
+    "title": "Entering the Story",
+    "summary": "This series follows a connected narrative that begins before people appear.",
     "para": {
-      "1": "The stories present wisdom through a connected account of people, choices, and relationships with God over time.",
-      "2": "You are invited to read these stories together and reflect on what they suggest about life, meaning, and responsibility."
+      "1": "The series presents wisdom through an unfolding account of people, choices, and relationships with God across generations.",
+      "2": "You are invited to read these accounts together and reflect on what they suggest about life, meaning, and responsibility."
     }
   },
   "life": {
     "title": "Wisdom for Everyday Life",
-    "summary": "These passages explore practical themes such as relationships, integrity, forgiveness, and decision-making.",
+    "summary": "This series explores practical themes such as relationships, integrity, forgiveness, and decision-making.",
     "para": {
       "1": "Jesus and his early followers spoke about everyday issues that many people still face today.",
-      "2": "As you read and discuss these passages, consider what stands out to you and whether any of these ideas connect with your own experience of life."
+      "2": "As you explore these themes together, consider what stands out to you and whether any of these ideas connect with your own experience of life."
     }
   },
   "question": {

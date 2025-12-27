@@ -28,6 +28,18 @@
     "maxLessons": 23
   },
   {
+    "key": "karma",
+    "title": "Escaping Karma",
+    "image": "/images/karma.png",
+    "route": "/page/karma"
+  },
+  {
+    "key": "Deepavali",
+    "title": "Light for the Soul",
+    "image": "/images/deepavali.png",
+    "route": "/page/deepavali"
+  },
+  {
     "key": "ctc",
     "title": "His Holy Book",
     "image": "/images/scroll.png",
@@ -41,19 +53,6 @@
     "route": "/video/following",
     "maxLessons": 5
   },
-  {
-    "key": "Deepavali",
-    "title": "Light for the Soul",
-    "image": "/images/deepavali.png",
-    "route": "/page/deepavali"
-  },
-  {
-    "key": "karma",
-    "title": "Escaping Karma",
-    "image": "/images/karma.png",
-    "route": "/page/karma"
-  },
-
   {
     "key": "ask",
     "title": "Questions",

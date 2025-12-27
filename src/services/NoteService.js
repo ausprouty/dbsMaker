@@ -13,6 +13,7 @@ const ALLOWED_SECTIONS = new Set([
   "look_back",
   "look_up",
   "look_forward",
+  "response",
 ]);
 
 export async function getNote(study, lesson, section) {

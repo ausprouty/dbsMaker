@@ -26,8 +26,8 @@ watch(
 <template>
   <div>
     <DbsSection
-      :content="commonContent"
-      section="question"
+      studySection="response"
+      :sectionContent="commonContent.response"
       :placeholder="videoNoteInstruction"
       timing=""
     />

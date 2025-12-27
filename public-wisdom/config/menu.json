@@ -1,11 +1,10 @@
 [
   {
-    "key": "jvideo",
-    "title": "The Source of Wisdom",
-    "image": "/images/source.png",
-    "route": "/jvideo",
-    "maxLessons": 61
+    "key": "seasonal",
+    "title": "Happy Lunar New Year",
+    "image": "/images/lunar.png"
   },
+
   {
     "key": "life",
     "title": "Wisdom for Life",
@@ -14,18 +13,24 @@
     "maxLessons": 23
   },
   {
+    "key": "jvideo",
+    "title": "Meeting Jesus",
+    "image": "/images/jesus.png",
+    "route": "/jvideo",
+    "maxLessons": 61
+  },
+
+  {
     "key": "ctc",
-    "title": "The Grand Story",
+    "title": "Entering the Story",
     "image": "/images/ctc.png",
     "route": "/series/ctc?variant=wisdom",
     "maxLessons": 23
   },
   {
     "key": "ask",
-    "title": "Discover and AsK",
+    "title": "Questions and Conversation",
     "image": "/images/ask.png",
     "route": "/questions?url=https://www.everyperson.com/contact.php"
-
   }
-
 ]
