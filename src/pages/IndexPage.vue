@@ -3,6 +3,7 @@ import { computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "src/stores/SettingsStore";
+import SeasonalHeader from "src/components/Seasonal/SeasonalHeader.vue";
 
 const router = useRouter();
 const { t, te, locale } = useI18n({ useScope: "global" });

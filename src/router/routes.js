@@ -3,24 +3,24 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-
       {
-        name: 'restore',
-        path: '',                // default child of "/"
-        component: () => import('pages/RestorePage.vue'),
-        meta: { resume: false }  // don’t store this page as lastGoodPath
+        name: "restore",
+        path: "", // default child of "/"
+        component: () => import("pages/RestorePage.vue"),
+        meta: { resume: false, hideSeasonalHeader: true }, // don’t store this page as lastGoodPath
       },
       {
         name: "Index",
         path: "/index",
         component: () => import("pages/IndexPage.vue"),
-        meta: { appbar: 'primary' }
+        meta: { appbar: "primary" },
       },
       {
         name: "StaticPageMaster",
-        path: '/page/:page([a-z0-9-]+)',
+        path: "/page/:page([a-z0-9-]+)",
         component: () => import("pages/StaticPageMaster.vue"),
-        alias: ['/content/:page([a-z0-9-]+)']
+        meta: { hideSeasonalHeader: true },
+        alias: ["/content/:page([a-z0-9-]+)"],
       },
 
       {
@@ -32,17 +32,17 @@ const routes = [
       // Optional: keep your old /jvideo/... URLs working via redirect
       {
         path: "/jvideo/:lesson?/:languageCodeHL?/:languageCodeJF?",
-        redirect: to => {
+        redirect: (to) => {
           return {
             name: "VideoMaster",
             params: {
               study: "jvideo",
               lesson: to.params.lesson,
               languageCodeHL: to.params.languageCodeHL,
-              languageCodeJF: to.params.languageCodeJF
-            }
+              languageCodeJF: to.params.languageCodeJF,
+            },
           };
-        }
+        },
       },
       {
         name: "SeriesMaster",
@@ -53,21 +53,25 @@ const routes = [
         name: "ExternalPage",
         path: "/external/:raw(.*)*",
         component: () => import("src/pages/ExternalPage.vue"),
-        meta: { appbar: 'primary' },
-        alias: ["/questions/:raw(.*)*", "/ask/:raw(.*)*" ]
+        meta: {
+          appbar: "primary",
+          hideSeasonalHeader: true,
+        },
+        alias: ["/questions/:raw(.*)*", "/ask/:raw(.*)*"],
       },
       {
         name: "reset",
         path: "/reset",
+        meta: { hideSeasonalHeader: true },
         component: () => import("pages/ResetData.vue"),
       },
     ],
   },
   // Always leave this as last one,
- {
-  path: "/:catchAll(.*)*",
-  redirect: { name: "Index" }   // Index is a child of MainLayout
-}
+  {
+    path: "/:catchAll(.*)*",
+    redirect: { name: "Index" }, // Index is a child of MainLayout
+  },
 ];
 
 export default routes;

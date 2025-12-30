@@ -23,6 +23,8 @@ export const useSettingsStore = defineStore("settingsStore", {
     menuError: null,
     menuStatus: "idle",
     previousPage: "/index",
+    seasonalContent: null,
+    seasonalExpires: null,
     variantForStudy: {},
   }),
   getters: settingsGetters,
@@ -51,6 +53,8 @@ export const useSettingsStore = defineStore("settingsStore", {
           "menuError",
           "menuStatus",
           "previousPage",
+          "seasonalContent",
+          "seasonalExpires",
           "variantForStudy",
         ],
         // 👇 these hooks run when the plugin restores persisted state

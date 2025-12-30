@@ -2,9 +2,11 @@
 import { ref, provide, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import LanguageOptions from "src/components/Language/LanguageOptions.vue";
 import ShareLink from "src/components/ShareLink.vue";
+import SeasonalHeader from "src/components/Seasonal/SeasonalHeader.vue";
 import { useContentStore } from "src/stores/ContentStore";
 import { useInterfaceLocale } from "src/composables/useInterfaceLocale";
 import { useLanguageRouting } from "src/composables/useLanguageRouting";
+import { useSeasonalService } from "src/services/SeasonalService";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -31,7 +33,20 @@ function closeRightDrawer() {
 // make toggler available to pages/components
 provide("toggleRightDrawer", toggleRightDrawer);
 
-const { changeLanguage } = useLanguageRouting(); // CHANGED: use composable
+// make seasonal content available to pages/components
+const { ensureSeasonalValid, refreshSeasonal } = useSeasonalService();
+
+async function loadSeasonalIfNeeded() {
+  ensureSeasonalValid();
+
+  if (!settingsStore.seasonalContent) {
+    if (!site.value || !languageCodeGoogle.value) return;
+    await refreshSeasonal(site.value, languageCodeGoogle.value);
+  }
+}
+
+// watch for language changes
+const { changeLanguage } = useLanguageRouting();
 console.log("changeLanguage", changeLanguage);
 
 // Keep vue-i18n + <html lang|dir> in sync with the selected language object.
@@ -134,6 +149,7 @@ function onScroll() {
 }
 onMounted(() => {
   window.addEventListener("scroll", onScroll, { passive: true });
+  loadSeasonalIfNeeded;
 });
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", onScroll);
@@ -191,6 +207,7 @@ const actionBtnColor = computed(() =>
     </q-drawer>
 
     <q-page-container>
+      <SeasonalHeader class="q-mb-md" />
       <router-view />
     </q-page-container>
   </q-layout>

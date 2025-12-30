@@ -214,7 +214,14 @@ export const settingsActions = {
     const clampedLesson = Math.min(parsedLesson, MAX_LESSON_NUMBERS[study]);
     this.lessonNumber[study] = clampedLesson;
   },
-
+  setSeasonalContent(payload) {
+    this.seasonalContent = payload.content;
+    this.seasonalExpires = payload.ends;
+  },
+  clearSeasonalContent() {
+    this.seasonalContent = null;
+    this.seasonalExpires = null;
+  },
   setVariantForStudy(study, v) {
     const s = study?.toLowerCase();
     const clean =
