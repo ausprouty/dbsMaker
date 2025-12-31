@@ -12,6 +12,14 @@ const props = defineProps({
 const emit = defineEmits(["select"]);
 
 // --- helpers ---
+
+// --- label helper ---
+function labelFor(lang) {
+  // If your languageLabel() supports a mode argument, this will use it.
+  // If it does not, it will still work because the extra arg is ignored in JS.
+  return languageLabel(lang, props.labelMode);
+}
+
 function findByHL(hl) {
   const list = Array.isArray(props.languages) ? props.languages : [];
   const key = String(hl || "");

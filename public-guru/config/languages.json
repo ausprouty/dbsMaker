@@ -5,7 +5,7 @@
     "ethnicName": "বাংলা",
     "languageCodeHL": "bng00",
     "languageCodeJF": "139082",
-    "languageCodeBrowser": "bn",
+    "languageCodeGoogle": "bn",
     "direction": "",
     "font": "shonar",
     "fontData": "{\"shonar\": {\"R\": \"shonar.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -16,7 +16,7 @@
     "ethnicName": "",
     "languageCodeHL": "eng00",
     "languageCodeJF": "529",
-    "languageCodeBrowser": "en",
+    "languageCodeGoogle": "en",
     "direction": "ltr",
     "font": "arial",
     "fontData": "null"
@@ -27,7 +27,7 @@
     "ethnicName": "ગુજરાતી",
     "languageCodeHL": "gjr00",
     "languageCodeJF": "6600",
-    "languageCodeBrowser": "gu",
+    "languageCodeGoogle": "gu",
     "direction": "",
     "font": "arialuni",
     "fontData": "{\"arialuni\": {\"R\": \"arialuni.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -38,7 +38,7 @@
     "ethnicName": "हिन्दी",
     "languageCodeHL": "hnd00",
     "languageCodeJF": "6464",
-    "languageCodeBrowser": "hi",
+    "languageCodeGoogle": "hi",
     "direction": "",
     "font": "mangal",
     "fontData": "{\"mangal\": {\"R\": \"mangal.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -49,7 +49,7 @@
     "ethnicName": "ಕನ್ನಡ",
     "languageCodeHL": "kjv00",
     "languageCodeJF": "6318",
-    "languageCodeBrowser": "kn",
+    "languageCodeGoogle": "kn",
     "direction": "",
     "font": "lohitkannada",
     "fontData": "{\"arialuni\": {\"R\": \"arialuni.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -60,7 +60,7 @@
     "ethnicName": "മലയാളം",
     "languageCodeHL": "mjs00",
     "languageCodeJF": "19985",
-    "languageCodeBrowser": "ml",
+    "languageCodeGoogle": "ml",
     "direction": "",
     "font": "tholikanew",
     "fontData": "{\"tholikanew\": {\"R\": \"tholikanew.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -71,7 +71,7 @@
     "ethnicName": "नेपाली भाषा ",
     "languageCodeHL": "nep00",
     "languageCodeJF": "1370",
-    "languageCodeBrowser": "ne",
+    "languageCodeGoogle": "ne",
     "direction": "",
     "font": "mangal",
     "fontData": "{\"mangal\": {\"R\": \"mangal.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -82,7 +82,7 @@
     "ethnicName": "",
     "languageCodeHL": "pan19",
     "languageCodeJF": "46771",
-    "languageCodeBrowser": "pa",
+    "languageCodeGoogle": "pa",
     "direction": null,
     "font": "akaash",
     "fontData": "{\"akaash\": {\"B\": \"akaash_bold.ttf\", \"R\": \"akaash.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -93,7 +93,7 @@
     "ethnicName": "मराठी",
     "languageCodeHL": "mrt00",
     "languageCodeJF": "6174",
-    "languageCodeBrowser": "mr",
+    "languageCodeGoogle": "mr",
     "direction": "",
     "font": "arialuni",
     "fontData": "{\"arialuni\": {\"R\": \"arialuni.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -105,7 +105,7 @@
     "ethnicName": "தமிழ்",
     "languageCodeHL": "tcv00",
     "languageCodeJF": "5871",
-    "languageCodeBrowser": "ta",
+    "languageCodeGoogle": "ta",
     "direction": "",
     "font": "tau-valluvar-b",
     "fontData": "{\"tau-valluvar-b\": {\"R\": \"tau-valluvar-b.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"
@@ -116,7 +116,7 @@
     "ethnicName": "తెలుగు",
     "languageCodeHL": "tcw00",
     "languageCodeJF": "139167",
-    "languageCodeBrowser": "te",
+    "languageCodeGoogle": "te",
     "direction": "",
     "font": "gidugu",
     "fontData": "{\"gidugu\": {\"R\": \"gidugu.ttf\", \"useOTL\": 255, \"useKashida\": 75}}"

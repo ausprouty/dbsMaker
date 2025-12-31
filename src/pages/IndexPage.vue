@@ -32,10 +32,9 @@ const menuItemsWithRoute = computed(function () {
 
 <template>
   <q-page class="bg-white q-pa-md">
+    <p>{{ t("index.para.1") }}</p>
+    <p>{{ t("index.para.2") }}</p>
     <div class="menu-container">
-      <p>{{ t("index.para.1") }}</p>
-      <p>{{ t("index.para.2") }}</p>
-
       <div v-if="error" class="text-negative q-mt-md">{{ error }}</div>
       <div v-else-if="loading" class="q-mt-md">Loading…</div>
 

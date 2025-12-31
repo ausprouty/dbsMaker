@@ -6,6 +6,7 @@
     "languageCodeIso": "bdl",
     "languageCodeHL": "inz00",
     "languageCodeJF": "17655",
+    "languageCodeGoogle": "id",
     "textDirection": "ltr"
   },
   {
@@ -15,6 +16,7 @@
     "languageCodeIso": "yue",
     "languageCodeHL": "chn-s",
     "languageCodeJF": "20601",
+    "languageCodeGoogle": "zh-TW",
     "textDirection": "ltr"
   },
   {
@@ -24,6 +26,7 @@
     "languageCodeIso": "cmn",
     "languageCodeHL": "chn-s",
     "languageCodeJF": "20615",
+    "languageCodeGoogle": "zh-CN",
     "textDirection": "ltr"
   },
   {
@@ -33,6 +36,7 @@
     "languageCodeIso": "eng",
     "languageCodeHL": "eng00",
     "languageCodeJF": "529",
+    "languageCodeGoogle": "en",
     "textDirection": "ltr"
   },
   {
@@ -42,6 +46,7 @@
     "languageCodeIso": "hak",
     "languageCodeHL": "chn-s",
     "languageCodeJF": "20611",
+    "languageCodeGoogle": "zh-CN",
     "textDirection": "ltr"
   },
   {
@@ -51,6 +56,7 @@
     "languageCodeIso": "ind",
     "languageCodeHL": "inz00",
     "languageCodeJF": "184566",
+    "languageCodeGoogle": "id",
     "textDirection": "ltr"
   },
   {
@@ -60,6 +66,7 @@
     "languageCodeIso": "kor",
     "languageCodeHL": "kkn00",
     "languageCodeJF": "3804",
+    "languageCodeGoogle": "ko",
     "textDirection": "ltr"
   },
   {
@@ -69,6 +76,7 @@
     "languageCodeIso": "zlm",
     "languageCodeHL": "inz00",
     "languageCodeJF": "1927",
+    "languageCodeGoogle": "ms",
     "textDirection": "ltr"
   },
   {
@@ -78,6 +86,7 @@
     "languageCodeIso": "mon",
     "languageCodeHL": "khk00",
     "languageCodeJF": "18259",
+    "languageCodeGoogle": "mn",
     "textDirection": "ltr"
   },
   {
@@ -87,6 +96,7 @@
     "languageCodeIso": "wuu",
     "languageCodeHL": "chn-s",
     "languageCodeJF": "20623",
+    "languageCodeGoogle": "zh-CN",
     "textDirection": "ltr"
   },
   {
@@ -96,6 +106,7 @@
     "languageCodeIso": "tgl",
     "languageCodeHL": "tgl00",
     "languageCodeJF": "12551",
+    "languageCodeGoogle": "fil",
     "textDirection": "ltr"
   },
   {
@@ -105,6 +116,7 @@
     "languageCodeIso": "tam",
     "languageCodeHL": "tcv00",
     "languageCodeJF": "5871",
+    "languageCodeGoogle": "ta",
     "textDirection": "ltr"
   },
   {
@@ -114,6 +126,7 @@
     "languageCodeIso": "nan",
     "languageCodeHL": "chn-s",
     "languageCodeJF": "21670",
+    "languageCodeGoogle": "zh-CN",
     "textDirection": "ltr"
   },
   {
@@ -123,6 +136,7 @@
     "languageCodeIso": "tha",
     "languageCodeHL": "thj00",
     "languageCodeJF": "13169",
+    "languageCodeGoogle": "th",
     "textDirection": "ltr"
   },
   {
@@ -132,6 +146,7 @@
     "languageCodeIso": "vie",
     "languageCodeHL": "vie00",
     "languageCodeJF": "3887",
+    "languageCodeGoogle": "vi",
     "textDirection": "ltr"
   }
 ]

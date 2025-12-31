@@ -53,5 +53,42 @@
     "videoSegment": "Video Segment",
     "videoUnavailable": "Video Unavailable",
     "watchOnline": "Watch {0} online"
+  },
+  "review": {
+    "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
+    "p2": "This helps us encourage each other and see how God is at work.",
+    "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
+  },
+  "index": {
+    "para": {
+      "1": "This site invites you to explore ancient stories and recorded teachings that have shaped how many people understand wisdom, purpose, and the way to live well."
+    }
+  },
+  "jvideo": {
+    "title": "Meeting Jesus",
+    "summary": "Short videos introduce Jesus and invite you to observe his teachings and actions.",
+    "para": {
+      "1": "As you watch, notice what Jesus says and does. Consider how his approach to wisdom compares with other voices and traditions you already know."
+    }
+  },
+  "ctc": {
+    "title": "Entering the Story",
+    "summary": "This series follows a connected narrative that begins before people appear.",
+    "para": {
+      "1": "The series presents wisdom through an unfolding account of people, choices, and relationships with God across generations.",
+      "2": "You are invited to read these accounts together and reflect on what they suggest about life, meaning, and responsibility."
+    }
+  },
+  "life": {
+    "title": "Wisdom for Everyday Life",
+    "summary": "This series explores practical themes such as relationships, integrity, forgiveness, and decision-making.",
+    "para": {
+      "1": "Jesus and his early followers spoke about everyday issues that many people still face today.",
+      "2": "As you explore these themes together, consider what stands out to you and whether any of these ideas connect with your own experience of life."
+    }
+  },
+  "question": {
+    "title": "Questions and Conversation",
+    "summary": "If you have questions or would like to share your thoughts, you are welcome to start a conversation."
   }
 }

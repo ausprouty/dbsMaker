@@ -6,7 +6,7 @@ ALWAYS USE YARN -- NOT NPM
 
 Create Languages file with:
 
-SELECT h.id, h.name, h.ethnicName, h.languageCodeIso, h.languageCodeHL, h.languageCodeJF, h.languageCodeBrowser, h.isChinese FROM hl_languages AS h INNER JOIN dbs_languages AS d ON d.languageCodeHL = h.languageCodeHL WHERE d.collectionCode = "C" ORDER BY h.isChinese, h.name;
+SELECT h.id, h.name, h.ethnicName, h.languageCodeIso, h.languageCodeHL, h.languageCodeJF, h.languageCodeGoogle, h.isChinese FROM hl_languages AS h INNER JOIN dbs_languages AS d ON d.languageCodeHL = h.languageCodeHL WHERE d.collectionCode = "C" ORDER BY h.isChinese, h.name;
 
 Now using node v18.18.0
 

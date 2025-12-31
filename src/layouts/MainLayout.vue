@@ -1,5 +1,13 @@
 <script setup>
-import { ref, provide, computed, onMounted, onBeforeUnmount, watch } from "vue";
+import {
+  ref,
+  provide,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  createApp,
+} from "vue";
 import LanguageOptions from "src/components/Language/LanguageOptions.vue";
 import ShareLink from "src/components/ShareLink.vue";
 import SeasonalHeader from "src/components/Seasonal/SeasonalHeader.vue";
@@ -8,12 +16,14 @@ import { useInterfaceLocale } from "src/composables/useInterfaceLocale";
 import { useLanguageRouting } from "src/composables/useLanguageRouting";
 import { useSeasonalService } from "src/services/SeasonalService";
 import { useSettingsStore } from "src/stores/SettingsStore";
+import { normId } from "src/utils/normalize";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 const route = useRoute();
 const settingsStore = useSettingsStore();
 const contentStore = useContentStore();
+const app = normId(import.meta.env.VITE_APP) || "default";
 
 const { isRTL, applyInterfaceLanguageToWebpage } = useInterfaceLocale();
 const { locale } = useI18n();
@@ -37,11 +47,15 @@ provide("toggleRightDrawer", toggleRightDrawer);
 const { ensureSeasonalValid, refreshSeasonal } = useSeasonalService();
 
 async function loadSeasonalIfNeeded() {
+  console.log("[loadSeasonalIfNeeded]");
   ensureSeasonalValid();
-
+  console.log("[loadSeasonalIfNeeded] ensure SeasonValid");
   if (!settingsStore.seasonalContent) {
-    if (!site.value || !languageCodeGoogle.value) return;
-    await refreshSeasonal(site.value, languageCodeGoogle.value);
+    console.log("[loadSeasonalIfNeeded] !settingsStore.seasonalContent");
+    const lang = String(languageCodeGoogle.value || "en").trim() || "en";
+    console.log("[loadSeasonalIfNeeded] lang: " + lang);
+    await refreshSeasonal(app, lang);
+    console.log("[loadSeasonalIfNeeded] lang: " + lang);
   }
 }
 
@@ -76,6 +90,13 @@ watch(
 
     // Apply <html lang|dir> and any other document-level tweaks
     applyInterfaceLanguageToWebpage(langObj);
+
+    // Apply Seasonal Text:
+
+    console.log(
+      "[Seasonal] calling refreshSeasonal with " + langObj.languageCodeGoogle
+    );
+    await refreshSeasonal(app, langObj.languageCodeGoogle);
   },
   { immediate: true, deep: true }
 );

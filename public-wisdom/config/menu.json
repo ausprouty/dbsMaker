@@ -1,20 +1,14 @@
 [
   {
-    "key": "seasonal",
-    "title": "Happy Lunar New Year",
-    "image": "/images/lunar.png"
-  },
-
-  {
     "key": "life",
-    "title": "Wisdom for Life",
+    "devName": "Life Principles",
     "image": "/images/life.png",
     "route": "/series/life?variant=wisdom",
     "maxLessons": 23
   },
   {
     "key": "jvideo",
-    "title": "Meeting Jesus",
+    "devName": "Jesus Video",
     "image": "/images/jesus.png",
     "route": "/jvideo",
     "maxLessons": 61
@@ -22,14 +16,14 @@
 
   {
     "key": "ctc",
-    "title": "Entering the Story",
+    "devName": "Creation to Church",
     "image": "/images/ctc.png",
     "route": "/series/ctc?variant=wisdom",
     "maxLessons": 23
   },
   {
     "key": "ask",
-    "title": "Questions and Conversation",
+    "devName": "Ask Questions",
     "image": "/images/ask.png",
     "route": "/questions?url=https://www.everyperson.com/contact.php"
   }
