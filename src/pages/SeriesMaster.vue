@@ -9,6 +9,8 @@ import { DEFAULTS } from "src/constants/Defaults";
 import { patchRouterForLogs } from "src/debug/patchRouterForLogs";
 
 import { useCommonContent } from "src/composables/useCommonContent";
+import { useSiteContent } from "src/composables/useSiteContent";
+
 import { useProgressTracker } from "src/composables/useProgressTracker.js";
 import { useInitializeSettingsStore } from "src/composables/useInitializeSettingsStore.js";
 
@@ -84,30 +86,34 @@ const {
 
 // ---- UI: Language selector / drawer toggle ----
 
-const showLanguageSelect = computed(() => {
-  const v = settingsStore.showLanguageSelect;
-  if (typeof v === "boolean") return v;
-  if (DEFAULTS && typeof DEFAULTS.showLanguageSelect === "boolean") {
-    return DEFAULTS.showLanguageSelect;
+// --- UI: Language selector button ---
+const showLanguageSelect = true;
+
+// Layout provides ONE function: openLanguageSelect()
+const openLanguageSelect = inject("openLanguageSelect", null);
+
+function onChangeLanguageClick() {
+  if (typeof openLanguageSelect === "function") {
+    openLanguageSelect();
+    return;
   }
-  return true;
-});
 
-// Try to get a toggler from the layout via provide/inject.
-const providedToggleRightDrawer = inject("toggleRightDrawer", null);
-const handleLanguageSelect = inject("handleLanguageSelect", null);
+  console.warn("[SeriesMaster] No language UI handler provided");
+}
 
-const toggleRightDrawer =
-  providedToggleRightDrawer ??
-  (handleLanguageSelect
-    ? () => handleLanguageSelect()
-    : () => {
-        if (typeof settingsStore.setRightDrawerOpen === "function") {
-          settingsStore.setRightDrawerOpen(true);
-        } else {
-          console.warn("[SeriesMaster] No drawer toggler provided");
-        }
-      });
+// useSiteContent is the single source of truth for already-normalized siteContent
+// Assume it returns:
+//   - siteContent (root object)
+//   - indexParas (array of strings)
+//   - getSection(key) -> { title, summary, paras }
+const { siteContent, indexParas, getSection } = useSiteContent();
+console.log("[SeriesMaster]", computedStudy.value);
+const section = getSection(computedStudy.value);
+console.log("[SeriesMaster]", section);
+const pageTitle = section?.title || commonContent?.title || "";
+console.log("[SeriesMaster]", pageTitle);
+const pageParas = section?.paras || commonContent?.paras || "";
+console.log("[SeriesMaster]", pageParas);
 
 onMounted(() => {
   try {
@@ -144,10 +150,10 @@ function updateLesson(nextLessonNumber) {
   <template v-if="commonContent">
     <q-page padding>
       <h1 class="dbs">
-        {{ t(`${computedStudy}.title`) }}
+        {{ pageTitle }}
       </h1>
 
-      <p v-for="(para, index) in tm(`${computedStudy}.para`)" :key="index">
+      <p v-for="(para, i) in pageParas" :key="i">
         {{ para }}
       </p>
 
@@ -157,7 +163,7 @@ function updateLesson(nextLessonNumber) {
         icon="language"
         no-caps
         class="mark-complete-btn q-mb-md"
-        @click="toggleRightDrawer()"
+        @click="onChangeLanguageClick"
       />
 
       <SeriesPassageSelect

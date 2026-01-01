@@ -47,20 +47,32 @@ const imageUrl = computed(() => seasonal.value?.imageUrl || "");
 </template>
 
 <style scoped>
+/* ---- wrapper: controls page gutter + aligns with blocks below ---- */
+.seasonal-wrap {
+  max-width: 1100px;
+  margin: 12px auto 20px; /* top | center | bottom */
+  padding: 0 16px; /* gutter on small screens */
+  box-sizing: border-box;
+}
+
+/* ---- card ---- */
 .seasonal-header {
   position: relative;
-  border-radius: 16px;
+  border-radius: 0;
   overflow: hidden;
 }
 
+/* ---- background image layer (covers full card) ---- */
 .seasonal-header__bg {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
   transform: scale(1.02);
+  z-index: 0;
 }
 
+/* ---- readable overlay panel ---- */
 .seasonal-header__inner {
   position: relative;
   padding: 18px 16px;
@@ -69,16 +81,20 @@ const imageUrl = computed(() => seasonal.value?.imageUrl || "");
     rgba(255, 255, 255, 0.92),
     rgba(255, 255, 255, 0.7)
   );
+  z-index: 1;
 }
 
 .seasonal-header__content {
   max-width: 820px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .seasonal-header__title {
-  margin: 0 0 6px 0;
-  font-size: 1.25rem;
+  color: var(--q-accent);
+  font-size: 1.15rem;
   font-weight: 700;
+  margin: 0 0 6px 0;
 }
 
 .seasonal-header__summary {
@@ -91,5 +107,14 @@ const imageUrl = computed(() => seasonal.value?.imageUrl || "");
   margin: 0 0 8px 0;
   font-size: 0.95rem;
   line-height: 1.45;
+}
+
+/* Optional: on wide screens, the page usually already has gutter,
+   so you can remove wrapper padding if you want perfectly tight alignment.
+   Keep or delete this block based on how your q-page is padded. */
+@media (min-width: 1024px) {
+  .seasonal-wrap {
+    padding: 0;
+  }
 }
 </style>

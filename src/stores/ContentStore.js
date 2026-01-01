@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import * as ContentKeys from "src/utils/ContentKeyBuilder";
 import { getCommonContent } from "../services/CommonContentService.js";
 import { getLessonContent } from "../services/LessonContentService.js";
+import { getSiteContent } from "../services/SiteContentService.js";
 import { getTranslatedInterface } from "../services/InterfaceService.js";
 import { buildVideoSource } from "@/utils/videoSource";
 import { unref } from "vue";
@@ -231,6 +232,11 @@ export const useContentStore = defineStore("contentStore", {
     // either the database (if we can), or go to the API
     async loadInterface(hl) {
       await getTranslatedInterface(hl); // fetch/cache only
+      console.log("ContentStore.loadInterface changed interface to " + hl);
+    },
+
+    async loadSiteContent(hl) {
+      await getSiteContent(hl); // fetch/cache only
       console.log("ContentStore.loadInterface changed interface to " + hl);
     },
 

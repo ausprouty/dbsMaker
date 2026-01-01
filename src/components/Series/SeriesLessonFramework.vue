@@ -1,5 +1,5 @@
 <script>
-import { computed, watch, onMounted, toRaw } from "vue";
+import { computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 
 import DbsSection from "src/components/Series/DbsSection.vue";
@@ -52,10 +52,6 @@ export default {
       return props.commonContent && props.commonContent.timing
         ? props.commonContent.timing
         : "";
-    });
-
-    watch(function () {
-      return [props.commonContent, props.languageCodeHL, props.languageCodeJF];
     });
 
     onMounted(function () {

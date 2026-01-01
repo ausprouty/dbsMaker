@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useSiteContent } from "src/composables/useSiteContent";
 
 const route = useRoute();
 
@@ -10,7 +11,7 @@ const loading = ref(true);
 const notFound = ref(false);
 const errorMsg = ref("");
 const html = ref("");
-console.log (route.params.page);
+console.log(route.params.page);
 
 const pageSlug = computed(() => String(route.params.page || "").trim());
 
@@ -54,7 +55,6 @@ async function loadPage() {
   }
 
   try {
-
     const m = await fetch(menuUrl.value, { cache: "no-store" });
     if (!m.ok) throw new Error(`menu.json (${m.status})`);
     const items = await m.json(); // [{ key, title, image, route, maxLessons }, ...]

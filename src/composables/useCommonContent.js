@@ -24,10 +24,14 @@ export function useCommonContent(
   const key = buildCommonContentKey(study, languageCodeHL, variant);
 
   console.log("[useCommonContent] setup", {
-    study: study,
-    hl: languageCodeHL,
-    variantRaw: variant,
-    key,
+    study: unref(study),
+    hl: unref(languageCodeHL),
+    variant: unref(variant),
+    key: buildCommonContentKey(
+      unref(study),
+      unref(languageCodeHL),
+      unref(variant)
+    ),
   });
 
   // end debug

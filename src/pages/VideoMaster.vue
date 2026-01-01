@@ -4,6 +4,7 @@ import { useVideoMasterVM } from "src/composables/useVideoMasterVM";
 import VideoPlayer from "src/components/Video/VideoPlayer.vue";
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 import VideoQuestions from "src/components/Video/VideoQuestions.vue";
+import { useSiteContent } from "src/composables/useSiteContent";
 
 function isObjectLike(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);

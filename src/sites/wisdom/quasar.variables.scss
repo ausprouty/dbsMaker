@@ -1,20 +1,20 @@
 /* src/sites/wisdom/quasar.variables.scss */
-$primary:   #d32f2f;  /* red — good fortune & joy */
-$secondary: #ffcc00;  /* gold — prosperity & wealth */
-$accent:    #8e44ad;  /* deep purple — festive touch */
+$primary: #d32f2f; /* red — warmth, welcome, clear headings */
+$secondary: #d59744; /* gold — warmth, generosity, gentle emphasis */
+$accent: #6d4c41; /* warm brown — grounded “wisdom” accent (replaces purple) */
 
-$minor1:    #d3b18c;  /* soft beige */
-$minor2:    #6a4e42;  /* dark brown */
-$neutral:   #f0f0f0;  /* soft white-gray */
+$minor1: #d3b18c; /* soft beige — friendly, calm surfaces */
+$minor2: #6a4e42; /* dark brown — depth for contrast and UI anchors */
+$neutral: #f8f3ee; /* warm off-white — less sterile than gray */
 
-$dark:      #2e2e2e;  /* dark bg */
-$dark-page: #1c1c1c;  /* darker page bg */
+$dark: #2e2e2e; /* dark bg — solid readability */
+$dark-page: #1c1c1c; /* darker page bg — night mode support */
 
-$positive:  #28a745;  /* green */
-$negative:  #c0392b;  /* warning/error red */
-$info:      #3498db;  /* info blue */
-$warning:   #f39c12;  /* orange-yellow */
+$positive: #65c058; /* green — affirmation, “good news” tone */
+$negative: #b03a2e; /* red-brown — error without shouting */
+$info: #3c6e89; /* slate blue — calm, trustworthy information */
+$warning: #d59744; /* amber-gold — caution that still fits the palette */
 
-$highlight-scripture: #f1c40f; /* gold accents for Scripture */
-$shadow:              #7f8c8d; /* subtle gray */
-$success-highlight:   #e74c3c; /* festive success red */
+$highlight-scripture: #f1c40f; /* gold — Scripture highlight with warmth */
+$shadow: #7f6e63; /* warm gray-brown — softer, less cold than gray */
+$success-highlight: #a05a2c; /* warm terracotta — success emphasis without competing with $primary */

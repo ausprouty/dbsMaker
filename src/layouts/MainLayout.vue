@@ -33,15 +33,22 @@ console.log("isRtl =", isRtl.value);
 const brandTitle = computed(() => settingsStore.brandTitle || "Not Set");
 
 const rightDrawerOpen = ref(false);
+
 function toggleRightDrawer() {
   rightDrawerOpen.value = !rightDrawerOpen.value;
 }
 function closeRightDrawer() {
   rightDrawerOpen.value = false;
 }
+function openRightDrawer() {
+  rightDrawerOpen.value = true;
+}
 
-// make toggler available to pages/components
-provide("toggleRightDrawer", toggleRightDrawer);
+function openLanguageSelect() {
+  openRightDrawer();
+}
+
+provide("openLanguageSelect", openLanguageSelect);
 
 // make seasonal content available to pages/components
 const { ensureSeasonalValid, refreshSeasonal } = useSeasonalService();
@@ -65,38 +72,60 @@ console.log("changeLanguage", changeLanguage);
 
 // Keep vue-i18n + <html lang|dir> in sync with the selected language object.
 // This runs on initial load and whenever languageObjectSelected changes.
+let lastLangReq = 0;
+
 watch(
   () => settingsStore.languageObjectSelected,
   async (langObj) => {
     if (!langObj) return;
 
+    const reqId = ++lastLangReq;
+
     const hl = String(langObj.languageCodeHL || "");
     if (!hl) return;
 
-    console.log("[MainLayout] languageObjectSelected changed:", hl);
+    const google = String(langObj.languageCodeGoogle || "");
 
+    applyInterfaceLanguageToWebpage(langObj);
+
+    // Start both in parallel
+    const interfacePromise = contentStore.loadInterface(hl);
+    const siteContentPromise = contentStore.loadSiteContent(hl);
+    const seasonalPromise = refreshSeasonal(app, google);
+
+    // Wait for interface first, then set locale
     try {
-      // Ensure the interface bundle for this HL is loaded
-      await contentStore.loadInterface(hl);
+      await interfacePromise;
     } catch (err) {
       console.warn("[MainLayout] loadInterface failed for", hl, err);
     }
 
-    // Set the actual i18n locale if needed
+    // If another language change happened, stop here (do not apply effects)
+    if (reqId !== lastLangReq) return;
+
     if (locale.value !== hl) {
-      console.log("[MainLayout] setting i18n locale to:", hl);
       locale.value = hl;
     }
 
-    // Apply <html lang|dir> and any other document-level tweaks
-    applyInterfaceLanguageToWebpage(langObj);
+    // Let the others finish, but do not throw if they fail
+    const settled = await Promise.allSettled([
+      siteContentPromise,
+      seasonalPromise,
+    ]);
 
-    // Apply Seasonal Text:
+    // If another change happened while waiting, ignore logs/effects
+    if (reqId !== lastLangReq) return;
 
-    console.log(
-      "[Seasonal] calling refreshSeasonal with " + langObj.languageCodeGoogle
-    );
-    await refreshSeasonal(app, langObj.languageCodeGoogle);
+    if (settled[0].status === "rejected") {
+      console.warn(
+        "[MainLayout] loadSiteContent failed for",
+        hl,
+        settled[0].reason
+      );
+    }
+    if (settled[1].status === "rejected") {
+      console.warn("[Seasonal] refreshSeasonal failed:", settled[1].reason);
+    }
   },
   { immediate: true, deep: true }
 );

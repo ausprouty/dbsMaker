@@ -1,12 +1,20 @@
 <script setup>
-import { computed, onMounted, watch } from "vue";
+import { computed, unref } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "src/stores/SettingsStore";
+import { useSiteContent } from "src/composables/useSiteContent";
 
 const router = useRouter();
-const { t, te, locale } = useI18n({ useScope: "global" });
+const { t, te } = useI18n({ useScope: "global" });
 const settingsStore = useSettingsStore();
+
+// useSiteContent is the single source of truth for already-normalized siteContent
+// Assume it returns:
+//   - siteContent (root object)
+//   - indexParas (array of strings)
+//   - getSection(key) -> { title, summary, paras }
+const { siteContent, indexParas, getSection } = useSiteContent();
 
 const loading = computed(
   () =>
@@ -16,30 +24,51 @@ const loading = computed(
 const error = computed(() => settingsStore.menuError);
 const menuItems = computed(() => settingsStore.menu ?? []);
 
+function getSectionKeyFromMenuItem(item) {
+  const k = String(item && item.key ? item.key : "")
+    .trim()
+    .toLowerCase();
+  return k;
+}
+
+const menuItemsResolved = computed(() => {
+  const items = menuItems.value || [];
+
+  return items.map((item) => {
+    const sectionKey = getSectionKeyFromMenuItem(item);
+
+    const rawSection =
+      typeof getSection === "function" ? getSection(sectionKey) : null;
+    const section = unref(rawSection) || { title: "", summary: "", paras: [] };
+
+    const title = section?.title || item?.title || item?.devName || "";
+
+    const summary = section?.summary || item?.summary || "";
+
+    return Object.assign({}, item, {
+      _title: title,
+      _summary: summary,
+    });
+  });
+});
+
 const handleImageClick = (to) => {
   if (to) router.push(to);
 };
-const menuItemsWithRoute = computed(function () {
-  return menuItems.value.filter(function (i) {
-    if (!i) return false;
-    if (typeof i.route === "string") return i.route.length > 0;
-    if (typeof i.route === "object" && i.route !== null) return true; // e.g. { name, params }
-    return false;
-  });
-});
 </script>
 
 <template>
   <q-page class="bg-white q-pa-md">
-    <p class="intro">{{ t("index.para.1") }}</p>
-    <p class="intro">{{ t("index.para.2") }}</p>
+    <p v-for="(intro, i) in indexParas" :key="i" class="intro">
+      {{ intro }}
+    </p>
     <div class="menu-container">
       <div v-if="error" class="text-negative q-mt-md">{{ error }}</div>
       <div v-else-if="loading" class="q-mt-md">Loading…</div>
 
       <div v-else class="menu-grid">
         <div
-          v-for="item in menuItemsWithRoute"
+          v-for="item in menuItemsResolved"
           :key="item.key"
           class="menu-col"
           @click="handleImageClick(item.route)"
@@ -47,22 +76,10 @@ const menuItemsWithRoute = computed(function () {
           <div class="menu-card hoverable">
             <img :src="item.image" class="menu-picture" />
             <div class="menu-label">
-              <h6>
-                {{
-                  t(
-                    (String(item.key) || "").toLowerCase() + ".title",
-                    item.title || item.key
-                  )
-                }}
-              </h6>
+              <h6>{{ item._title }}</h6>
 
-              <p class="menu-explanation">
-                {{
-                  t(
-                    (String(item.key) || "").toLowerCase() + ".summary",
-                    item.summary || ""
-                  )
-                }}
+              <p class="menu-summary">
+                {{ item._summary }}
               </p>
             </div>
           </div>
@@ -128,7 +145,7 @@ const menuItemsWithRoute = computed(function () {
   height: 100%;
   cursor: pointer;
 }
-p.menu-explanation {
+p.menu-summary {
   text-align: left;
 }
 
