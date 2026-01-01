@@ -1,84 +1,84 @@
 [
   {
     "key": "jvideo",
-    "title": "Jesus Video",
+    "devName": "Jesus Video",
     "image": "/images/jesus.png",
     "route": "/jvideo",
     "maxLessons": 61
   },
   {
     "key": "life",
-    "title": "Life Issues",
+    "devName": "Life Issues",
     "image": "/images/life.png",
     "route": "/series/life",
     "maxLessons": 23
   },
   {
     "key": "ctc",
-    "title": "Connect to Community",
+    "devName": "Creation to Church",
     "image": "/images/community.png",
     "route": "/series/ctc",
     "maxLessons": 23
   },
   {
     "key": "obey",
-    "title": "Obey",
+    "devName": "Obey",
     "image": "/images/obey.png",
     "route": "/series/obey",
     "maxLessons": 8
   },
   {
     "key": "give",
-    "title": "Give",
+    "devName": "Give",
     "image": "/images/give.png",
     "route": "/series/give",
     "maxLessons": 9
   },
   {
     "key": "relate",
-    "title": "Relate",
+    "devName": "Relate",
     "image": "/images/relate.png",
     "route": "/series/relate",
     "maxLessons": 9
   },
   {
     "key": "serve",
-    "title": "Serve",
+    "devName": "Serve",
     "image": "/images/serve.png",
     "route": "/series/serve",
     "maxLessons": 9
   },
   {
     "key": "hope",
-    "title": "Seven Stories of Hope",
+    "devName": "Seven Stories of Hope",
     "image": "/images/hope.png",
     "route": "/series/hope",
     "maxLessons": 7
   },
   {
     "key": "share",
-    "title": "Share",
+    "devName": "Share",
     "image": "/images/share.png",
     "route": "/series/share",
     "maxLessons": 9
   },
   {
     "key": "trust",
-    "title": "Trust",
+    "devName": "Trust",
     "image": "/images/trust.png",
     "route": "/series/trust",
     "maxLessons": 17
   },
   {
     "key": "lead",
-    "title": "Lead",
+    "devName": "Lead",
     "image": "/images/lead.png",
     "route": "/series/lead",
     "maxLessons": 25
   },
   {
     "key": "disciple",
-    "title": "Disciple",
+    "devName": "Disciple",
     "image": "/images/disciple.png",
     "route": "/series/disciple",
     "maxLessons": 8

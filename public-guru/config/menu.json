@@ -1,61 +1,61 @@
 [
   {
     "key": "mountain",
-    "title": "Mountain of God",
+    "devName": "Mountain of God",
     "image": "/images/mountain.png",
     "route": "/video/mountain",
     "maxLessons": 1
   },
   {
     "key": "wisemen",
-    "title": "Birth of the Guru",
+    "devName": "Birth of the Guru",
     "image": "/images/christmas.png",
     "route": "/video/wisemen",
     "maxLessons": 1
   },
   {
     "key": "jvideo",
-    "title": "His Life",
+    "devName": "Jesus Video",
     "image": "/images/jesus.png",
     "route": "/video/jvideo",
     "maxLessons": 61
   },
   {
     "key": "life",
-    "title": "His Teachings",
+    "devName": "Life Principles",
     "image": "/images/community.png",
     "route": "/series/life",
     "maxLessons": 23
   },
   {
     "key": "karma",
-    "title": "Escaping Karma",
+    "devName": "Karma",
     "image": "/images/karma.png",
     "route": "/page/karma"
   },
   {
     "key": "Deepavali",
-    "title": "Light for the Soul",
+    "devName": "Deepavali",
     "image": "/images/deepavali.png",
     "route": "/page/deepavali"
   },
   {
     "key": "ctc",
-    "title": "His Holy Book",
+    "devName": "Creation to Church",
     "image": "/images/scroll.png",
     "route": "/series/ctc",
     "maxLessons": 23
   },
   {
     "key": "following",
-    "title": "Following Him",
+    "devName": "Following Him",
     "image": "/images/follow.png",
     "route": "/video/following",
     "maxLessons": 5
   },
   {
     "key": "ask",
-    "title": "Questions",
+    "devName": "Ask",
     "image": "/images/ask.png",
     "route": "/ask?url=everyperson.com/contact.php"
   }

@@ -32,6 +32,9 @@ export function openDatabase() {
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
 
+      if (!db.objectStoreNames.contains("siteContent"))
+        db.createObjectStore("siteContent");
+
       if (!db.objectStoreNames.contains("commonContent"))
         db.createObjectStore("commonContent");
 
@@ -41,9 +44,9 @@ export function openDatabase() {
       if (!db.objectStoreNames.contains("interface"))
         db.createObjectStore("interface");
 
-      if (!db.objectStoreNames.contains("notes")) db.createObjectStore("notes");
+      if (!db.objectStoreNames.contains("notes"))
+        db.createObjectStore("notes");
 
-      // ✅ NEW store for per-study tracking
       if (!db.objectStoreNames.contains("study_progress"))
         db.createObjectStore("study_progress");
     };
@@ -178,7 +181,7 @@ function previewVal(v) {
   if (v && typeof v === "object") return `Object keys=${Object.keys(v).length}`;
   return String(v);
 }
-// ----------------- Common Content -----------------
+// ----------------- Interface Content -----------------
 
 export async function getInterfaceFromDB(languageCodeHL) {
   const key = ContentKeys.buildInterfaceKey(languageCodeHL);
@@ -190,20 +193,27 @@ export async function saveInterfaceToDB(languageCodeHL, content) {
   return saveItem("interface", key, content);
 }
 
+// ----------------- Site Content -----------------
+
+export async function getSiteContentFromDB(languageCodeHL) {
+  const key = ContentKeys.buildSiteContentKey(languageCodeHL);
+  return getItem("siteContent", key);
+}
+
+export async function saveSiteContentToDB(languageCodeHL, content) {
+  const key = ContentKeys.buildSiteContentKey(languageCodeHL);
+  return saveItem("siteContent", key, content);
+}
+
 // ----------------- Common Content -----------------
 
 export async function getCommonContentFromDB(study, languageCodeHL) {
   const key = ContentKeys.buildCommonContentKey(study, languageCodeHL);
-  console.log(key);
   return getItem("commonContent", key);
 }
 
 export async function saveCommonContentToDB(study, languageCodeHL, content) {
   const key = ContentKeys.buildCommonContentKey(study, languageCodeHL);
-  console.log("SAVE COMMON CONTENT TO DB");
-  console.log(key);
-  console.log(languageCodeHL);
-  console.log(content);
   return saveItem("commonContent", key, content);
 }
 

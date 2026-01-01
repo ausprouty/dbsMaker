@@ -90,3 +90,10 @@ export function buildStudyProgressKey(study) {
   var s = nId(study);
   return s ? "progress-" + s : null;
 }
+
+export function buildSiteContentKey(languageCodeHL) {
+  const hl = nId(languageCodeHL);
+  if (!hl) return null;
+  const key = "siteContent-" + hl;
+  return key;
+}

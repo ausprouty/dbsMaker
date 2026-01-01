@@ -3,7 +3,6 @@ import { computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "src/stores/SettingsStore";
-import SeasonalHeader from "src/components/Seasonal/SeasonalHeader.vue";
 
 const router = useRouter();
 const { t, te, locale } = useI18n({ useScope: "global" });
@@ -32,8 +31,8 @@ const menuItemsWithRoute = computed(function () {
 
 <template>
   <q-page class="bg-white q-pa-md">
-    <p>{{ t("index.para.1") }}</p>
-    <p>{{ t("index.para.2") }}</p>
+    <p class="intro">{{ t("index.para.1") }}</p>
+    <p class="intro">{{ t("index.para.2") }}</p>
     <div class="menu-container">
       <div v-if="error" class="text-negative q-mt-md">{{ error }}</div>
       <div v-else-if="loading" class="q-mt-md">Loading…</div>
@@ -159,5 +158,8 @@ p.menu-explanation {
 img.icon {
   height: 30px;
   cursor: pointer;
+}
+.intro {
+  font-size: 14pt;
 }
 </style>

@@ -14,10 +14,11 @@ let lastInterfaceReq = 0;
 
 export const useContentStore = defineStore("contentStore", {
   state: () => ({
-    commonContent: {}, // {'commonContent-${study}-${hl}': html}
-    lessonContent: {}, // {'lessonContent-${study}-${hl}-${jf}-lesson-${n}': html}
+    siteContent: {}, // {'siteContent-${hl}': json}
+    commonContent: {}, // {'commonContent-${study}-${hl}': json}
+    lessonContent: {}, // {'lessonContent-${study}-${hl}-${jf}-lesson-${n}': json}
     videoUrls: {}, // {'videoUrls-${study}-${jf}': [url1, url2]}
-    // NEW: cache for video meta per study
+    // cache for video meta per study
     _videoMetaByStudy: {}, // { [study]: { provider, segments, meta } }
     translationComplete: {
       interface: false,
@@ -27,26 +28,6 @@ export const useContentStore = defineStore("contentStore", {
   }),
 
   getters: {
-    lessonContentFor: (state) => (study, hl, jf, lesson) => {
-      const key = ContentKeys.buildLessonContentKey(study, hl, jf, lesson);
-      "LessonContentFor was asked for " + key;
-      const value = state.lessonContent[key];
-
-      if (!value) {
-        return null;
-      }
-
-      if (typeof value !== "object") {
-        console.warn(
-          "[ContentStore.lessonContentFor] non-object value in store",
-          { key, study, hl, jf, lesson, value }
-        );
-        return null;
-      }
-
-      return value;
-    },
-
     commonContentFor:
       (state) =>
       (study, hl, variant = null) => {
@@ -67,6 +48,46 @@ export const useContentStore = defineStore("contentStore", {
         }
         return value;
       },
+
+    lessonContentFor: (state) => (study, hl, jf, lesson) => {
+      const key = ContentKeys.buildLessonContentKey(study, hl, jf, lesson);
+      "LessonContentFor was asked for " + key;
+      const value = state.lessonContent[key];
+
+      if (!value) {
+        return null;
+      }
+
+      if (typeof value !== "object") {
+        console.warn(
+          "[ContentStore.lessonContentFor] non-object value in store",
+          { key, study, hl, jf, lesson, value }
+        );
+        return null;
+      }
+
+      return value;
+    },
+
+    siteContentFor: (state) => (hl) => {
+      const key = ContentKeys.buildSiteContentKey(hl);
+      console.log("SiteContentFor was asked for " + key);
+      const value = state.siteContent[key];
+
+      if (!value) {
+        return null;
+      }
+
+      if (typeof value !== "object") {
+        console.warn(
+          "[ContentStore.siteContentFor] non-object value in store",
+          { key, hl, value }
+        );
+        return null;
+      }
+
+      return value;
+    },
 
     videoUrlsFor: (state) => (study, jf) => {
       const key = ContentKeys.buildVideoUrlsKey(study, jf);
@@ -98,7 +119,6 @@ export const useContentStore = defineStore("contentStore", {
     // moves retrieved common content into Content Store
     setCommonContent(study, hl, data, variant = null) {
       const key = ContentKeys.buildCommonContentKey(study, hl, variant);
-
       if (!key) {
         console.warn(
           "setCommonContent: commonContent key is null; skipping set.",
@@ -106,7 +126,6 @@ export const useContentStore = defineStore("contentStore", {
         );
         return;
       }
-
       // Guard against accidentally storing the store itself
       if (data && typeof data === "object" && data.$id === "contentStore") {
         console.error(
@@ -115,7 +134,6 @@ export const useContentStore = defineStore("contentStore", {
         );
         return;
       }
-
       if (!data || typeof data !== "object") {
         console.warn(
           "setCommonContent: ignoring non-object commonContent payload.",
@@ -123,15 +141,12 @@ export const useContentStore = defineStore("contentStore", {
         );
         return;
       }
-
       this.commonContent[key] = data;
     },
 
-    // moves retreived lesson content into Content Store
     // moves retrieved lesson content into Content Store
     setLessonContent(study, hl, jf, lesson, data) {
       const key = ContentKeys.buildLessonContentKey(study, hl, jf, lesson);
-
       if (!key) {
         console.warn(
           "setLessonContent: lessonContent key is null; skipping set.",
@@ -139,7 +154,6 @@ export const useContentStore = defineStore("contentStore", {
         );
         return;
       }
-
       if (!data || typeof data !== "object") {
         console.warn("setLessonContent: ignoring non-object lesson payload.", {
           key,
@@ -151,8 +165,33 @@ export const useContentStore = defineStore("contentStore", {
         });
         return;
       }
-
       this.lessonContent[key] = data;
+    },
+
+    setSiteContent(hl, data) {
+      const key = ContentKeys.buildSiteContentKey(hl);
+      if (!key) {
+        console.warn("setSiteContent: siteContent key is null; skipping set.", {
+          hl,
+        });
+        return;
+      }
+      // Guard against accidentally storing the store itself
+      if (data && typeof data === "object" && data.$id === "contentStore") {
+        console.error(
+          "setSiteContent: BUG – received contentStore instance as data.",
+          { key, hl }
+        );
+        return;
+      }
+      if (!data || typeof data !== "object") {
+        console.warn(
+          "setSiteContent: ignoring non-object siteContent payload.",
+          { key, hl, data }
+        );
+        return;
+      }
+      this.siteContent[key] = data;
     },
 
     // moves retreived videoURLs  into Content Store which I plan to remove
