@@ -53,36 +53,5 @@
     "videoSegment": "Video Segment",
     "videoUnavailable": "Video Unavailable",
     "watchOnline": "Watch {0} online"
-  },
-  "review": {
-    "p1": "Before we begin, let’s take a moment to review what you committed to last time.",
-    "p2": "This helps us encourage each other and see how God is at work.",
-    "empty": "You didn’t write any notes in Look Forward the last time we met. Taking a few notes can help you grow!"
-  },
-  "index": {
-    "para": {
-      "1": "Most of us do not figure life out on our own. We look for people we can learn from, voices we can trust, and communities where questions and growth are welcome.",
-      "2": "This site invites you to explore a series of stories and conversations drawn from the life and teachings of Jesus, and to consider whether they have anything to say about wisdom, relationships, and real life today."
-    }
-  },
-  "hope": {
-    "title": "Seven Stories of Hope",
-    "summary": "Seven stories that describe encounters between Jesus and ordinary people facing real-life situations.",
-    "para": {
-      "1": "Each story records an interaction between Jesus and a person or group dealing with pressure, need, or uncertainty.",
-      "2": "As you read these stories together, you are invited to notice what stands out, reflect on the responses of the people involved, and consider whether any of these accounts connect with your own experience of life."
-    }
-  },
-  "outline": {
-    "title": "DBS Outline",
-    "summary": "An outline you can use to lead a Discovery Bible Study with any passage"
-  },
-  "tips": {
-    "title": "Discussion Tips",
-    "summary": "Simple guidance to help group discussions work well",
-    "para": {
-      "1": "These guidelines are designed to help groups have open, respectful conversations where everyone has space to share and listen.",
-      "2": "You do not need to be an expert or have all the answers. The focus is on reading together, noticing what stands out, and learning from one another."
-    }
   }
 }

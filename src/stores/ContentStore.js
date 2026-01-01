@@ -6,6 +6,7 @@ import { getLessonContent } from "../services/LessonContentService.js";
 import { getTranslatedInterface } from "../services/InterfaceService.js";
 import { buildVideoSource } from "@/utils/videoSource";
 import { unref } from "vue";
+import { normalizeSiteContentPayload } from "src/utils/normalizeSiteContent.js";
 import { validateLessonNumber } from "./validators";
 import { i18n } from "src/boot/i18n";
 // for use by loadInterface
@@ -176,7 +177,7 @@ export const useContentStore = defineStore("contentStore", {
         });
         return;
       }
-      // Guard against accidentally storing the store itself
+
       if (data && typeof data === "object" && data.$id === "contentStore") {
         console.error(
           "setSiteContent: BUG – received contentStore instance as data.",
@@ -184,6 +185,7 @@ export const useContentStore = defineStore("contentStore", {
         );
         return;
       }
+
       if (!data || typeof data !== "object") {
         console.warn(
           "setSiteContent: ignoring non-object siteContent payload.",
@@ -191,7 +193,17 @@ export const useContentStore = defineStore("contentStore", {
         );
         return;
       }
-      this.siteContent[key] = data;
+
+      const normalized = normalizeSiteContentPayload(data);
+      if (!normalized) {
+        console.warn("setSiteContent: failed to normalize siteContent.", {
+          key,
+          hl,
+        });
+        return;
+      }
+
+      this.siteContent[key] = normalized;
     },
 
     // moves retreived videoURLs  into Content Store which I plan to remove
