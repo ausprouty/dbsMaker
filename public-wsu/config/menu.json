@@ -2,28 +2,28 @@
   {
     "key": "jvideo",
     "devName": "Jesus Video",
-    "image": "/images/jesus.png",
+    "image": "/images/jesus.webp",
     "route": "/jvideo",
     "maxLessons": 61
   },
   {
     "key": "hope",
     "devName": "Seven Stories of Hope",
-    "image": "/images/hope.png",
+    "image": "/images/hope.webp",
     "route": "/series/hope?variant=apply",
     "maxLessons": 7
   },
   {
     "key": "outline",
     "devName": "DBS Outline",
-    "image": "/images/outline.png",
+    "image": "/images/outline.webp",
     "route": "/page/dbsOutline",
     "maxLessons": 1
   },
   {
     "key": "tips",
     "devName": "Facilitator's Tips",
-    "image": "/images/tips.png",
+    "image": "/images/tips.webp",
     "route": "/page/tips",
     "maxLessons": 1
   }

@@ -2,42 +2,42 @@
   {
     "key": "jvideo",
     "devName": "Jesus Video",
-    "image": "/images/jesus.png",
+    "image": "/images/jesus.webp",
     "route": "/jvideo",
     "maxLessons": 61
   },
   {
     "key": "life",
     "devName": "Life Issues",
-    "image": "/images/life.png",
+    "image": "/images/life.webp",
     "route": "/series/life",
     "maxLessons": 23
   },
   {
     "key": "hope",
     "devName": "Seven Stories of Hope",
-    "image": "/images/hope.png",
+    "image": "/images/hope.webp",
     "route": "/series/hope",
     "maxLessons": 7
   },
   {
     "key": "ctc",
     "devName": "Creation to Church",
-    "image": "/images/community.png",
+    "image": "/images/community.webp",
     "route": "/series/ctc",
     "maxLessons": 23
   },
   {
     "key": "outline",
     "devName": "DBS Outline",
-    "image": "/images/outline.png",
+    "image": "/images/outline.webp",
     "route": "/page/dbsOutline",
     "maxLessons": 1
   },
   {
     "key": "tips",
     "devName": "Facilitator's Tips",
-    "image": "/images/tips.png",
+    "image": "/images/tips.webp",
     "route": "/page/tips",
     "maxLessons": 1
   }

@@ -2,14 +2,14 @@
   {
     "key": "life",
     "devName": "Life Principles",
-    "image": "/images/life.png",
+    "image": "/images/life.webp",
     "route": "/series/life?variant=wisdom",
     "maxLessons": 23
   },
   {
     "key": "jvideo",
     "devName": "Jesus Video",
-    "image": "/images/jesus.png",
+    "image": "/images/jesus.webp",
     "route": "/jvideo",
     "maxLessons": 61
   },
@@ -17,14 +17,14 @@
   {
     "key": "ctc",
     "devName": "Creation to Church",
-    "image": "/images/ctc.png",
+    "image": "/images/ctc.webp",
     "route": "/series/ctc?variant=wisdom",
     "maxLessons": 23
   },
   {
     "key": "ask",
     "devName": "Ask Questions",
-    "image": "/images/ask.png",
+    "image": "/images/ask.webp",
     "route": "/questions?url=https://www.everyperson.com/contact.php"
   }
 ]

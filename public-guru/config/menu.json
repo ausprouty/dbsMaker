@@ -2,61 +2,61 @@
   {
     "key": "mountain",
     "devName": "Mountain of God",
-    "image": "/images/mountain.png",
+    "image": "/images/mountain.webp",
     "route": "/video/mountain",
     "maxLessons": 1
   },
   {
     "key": "wisemen",
     "devName": "Birth of the Guru",
-    "image": "/images/christmas.png",
+    "image": "/images/christmas.webp",
     "route": "/video/wisemen",
     "maxLessons": 1
   },
   {
     "key": "jvideo",
     "devName": "Jesus Video",
-    "image": "/images/jesus.png",
+    "image": "/images/jesus.webp",
     "route": "/video/jvideo",
     "maxLessons": 61
   },
   {
     "key": "life",
     "devName": "Life Principles",
-    "image": "/images/community.png",
+    "image": "/images/community.webp",
     "route": "/series/life",
     "maxLessons": 23
   },
   {
     "key": "karma",
     "devName": "Karma",
-    "image": "/images/karma.png",
+    "image": "/images/karma.webp",
     "route": "/page/karma"
   },
   {
     "key": "Deepavali",
     "devName": "Deepavali",
-    "image": "/images/deepavali.png",
+    "image": "/images/deepavali.webp",
     "route": "/page/deepavali"
   },
   {
     "key": "ctc",
     "devName": "Creation to Church",
-    "image": "/images/scroll.png",
+    "image": "/images/scroll.webp",
     "route": "/series/ctc",
     "maxLessons": 23
   },
   {
     "key": "following",
     "devName": "Following Him",
-    "image": "/images/follow.png",
+    "image": "/images/follow.webp",
     "route": "/video/following",
     "maxLessons": 5
   },
   {
     "key": "ask",
     "devName": "Ask",
-    "image": "/images/ask.png",
+    "image": "/images/ask.webp",
     "route": "/ask?url=everyperson.com/contact.php"
   }
 ]
