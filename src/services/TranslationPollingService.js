@@ -11,7 +11,12 @@ import {
 
 // De-duplicate identical concurrent polls
 const inFlight = new Map();
-const ALLOWED_TYPES = new Set(["interface", "commonContent", "lessonContent"]);
+const ALLOWED_TYPES = new Set([
+  "interface",
+  "commonContent",
+  "lessonContent",
+  "siteContent",
+]);
 
 /**
  * Polls the translation endpoint until complete (meta.complete === true).

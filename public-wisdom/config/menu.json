@@ -3,7 +3,7 @@
     "key": "life",
     "devName": "Life Principles",
     "image": "/images/life.webp",
-    "route": "/series/life?variant=wisdom",
+    "route": "/series/life",
     "maxLessons": 23
   },
   {
@@ -18,7 +18,7 @@
     "key": "ctc",
     "devName": "Creation to Church",
     "image": "/images/ctc.webp",
-    "route": "/series/ctc?variant=wisdom",
+    "route": "/series/ctc",
     "maxLessons": 23
   },
   {

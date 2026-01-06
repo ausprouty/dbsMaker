@@ -10,7 +10,7 @@
     "key": "hope",
     "devName": "Seven Stories of Hope",
     "image": "/images/hope.webp",
-    "route": "/series/hope?variant=apply",
+    "route": "/series/hope/apply",
     "maxLessons": 7
   },
   {

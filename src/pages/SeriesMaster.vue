@@ -5,14 +5,13 @@ import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 
 import { useSettingsStore } from "src/stores/SettingsStore";
-import { DEFAULTS } from "src/constants/Defaults";
 import { patchRouterForLogs } from "src/debug/patchRouterForLogs";
 
 import { useCommonContent } from "src/composables/useCommonContent";
 import { useSiteContent } from "src/composables/useSiteContent";
 
 import { useProgressTracker } from "src/composables/useProgressTracker.js";
-import { useInitializeSettingsStore } from "src/composables/useInitializeSettingsStore.js";
+import { applyRouteToSettingsStore } from "src/composables/applyRouteToSettingsStore.js";
 
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 import SeriesLessonFramework from "src/components/Series/SeriesLessonFramework.vue";
@@ -20,14 +19,14 @@ import SeriesLessonFramework from "src/components/Series/SeriesLessonFramework.v
 const route = useRoute();
 const router = useRouter();
 
-const { t, tm, locale } = useI18n({ useScope: "global" });
+const { t, locale } = useI18n({ useScope: "global" });
 
 const settingsStore = useSettingsStore();
-useInitializeSettingsStore(route, settingsStore);
+applyRouteToSettingsStore(route, settingsStore);
 
 console.log("[SeriesMaster] interface locale on mount:", locale.value);
 
-const { languageCodeHLSelected, languageCodeJFSelected } =
+const { languageCodeHLSelected, languageCodeJFSelected, variant } =
   storeToRefs(settingsStore);
 
 console.log(
@@ -52,15 +51,10 @@ const computedLessonNumber = computed(() => {
 const computedLanguageHL = languageCodeHLSelected;
 const computedLanguageJF = languageCodeJFSelected;
 
-// Optional variant (?variant=wsu). Accept "variant" or "varient".
+// Variant is now sourced from SettingsStore (hydrated from the route)
 const computedVariant = computed(() => {
-  const q = route.query;
-  const v = q && (q.variant != null ? q.variant : q.varient);
-  const raw = Array.isArray(v) ? v[0] : v;
-  if (typeof raw !== "string") return null;
-  const lower = raw.trim().toLowerCase();
-  const clean = lower.replace(/[^a-z0-9-]/g, "");
-  return clean || null;
+  const v = variant && variant.value != null ? variant.value : null;
+  return v ? String(v) : null;
 });
 
 console.log(
@@ -86,10 +80,8 @@ const {
 
 // ---- UI: Language selector / drawer toggle ----
 
-// --- UI: Language selector button ---
 const showLanguageSelect = true;
 
-// Layout provides ONE function: openLanguageSelect()
 const openLanguageSelect = inject("openLanguageSelect", null);
 
 function onChangeLanguageClick() {
@@ -101,19 +93,23 @@ function onChangeLanguageClick() {
   console.warn("[SeriesMaster] No language UI handler provided");
 }
 
-// useSiteContent is the single source of truth for already-normalized siteContent
-// Assume it returns:
-//   - siteContent (root object)
-//   - indexParas (array of strings)
-//   - getSection(key) -> { title, summary, paras }
-const { siteContent, indexParas, getSection } = useSiteContent();
-console.log("[SeriesMaster]", computedStudy.value);
-const section = getSection(computedStudy.value);
-console.log("[SeriesMaster]", section);
-const pageTitle = section?.title || commonContent?.title || "";
-console.log("[SeriesMaster]", pageTitle);
-const pageParas = section?.paras || commonContent?.paras || "";
-console.log("[SeriesMaster]", pageParas);
+const { getSection } = useSiteContent();
+
+const section = computed(() => getSection(computedStudy.value));
+
+const pageTitle = computed(() => {
+  const s = section.value;
+  return (
+    (s && s.title) || (commonContent.value && commonContent.value.title) || ""
+  );
+});
+
+const pageParas = computed(() => {
+  const s = section.value;
+  return (
+    (s && s.paras) || (commonContent.value && commonContent.value.paras) || []
+  );
+});
 
 onMounted(() => {
   try {
@@ -127,7 +123,6 @@ onMounted(() => {
   }
 });
 
-// Reload when study/languages/variant change
 watch(
   [computedLanguageHL, computedLanguageJF, computedStudy, computedVariant],
   () => {
@@ -135,12 +130,10 @@ watch(
   }
 );
 
-// Log locale changes
 watch(locale, (newVal, oldVal) => {
   console.log("[SeriesMaster] interface locale changed:", oldVal, "→", newVal);
 });
 
-// Child -> parent lesson change
 function updateLesson(nextLessonNumber) {
   settingsStore.setLessonNumber(computedStudy.value, nextLessonNumber);
 }
