@@ -11,12 +11,13 @@ function nInt(value) {
   return v ? v : null;
 }
 
-export function buildCommonContentKey(study, languageCodeHL, variant = null) {
+export function buildCommonContentKey(study, languageCodeHL, variant) {
   const s = nId(study);
   const hl = nId(languageCodeHL);
   if (!s || !hl) return null;
 
-  let raw = variant;
+  // Require variant; default it
+  var raw = variant;
   if (
     raw === null ||
     raw === undefined ||
@@ -24,18 +25,13 @@ export function buildCommonContentKey(study, languageCodeHL, variant = null) {
     raw === "null" ||
     raw === "undefined"
   ) {
-    raw = "";
+    raw = "default";
   }
 
-  let v = "";
-  if (raw) {
-    v = nId(raw);
-    if (!v) return null;
-  }
+  const v = nId(raw);
+  if (!v) return null;
 
-  const key = v
-    ? "commonContent-" + s + "-" + hl + "-v-" + v
-    : "commonContent-" + s + "-" + hl;
+  const key = "commonContent-" + s + "-" + hl + "-" + v;
 
   console.log("[buildCommonContentKey]", {
     study,

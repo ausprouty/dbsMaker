@@ -44,8 +44,7 @@ export function openDatabase() {
       if (!db.objectStoreNames.contains("interface"))
         db.createObjectStore("interface");
 
-      if (!db.objectStoreNames.contains("notes"))
-        db.createObjectStore("notes");
+      if (!db.objectStoreNames.contains("notes")) db.createObjectStore("notes");
 
       if (!db.objectStoreNames.contains("study_progress"))
         db.createObjectStore("study_progress");
@@ -207,13 +206,18 @@ export async function saveSiteContentToDB(languageCodeHL, content) {
 
 // ----------------- Common Content -----------------
 
-export async function getCommonContentFromDB(study, languageCodeHL) {
-  const key = ContentKeys.buildCommonContentKey(study, languageCodeHL);
+export async function getCommonContentFromDB(study, languageCodeHL, variant) {
+  const key = ContentKeys.buildCommonContentKey(study, languageCodeHL, variant);
   return getItem("commonContent", key);
 }
 
-export async function saveCommonContentToDB(study, languageCodeHL, content) {
-  const key = ContentKeys.buildCommonContentKey(study, languageCodeHL);
+export async function saveCommonContentToDB(
+  study,
+  languageCodeHL,
+  content,
+  variant
+) {
+  const key = ContentKeys.buildCommonContentKey(study, languageCodeHL, variant);
   return saveItem("commonContent", key, content);
 }
 

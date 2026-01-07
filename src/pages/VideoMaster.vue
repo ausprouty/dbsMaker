@@ -5,6 +5,7 @@ import VideoPlayer from "src/components/Video/VideoPlayer.vue";
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 import VideoQuestions from "src/components/Video/VideoQuestions.vue";
 import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings";
+import { useSettingsStore } from "src/stores/SettingsStore";
 
 function isObjectLike(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);
@@ -17,7 +18,8 @@ function toNonEmptyString(v) {
 
 const toggleRightDrawer = inject("toggleRightDrawer", function () {});
 
-useApplyRouteToSettings();
+const settingsStore = useSettingsStore();
+useApplyRouteToSettings(settingsStore);
 
 const {
   heading,

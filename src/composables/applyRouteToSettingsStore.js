@@ -73,7 +73,6 @@ export function applyRouteToSettingsStore(route, settingsStore) {
     DEFAULTS.languageCodeJF;
 
   var variant = normVariant(rawVar);
-  if (variant === "default") variant = null;
 
   // ---- Apply to store ------------------------------------------------------
   // Preferred: one store action owns consistency + HL lookup.

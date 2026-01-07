@@ -20,12 +20,18 @@ const router = useRouter();
 
 const { t, locale } = useI18n({ useScope: "global" });
 
+import { getActivePinia } from "pinia";
+console.log("[SeriesMaster] activePinia =", getActivePinia());
 const settingsStore = useSettingsStore();
-useApplyRouteToSettings();
 
-console.log("[SeriesMaster] interface locale on mount:", locale.value);
+try {
+  useApplyRouteToSettings(settingsStore);
+} catch (e) {
+  console.error("[SeriesMaster] useApplyRouteToSettings failed", e);
+  throw e;
+}
 
-const { textLanguageObjectSelected, videoSelectedLanguage, variantForStudy } =
+const { textLanguageObjectSelected, videoLanguageSelected, variantForStudy } =
   storeToRefs(settingsStore);
 
 const computedStudy = computed(
@@ -42,30 +48,39 @@ const computedLessonNumber = computed(() => {
     : 1;
 });
 
-const computedLanguageHL = textLanguageObjectSelected;
-const computedLanguageJF = videoSelectedLanguage;
-
-// variantForStudy is now sourced from SettingsStore (hydrated from the route)
-const computedvariantForStudy = computed(() => {
-  const v =
-    variantForStudy && variantForStudy.value != null
-      ? variantForStudy.value
-      : null;
-  return v ? String(v) : null;
+// ✅ TEXT language (HL) — reactive
+const computedLanguageHL = computed(() => {
+  var obj = textLanguageObjectSelected.value;
+  return obj && obj.languageCodeHL ? String(obj.languageCodeHL) : "eng00";
 });
 
-console.log(
-  "[SeriesMaster] study/langHL:",
-  computedStudy.value,
-  computedLanguageHL.value
-);
+// ✅ VIDEO language (JF) — reactive
+const computedLanguageJF = computed(() => {
+  var jf = videoLanguageSelected.value;
+  return jf != null && String(jf).trim().length > 0 ? String(jf).trim() : "";
+});
+
+// ✅ Variant — simplest form: just use the getter
+const computedVariant = computed(() => {
+  var v =
+    typeof settingsStore.variantForCurrentStudy === "function"
+      ? settingsStore.variantForCurrentStudy
+      : "default";
+
+  if (v == null) {
+    return "default";
+  }
+
+  var s = String(v).trim();
+  return s.length > 0 ? s : "default";
+});
 
 // ---- Lesson content readiness ----
 
 const { commonContent, topics, loadCommonContent } = useCommonContent(
   computedStudy,
   computedLanguageHL,
-  computedvariantForStudy
+  computedVariant
 );
 
 const {
@@ -121,12 +136,7 @@ onMounted(() => {
 });
 
 watch(
-  [
-    computedLanguageHL,
-    computedLanguageJF,
-    computedStudy,
-    computedvariantForStudy,
-  ],
+  [computedLanguageHL, computedLanguageJF, computedStudy, computedVariant],
   () => {
     loadCommonContent();
   }
@@ -176,7 +186,7 @@ function updateLesson(nextLessonNumber) {
 
       <SeriesLessonFramework
         :key="`${computedStudy}-${
-          computedvariantForStudy || ''
+          computedVariant || ''
         }-${computedLessonNumber}`"
         :languageCodeHL="computedLanguageHL"
         :languageCodeJF="computedLanguageJF"

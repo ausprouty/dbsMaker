@@ -89,28 +89,16 @@ export const settingsGetters = {
   // Getter that returns a function
   lessonNumberForStudy(state) {
     return function (studyArg) {
-      var study = studyArg || state.currentStudy || "dbs";
+      var study = String(studyArg || state.currentStudy || "dbs").trim();
+      if (!study) study = "dbs";
 
       var dict = state.lessonNumber || {};
-      var has =
-        dict instanceof Map
-          ? dict.has(study)
-          : Object.prototype.hasOwnProperty.call(dict, study);
+      var raw = Object.prototype.hasOwnProperty.call(dict, study)
+        ? dict[study]
+        : 1;
 
-      if (!has) {
-        console.warn('[store] "' + study + '" not found. Returning 1.');
-        return 1;
-      }
-
-      var raw = dict instanceof Map ? dict.get(study) : dict[study];
       var lesson = Number(raw);
-      if (!Number.isFinite(lesson) || lesson < 1) {
-        console.warn(
-          '[store] "' + study + '" invalid lesson "' + raw + '". Returning 1.'
-        );
-        return 1;
-      }
-      return lesson;
+      return Number.isFinite(lesson) && lesson >= 1 ? lesson : 1;
     };
   },
 
@@ -138,8 +126,15 @@ export const settingsGetters = {
   },
 
   variantForCurrentStudy(state) {
-    var s = state.currentStudy ? String(state.currentStudy).toLowerCase() : "";
-    var map = state.variantByStudy || {};
-    return map[s] || null;
+    var s = state.currentStudy
+      ? String(state.currentStudy).trim().toLowerCase()
+      : "";
+    if (!s) return "default";
+
+    var map = state.variantByStudy;
+    if (!map || typeof map !== "object") return "default";
+
+    var v = map[s];
+    return v ? String(v) : "default";
   },
 };

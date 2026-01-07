@@ -10,7 +10,7 @@
     "key": "jvideo",
     "devName": "Jesus Video",
     "image": "/images/jesus.webp",
-    "route": "/jvideo",
+    "route": "/video/jvideo",
     "maxLessons": 61
   },
 

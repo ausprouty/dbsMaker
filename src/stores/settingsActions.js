@@ -9,33 +9,41 @@ export const settingsActions = {
   applyRouteContext(payload) {
     payload = payload || {};
 
-    // Expect cleaned values from route adapter, but still be defensive.
     var study = payload.study;
     var lesson = payload.lesson;
     var hl = payload.hl;
     var jf = payload.jf;
     var variant = payload.variant;
 
-    if (study) this.setCurrentStudy(study);
-    if (study && lesson) this.setLessonNumber(study, lesson);
-
-    if (typeof this.setVariant === "function") {
-      this.setVariant(variant);
-    } else {
-      this.variant = variant;
+    // ---- STUDY ----
+    if (study) {
+      this.setCurrentStudy(study);
     }
 
-    // VIDEO: store a string (JF). Only set if present, do not stomp.
+    // ---- LESSON ----
+    if (study && lesson != null) {
+      this.setLessonNumber(study, lesson);
+    }
+
+    // ---- VARIANT (always a string) ----
+    if (study && typeof this.setVariantForStudy === "function") {
+      var v = typeof variant === "string" ? variant : "";
+      this.setVariantForStudy(study, v);
+    }
+
+    // ---- VIDEO LANGUAGE (JF) ----
     if (jf && typeof this.setVideoLanguageSelected === "function") {
       this.setVideoLanguageSelected(jf);
-    } else if (jf) {
-      this.videoLanguageSelected = jf;
     }
 
-    // TEXT: needs an object. Resolve from HL and set it if HL changed.
+    // ---- TEXT LANGUAGE (HL → object) ----
     if (hl) {
       var cur = this.textLanguageObjectSelected || null;
-      var curHL = cur && cur.languageCodeHL ? String(cur.languageCodeHL) : "";
+      var curHL =
+        cur && (cur.languageCodeHL || cur.LanguageCodeHL)
+          ? String(cur.languageCodeHL || cur.LanguageCodeHL)
+          : "";
+
       if (String(hl) !== curHL) {
         var found = this.findLanguageByHL(hl);
         var langObj = found || this.makeLanguageFallback(hl, jf);
@@ -254,26 +262,29 @@ export const settingsActions = {
   },
 
   setLessonNumber(study, lesson) {
-    console.log(`setLessonNumber called with study=${study}, lesson=${lesson}`);
+    var s = String(study || "").trim();
+    if (!s) return;
 
-    if (!this.lessonNumber.hasOwnProperty(study)) {
-      console.warn(
-        `setLessonNumber: Invalid study '${study}'. No changes made.`
-      );
-      return;
+    var parsedLesson = validateLessonNumber(lesson);
+    if (parsedLesson === null) return;
+
+    var max =
+      MAX_LESSON_NUMBERS && MAX_LESSON_NUMBERS[s]
+        ? MAX_LESSON_NUMBERS[s]
+        : null;
+
+    var clamped = max ? Math.min(parsedLesson, max) : parsedLesson;
+
+    if (!this.lessonNumber || typeof this.lessonNumber !== "object") {
+      this.lessonNumber = {};
     }
 
-    const parsedLesson = validateLessonNumber(lesson);
-    if (parsedLesson === null) {
-      console.warn(
-        `setLessonNumber: Invalid lesson '${lesson}'. No changes made.`
-      );
-      return;
-    }
-
-    const clampedLesson = Math.min(parsedLesson, MAX_LESSON_NUMBERS[study]);
-    this.lessonNumber[study] = clampedLesson;
+    // Ensure reactivity (Pinia/Vue generally handles this, but copy is safest)
+    var copy = Object.assign({}, this.lessonNumber);
+    copy[s] = clamped;
+    this.lessonNumber = copy;
   },
+
   setSeasonalContent(payload) {
     this.seasonalContent = payload.content;
     this.seasonalExpires = payload.ends;
@@ -283,14 +294,21 @@ export const settingsActions = {
     this.seasonalExpires = null;
   },
   setVariantForStudy(study, v) {
-    const s = study?.toLowerCase();
-    const clean =
-      typeof v === "string"
-        ? v
-            .trim()
-            .toLowerCase()
-            .replace(/[^a-z0-9-]/g, "")
-        : null;
-    this.variantByStudy[s] = clean || null;
+    var s = String(study || "")
+      .trim()
+      .toLowerCase();
+    if (!s) return;
+
+    var clean = typeof v === "string" ? v.trim().toLowerCase() : "";
+    clean = clean.replace(/[^a-z0-9-]/g, "");
+    if (!clean) clean = "default";
+
+    var map = this.variantByStudy;
+    if (!map || typeof map !== "object") map = {};
+
+    // safest reactive update
+    var copy = Object.assign({}, map);
+    copy[s] = clean;
+    this.variantByStudy = copy;
   },
 };

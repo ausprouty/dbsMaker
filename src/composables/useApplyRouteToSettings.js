@@ -1,22 +1,31 @@
-App;
 // src/composables/useApplyRouteToSettings.js
 import { watch } from "vue";
 import { useRoute } from "vue-router";
-import { useSettingsStore } from "src/stores/SettingsStore";
 import { applyRouteToSettingsStore } from "src/composables/applyRouteToSettingsStore";
 
-export function useApplyRouteToSettings() {
+export function useApplyRouteToSettings(settingsStore) {
+  if (!settingsStore) {
+    throw new Error("useApplyRouteToSettings: settingsStore is required");
+  }
+
   var route = useRoute();
-  var settingsStore = useSettingsStore();
 
   watch(
     function () {
       return route.fullPath;
     },
     function () {
-      applyRouteToSettingsStore(route, settingsStore);
+      try {
+        applyRouteToSettingsStore(route, settingsStore);
+      } catch (err) {
+        console.console.error(
+          "[useApplyRouteToSettings] applyRouteToSettingsStore failed",
+          err,
+          { fullPath: route.fullPath }
+        );
+      }
     },
-    { immediate: true }
+    { immediate: true, flushd: "post" }
   );
 
   return { settingsStore: settingsStore };
