@@ -6,6 +6,67 @@ import { MAX_LESSON_NUMBERS } from "src/constants/Defaults";
 import { validateLessonNumber, validateNonEmptyString } from "./validators";
 
 export const settingsActions = {
+  applyRouteContext(payload) {
+    payload = payload || {};
+
+    // Expect cleaned values from route adapter, but still be defensive.
+    var study = payload.study;
+    var lesson = payload.lesson;
+    var hl = payload.hl;
+    var jf = payload.jf;
+    var variant = payload.variant;
+
+    if (study) this.setCurrentStudy(study);
+    if (study && lesson) this.setLessonNumber(study, lesson);
+
+    if (typeof this.setVariant === "function") {
+      this.setVariant(variant);
+    } else {
+      this.variant = variant;
+    }
+
+    // VIDEO: store a string (JF). Only set if present, do not stomp.
+    if (jf && typeof this.setVideoLanguageSelected === "function") {
+      this.setVideoLanguageSelected(jf);
+    } else if (jf) {
+      this.videoLanguageSelected = jf;
+    }
+
+    // TEXT: needs an object. Resolve from HL and set it if HL changed.
+    if (hl) {
+      var cur = this.textLanguageObjectSelected || null;
+      var curHL = cur && cur.languageCodeHL ? String(cur.languageCodeHL) : "";
+      if (String(hl) !== curHL) {
+        var found = this.findLanguageByHL(hl);
+        var langObj = found || this.makeLanguageFallback(hl, jf);
+        this.setTextLanguageObjectSelected(langObj);
+      }
+    }
+  },
+
+  findLanguageByHL(hl) {
+    var key = String(hl || "").trim();
+    if (!key) return null;
+
+    var list = Array.isArray(this.languages) ? this.languages : [];
+    for (var i = 0; i < list.length; i++) {
+      if (String(list[i].languageCodeHL || "") === key) return list[i];
+    }
+    return null;
+  },
+
+  makeLanguageFallback(hl, jf) {
+    return {
+      name: String(hl || ""),
+      ethnicName: "",
+      languageCodeIso: "",
+      languageCodeHL: String(hl || ""),
+      languageCodeJF: String(jf || ""),
+      languageCodeGoogle: "",
+      textDirection: "ltr",
+    };
+  },
+
   addRecentLanguage(lang) {
     if (!lang || !lang.languageCodeHL) return;
     var key = String(lang.languageCodeHL);

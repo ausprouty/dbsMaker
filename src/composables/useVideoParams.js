@@ -1,163 +1,104 @@
 // src/composables/useVideoParams.js
-import { computed, unref, watch, onMounted } from "vue";
+import { computed, unref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useSettingsStore } from "src/stores/SettingsStore";
-import { normPositiveInt, normParamStr } from "src/utils/normalize";
 
 /*
-  Priority per field:
-  1) route params (if present & valid)
-  2) store
-  3) provided defaults
-
+  Store is the source of truth.
   Options:
     studyKey: string|ref (required)
-    defaults: { lesson, languageCodeHL, languageCodeJF }
     syncToRoute: boolean (default true)
 */
 export function useVideoParams(options) {
-  const {
-    studyKey,
-    defaults = { lesson: 1, languageCodeHL: "eng00", languageCodeJF: "529" },
-    syncToRoute = true,
-  } = options || {};
+  options = options || {};
+  var studyKey = options.studyKey;
+  var syncToRoute = options.syncToRoute !== false;
 
-  const route = useRoute();
-  const router = useRouter();
-  const settingsStore = useSettingsStore();
+  var route = useRoute();
+  var router = useRouter();
+  var settingsStore = useSettingsStore();
 
-  // ---- Unref once & normalise ---------------------------------------------
-  const resolvedStudyKey = computed(() => normParamStr(unref(studyKey)));
+  var resolvedStudyKey = computed(function () {
+    return String(
+      unref(studyKey) || settingsStore.currentStudySelected || "dbs"
+    );
+  });
 
-  // ---- Route candidates -----------------------------------------------------
-  const routeLesson = computed(() => normPositiveInt(route.params.lesson));
-  const routeHL = computed(() => normParamStr(route.params.languageCodeHL));
-  const routeJF = computed(() => normParamStr(route.params.languageCodeJF));
-
-  // ---- Store candidates -----------------------------------------------------
-  const storeLesson = computed(() => {
-    const fn = settingsStore.lessonNumberForStudy;
+  var lesson = computed(function () {
+    var key = resolvedStudyKey.value;
+    var fn = settingsStore.lessonNumberForStudy;
     if (typeof fn === "function") {
-      const n = Number(fn(resolvedStudyKey.value));
-      if (Number.isFinite(n) && n > 0) return n;
-    } else {
-      const n = Number(settingsStore.lessonNumber);
-      if (Number.isFinite(n) && n > 0) return n;
+      var n = Number(fn(key));
+      return n > 0 ? n : 1;
     }
-    return undefined;
+    return 1;
   });
 
-  const storeHL = computed(() => {
-    const s = settingsStore.languageCodeHLSelected;
-    return s && String(s).trim() ? String(s).trim() : undefined;
+  var languageCodeHL = computed(function () {
+    var obj = settingsStore.textLanguageObjectSelected;
+    var hl = obj && obj.languageCodeHL ? String(obj.languageCodeHL) : "";
+    return hl || "eng00";
   });
 
-  const storeJF = computed(() => {
-    const s = settingsStore.languageCodeJFSelected;
-    return s != null ? String(s) : undefined;
+  var languageCodeJF = computed(function () {
+    var v = settingsStore.videoLanguageSelected;
+    v = v == null ? "" : String(v).trim();
+    if (v) return v;
+
+    // Useful fallback if video language has not been chosen yet
+    var obj = settingsStore.textLanguageObjectSelected;
+    var jf = obj && obj.languageCodeJF ? String(obj.languageCodeJF) : "";
+    return jf || "529";
   });
 
-  // ---- Resolved values ------------------------------------------------------
-  const lesson = computed(
-    () => routeLesson.value || storeLesson.value || Number(defaults.lesson || 1)
-  );
-
-  const languageCodeHL = computed(
-    () => routeHL.value || storeHL.value || String(defaults.languageCodeHL)
-  );
-
-  const languageCodeJF = computed(() => {
-    const v = routeJF.value || storeJF.value || String(defaults.languageCodeJF);
-    return v == null ? "" : String(v);
+  var sectionKey = computed(function () {
+    return lesson.value > 0 ? "video-" + lesson.value : "";
   });
 
-  const sectionKey = computed(() =>
-    lesson.value > 0 ? "video-" + lesson.value : ""
-  );
-
-  // ---- Apply to store / router ---------------------------------------------
-  // not sure we need this
-  function applyToStore() {
-    const key = resolvedStudyKey.value;
-    settingsStore.setCurrentStudy(key);
-    settingsStore.setLessonNumber(key, Number(lesson.value));
-    settingsStore.setLanguageCodeHL(languageCodeHL.value);
-    settingsStore.setLanguageCodeJF(languageCodeJF.value);
-  }
-
-  function applyToRouteIfEnabled() {
+  function syncRoute() {
     if (!syncToRoute) return;
 
-    const resolvedStudy = String(unref(studyKey));
-    const next = {
-      study: resolvedStudy,
-      lesson: String(lesson.value),
-      languageCodeHL: languageCodeHL.value,
-      languageCodeJF: languageCodeJF.value || undefined, // drop if empty
-    };
+    // Keep params (study/lesson) but move language to query:
+    // ?t=eng00&jf=20615&var=apply
+    var name = route.name || "VideoMaster";
+    var params = Object.assign({}, route.params);
+    params.study = String(resolvedStudyKey.value);
+    params.lesson = String(lesson.value);
 
-    const cur = route.params;
-    const changed =
-      cur.study !== next.study ||
-      cur.lesson !== next.lesson ||
-      cur.languageCodeHL !== next.languageCodeHL ||
-      cur.languageCodeJF !== next.languageCodeJF;
+    var query = Object.assign({}, route.query);
+    query.t = languageCodeHL.value;
+    query.jf = languageCodeJF.value || undefined;
 
-    if (changed) {
-      router
-        .replace({
-          name: route.name || "VideoMaster",
-          params: next,
-          query: route.query,
-          hash: route.hash,
-        })
-        .catch(() => {});
-    }
+    // variant stored in settingsStore (null means drop)
+    if (settingsStore.variant) query.var = settingsStore.variant;
+    else delete query.var;
+
+    router
+      .replace({ name: name, params: params, query: query, hash: route.hash })
+      .catch(function () {});
   }
 
-  // 1) Route -> Store (when URL changes)
+  // Only store -> route (URL normalization)
   watch(
-    () => [
-      route.params.lesson,
-      route.params.languageCodeHL,
-      route.params.languageCodeJF,
-      String(unref(studyKey)),
-    ],
-    () => {
-      applyToStore(); // keep store aligned with the URL
-      applyToRouteIfEnabled(); // normalize URL if needed
+    function () {
+      return [
+        String(resolvedStudyKey.value),
+        String(lesson.value),
+        String(languageCodeHL.value),
+        String(languageCodeJF.value),
+        String(settingsStore.variant || ""),
+      ];
+    },
+    function () {
+      syncRoute();
     },
     { immediate: true }
   );
-  // 2) Store -> Route (when user changes dropdowns etc.)
-  watch(
-    () => {
-      const resolvedStudy = String(unref(studyKey));
-      // watch the exact per-study lesson cell so reactivity triggers
-      const lessonByStudy = (settingsStore.lessonNumber || {})[resolvedStudy];
-      return [
-        settingsStore.languageCodeHLSelected,
-        settingsStore.languageCodeJFSelected,
-        lessonByStudy,
-        resolvedStudy,
-      ];
-    },
-    () => {
-      applyToRouteIfEnabled(); // this is what updates /video/jvideo/2/...
-    }
-  );
-
-  onMounted(() => {
-    applyToStore();
-    applyToRouteIfEnabled();
-  });
 
   return {
-    lesson,
-    languageCodeHL,
-    languageCodeJF,
-    sectionKey,
-    // expose if you want manual re-apply
-    // applyToStore,
+    lesson: lesson,
+    languageCodeHL: languageCodeHL,
+    languageCodeJF: languageCodeJF,
+    sectionKey: sectionKey,
   };
 }

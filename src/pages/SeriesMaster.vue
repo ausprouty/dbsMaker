@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, watch, inject } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 
@@ -11,28 +11,22 @@ import { useCommonContent } from "src/composables/useCommonContent";
 import { useSiteContent } from "src/composables/useSiteContent";
 
 import { useProgressTracker } from "src/composables/useProgressTracker.js";
-import { applyRouteToSettingsStore } from "src/composables/applyRouteToSettingsStore.js";
+import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings";
 
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 import SeriesLessonFramework from "src/components/Series/SeriesLessonFramework.vue";
 
-const route = useRoute();
 const router = useRouter();
 
 const { t, locale } = useI18n({ useScope: "global" });
 
 const settingsStore = useSettingsStore();
-applyRouteToSettingsStore(route, settingsStore);
+useApplyRouteToSettings();
 
 console.log("[SeriesMaster] interface locale on mount:", locale.value);
 
-const { languageCodeHLSelected, languageCodeJFSelected, variant } =
+const { textLanguageObjectSelected, videoSelectedLanguage, variantForStudy } =
   storeToRefs(settingsStore);
-
-console.log(
-  "[SeriesMaster] settings HL on mount:",
-  languageCodeHLSelected.value
-);
 
 const computedStudy = computed(
   () => settingsStore.currentStudySelected || "dbs"
@@ -48,12 +42,15 @@ const computedLessonNumber = computed(() => {
     : 1;
 });
 
-const computedLanguageHL = languageCodeHLSelected;
-const computedLanguageJF = languageCodeJFSelected;
+const computedLanguageHL = textLanguageObjectSelected;
+const computedLanguageJF = videoSelectedLanguage;
 
-// Variant is now sourced from SettingsStore (hydrated from the route)
-const computedVariant = computed(() => {
-  const v = variant && variant.value != null ? variant.value : null;
+// variantForStudy is now sourced from SettingsStore (hydrated from the route)
+const computedvariantForStudy = computed(() => {
+  const v =
+    variantForStudy && variantForStudy.value != null
+      ? variantForStudy.value
+      : null;
   return v ? String(v) : null;
 });
 
@@ -68,7 +65,7 @@ console.log(
 const { commonContent, topics, loadCommonContent } = useCommonContent(
   computedStudy,
   computedLanguageHL,
-  computedVariant
+  computedvariantForStudy
 );
 
 const {
@@ -124,7 +121,12 @@ onMounted(() => {
 });
 
 watch(
-  [computedLanguageHL, computedLanguageJF, computedStudy, computedVariant],
+  [
+    computedLanguageHL,
+    computedLanguageJF,
+    computedStudy,
+    computedvariantForStudy,
+  ],
   () => {
     loadCommonContent();
   }
@@ -174,7 +176,7 @@ function updateLesson(nextLessonNumber) {
 
       <SeriesLessonFramework
         :key="`${computedStudy}-${
-          computedVariant || ''
+          computedvariantForStudy || ''
         }-${computedLessonNumber}`"
         :languageCodeHL="computedLanguageHL"
         :languageCodeJF="computedLanguageJF"

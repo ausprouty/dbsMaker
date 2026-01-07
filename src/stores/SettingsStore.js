@@ -57,7 +57,7 @@ export const useSettingsStore = defineStore("settingsStore", {
           "seasonalContent",
           "seasonalExpires",
           "variantForStudy",
-          "videoLanguageSelected",
+          "videoSelectedLanguage",
         ],
         // 👇 these hooks run when the plugin restores persisted state
         beforeRestore: (ctx) => {
