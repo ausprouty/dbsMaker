@@ -15,7 +15,7 @@ export function syncLanguageFromRoute(route) {
     //const languageObject = getLanguageObjectFromHL(langCodeFromRoute);
     //console.log(languageObject);
     // if (languageObject) {
-    //   settingsStore.setLanguageObjectSelected(languageObject);
+    //   settingsStore.setTextLanguageObjectSelected(languageObject);
     // } else {
     //   console.warn(`Unknown language code in route: ${langCodeFromRoute}`);
     // }

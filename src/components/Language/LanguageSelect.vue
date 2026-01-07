@@ -59,19 +59,19 @@ const filteredOptions = ref([]);
 onMounted(function () {
   filteredOptions.value = languageOptions.value;
   selectedLanguage.value = normalize(
-    settingsStore.languageObjectSelected || null
+    settingsStore.textLanguageObjectSelected || null
   );
 });
 watch(languageOptions, function (opts) {
   filteredOptions.value = opts;
   selectedLanguage.value = normalize(
-    settingsStore.languageObjectSelected || null
+    settingsStore.textLanguageObjectSelected || null
   );
 });
 
 watch(
   function () {
-    return settingsStore.languageObjectSelected;
+    return settingsStore.textLanguageObjectSelected;
   },
   function (val) {
     selectedLanguage.value = normalize(val);
@@ -106,10 +106,10 @@ function handleChange(value) {
     return;
   }
 
-  if (typeof settingsStore.setLanguageObjectSelected === "function") {
-    settingsStore.setLanguageObjectSelected(lang);
+  if (typeof settingsStore.setTextLanguageObjectSelected === "function") {
+    settingsStore.setTextLanguageObjectSelected(lang);
   } else {
-    settingsStore.languageObjectSelected = lang;
+    settingsStore.textLanguageObjectSelected = lang;
   }
 
   if (typeof settingsStore.addRecentLanguage === "function") {
@@ -150,9 +150,9 @@ function chipLabel(lang) {
       <p>
         <strong>Current Language:</strong>
         {{
-          settingsStore.languageObjectSelected
-            ? `${settingsStore.languageObjectSelected.name} (${
-                settingsStore.languageObjectSelected.ethnicName || ""
+          settingsStore.textLanguageObjectSelected
+            ? `${settingsStore.textLanguageObjectSelected.name} (${
+                settingsStore.textLanguageObjectSelected.ethnicName || ""
               })`.replace(/\(\s*\)$/, "")
             : "None"
         }}

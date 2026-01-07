@@ -21,7 +21,7 @@ export const settingsActions = {
     } catch {}
   },
   clearLanguagePrefs() {
-    this.languageObjectSelected = null;
+    this.textLanguageObjectSelected = null;
     this.languagesUsed = [];
     try {
       localStorage.removeItem("lang:selected");
@@ -38,9 +38,9 @@ export const settingsActions = {
     }
     try {
       var rawS = localStorage.getItem("lang:selected");
-      this.languageObjectSelected = rawS ? JSON.parse(rawS) : null;
+      this.textLanguageObjectSelected = rawS ? JSON.parse(rawS) : null;
     } catch {
-      this.languageObjectSelected = null;
+      this.textLanguageObjectSelected = null;
     }
   },
   findByHL(hl) {
@@ -62,7 +62,7 @@ export const settingsActions = {
     try {
       var s = localStorage.getItem("lang:selected");
       var sel = s ? JSON.parse(s) : null;
-      if (sel) this.setLanguageObjectSelected(sel);
+      if (sel) this.setTextLanguageObjectSelected(sel);
     } catch {}
   },
   normalizeShapes() {
@@ -116,20 +116,30 @@ export const settingsActions = {
     console.log("SettingStore.setLanguageAndApply changed interface to " + hl);
   },
 
-  setLanguageObjectSelected(lang) {
-    console.log("entered store to setLanguageObjectSelected");
+  setTextLanguageObjectSelected(lang) {
+    console.log("entered store to setTextLanguageObjectSelected");
     // Keep this for API stability (also updates MRU + direction)
     if (!lang) return;
     console.log("have language");
     console.log(lang);
-    this.languageObjectSelected = lang;
+    this.textLanguageObjectSelected = lang;
     this.addRecentLanguage(lang);
     try {
-      localStorage.setItem("lang:selected", JSON.stringify(lang));
+      localStorage.setItem("text:lang:selected", JSON.stringify(lang));
     } catch {}
     console.log("about to applyDirection");
     applyDirection(detectDirection(lang));
   },
+  setVideoLanguageSelected(value) {
+    var v = value == null ? "" : String(value);
+    v = v.trim();
+    this.videoLanguageSelected = v;
+    try {
+      localStorage.setItem("video:lang:selected", v);
+    } catch {}
+  },
+
+  // this routine has to be wrong
 
   setLanguageCodes(payload) {
     // payload: { hl, jf }  (either may be provided)
@@ -139,8 +149,8 @@ export const settingsActions = {
     // Build/merge a selected object
     var base =
       (hl && this.findByHL(hl)) ||
-      (this.languageObjectSelected
-        ? { ...this.languageObjectSelected }
+      (this.textLanguageObjectSelected
+        ? { ...this.textLanguageObjectSelected }
         : null) ||
       {};
     if (hl) base.languageCodeHL = hl;
@@ -151,24 +161,13 @@ export const settingsActions = {
     if (!base.ethnicName) base.ethnicName = base.ethnicName || "";
 
     // Apply selection (handles MRU + direction + persist)
-    this.setLanguageObjectSelected(base);
+    this.setTextLanguageObjectSelected(base);
     return true;
   },
 
   // ------- Wrappers (backward compatible) -------
   setLanguageCodeHL(code) {
-    var hl = normHL(code);
-    if (!hl) {
-      console.warn("setLanguageCodeHL: invalid HL '" + code + "'.");
-      return false;
-    }
-    // Keep current JF if any
-    var curJF =
-      (this.languageObjectSelected &&
-        this.languageObjectSelected.languageCodeJF) ||
-      "";
-    this.setLanguageCodes({ hl: hl, jf: curJF });
-    return true;
+    this.setVideoLanguageSelected(code);
   },
 
   setLanguageCodeJF(code) {
@@ -178,8 +177,8 @@ export const settingsActions = {
       return false;
     }
     var curHL =
-      (this.languageObjectSelected &&
-        this.languageObjectSelected.languageCodeHL) ||
+      (this.textLanguageObjectSelected &&
+        this.textLanguageObjectSelected.languageCodeHL) ||
       "";
     this.setLanguageCodes({ hl: curHL, jf: jf });
     return true;
@@ -232,37 +231,5 @@ export const settingsActions = {
             .replace(/[^a-z0-9-]/g, "")
         : null;
     this.variantByStudy[s] = clean || null;
-  },
-
-  updateLanguageCodeHL(newCodeHL) {
-    if (!this.languageSelected) {
-      console.warn("updateLanguageCodeHL: No languageSelected set.");
-      return;
-    }
-    if (!newCodeHL) {
-      console.warn("updateLanguageCodeHL: Invalid newCodeHL.");
-      return;
-    }
-
-    this.languageSelected = {
-      ...this.languageSelected,
-      languageCodeHL: newCodeHL,
-    };
-  },
-
-  updateLanguageCodeJF(newCodeJF) {
-    if (!this.languageSelected) {
-      console.warn("updateLanguageCodeJF: No languageSelected set.");
-      return;
-    }
-    if (!newCodeJF) {
-      console.warn("updateLanguageCodeJF: Invalid newCodeJF.");
-      return;
-    }
-
-    this.languageSelected = {
-      ...this.languageSelected,
-      languageCodeJF: newCodeJF,
-    };
   },
 };

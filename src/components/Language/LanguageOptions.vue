@@ -50,7 +50,7 @@ function handlePick(v) {
     :languages="store.languages"
     :recents="store.languagesUsed"
     :selectedHL="
-      store.languageObjectSelected?.languageCodeHL ||
+      store.textLanguageObjectSelected?.languageCodeHL ||
       store.languageSelected ||
       ''
     "

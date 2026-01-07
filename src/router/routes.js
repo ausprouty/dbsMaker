@@ -25,28 +25,14 @@ const routes = [
 
       {
         name: "VideoMaster",
-        path: "/video/:study/:lesson?/:languageCodeHL?/:languageCodeJF?",
+        path: "/video/:study/:lesson?",
+        //  possbile ?t=eng00&jf=20615&var=apply
         component: () => import("src/pages/VideoMaster.vue"),
-      },
-
-      // Optional: keep your old /jvideo/... URLs working via redirect
-      {
-        path: "/jvideo/:lesson?/:languageCodeHL?/:languageCodeJF?",
-        redirect: (to) => {
-          return {
-            name: "VideoMaster",
-            params: {
-              study: "jvideo",
-              lesson: to.params.lesson,
-              languageCodeHL: to.params.languageCodeHL,
-              languageCodeJF: to.params.languageCodeJF,
-            },
-          };
-        },
       },
       {
         name: "SeriesMaster",
-        path: "/series/:study/:variant?/:lesson?/:languageCodeHL?/:languageCodeJF?",
+        path: "series/:study/:lesson?",
+        //  possbile ?t=eng00&jf=20615&var=apply
         component: () => import("pages/SeriesMaster.vue"),
       },
       {

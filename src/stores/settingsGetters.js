@@ -5,7 +5,7 @@ import { normHL, normJF } from "src/utils/normalize.js";
 export const settingsGetters = {
   currentLanguage(state) {
     // If you like this alias, keep it—but it’s redundant with languageSelected
-    return state.languageObjectSelected;
+    return state.textLanguageObjectSelected;
   },
 
   currentStudySelected(state) {
@@ -51,33 +51,33 @@ export const settingsGetters = {
   },
 
   languageCodeHLSelected(state) {
-    var ls = state.languageObjectSelected || {};
+    var ls = state.textLanguageObjectSelected || {};
     var raw = ls.languageCodeHL != null ? String(ls.languageCodeHL) : "";
     var c = normHL(raw); // 3 letters + 2 digits; preserves case
     return c || DEFAULTS.languageCodeHL; // e.g., "eng00"
   },
 
   languageCodeJFSelected(state) {
-    var ls = state.languageObjectSelected || {};
+    var ls = state.textLanguageObjectSelected || {};
     var raw = ls.languageCodeJF != null ? String(ls.languageCodeJF) : "";
     var c = normJF(raw); // digits only
     return c || DEFAULTS.languageCodeJF; // e.g., "529"
   },
   languageDirection(state) {
-    const ls = state.languageObjectSelected || {};
+    const ls = state.textLanguageObjectSelected || {};
     const dir = (ls.textDirection || "").toLowerCase();
     return dir === "rtl" ? "rtl" : "ltr";
   },
 
   languageIdSelected(state) {
-    var ls = state.languageObjectSelected || {};
+    var ls = state.textLanguageObjectSelected || {};
     var v = ls.languageId;
     return v == null ? null : v;
   },
 
   // Always safe to read: returns selected object or a fallback stub
   languageSelected(state) {
-    const ls = state.languageObjectSelected || {};
+    const ls = state.textLanguageObjectSelected || {};
     if (ls.languageCodeHL || ls.languageCodeJF) return ls;
     console.log("returning defaults in languageSelected");
     return {

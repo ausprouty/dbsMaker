@@ -141,9 +141,9 @@ function loadMRU(store) {
   }
   try {
     var rawSel = localStorage.getItem("lang:selected");
-    store.languageObjectSelected = rawSel ? JSON.parse(rawSel) : null;
+    store.textLanguageObjectSelected = rawSel ? JSON.parse(rawSel) : null;
   } catch (e) {
-    store.languageObjectSelected = null;
+    store.textLanguageObjectSelected = null;
   }
 }
 
@@ -171,16 +171,16 @@ export default boot(function ({ router }) {
       ethnicName: "",
     };
 
-    if (typeof s.setLanguageObjectSelected === "function") {
-      s.setLanguageObjectSelected(lang);
+    if (typeof s.setTextLanguageObjectSelected === "function") {
+      s.setTextLanguageObjectSelected(lang);
     } else {
-      s.languageObjectSelected = lang;
+      s.textLanguageObjectSelected = lang;
     }
     addToMRU(s, lang);
     return;
   }
   // If nothing is selected yet, try browser language (match by languageCodeGoogle)
-  if (!s.languageObjectSelected) {
+  if (!s.textLanguageObjectSelected) {
     var prefs = getBrowserGooglePrefs();
     var picked = null;
     for (var p = 0; p < prefs.length; p++) {
@@ -189,10 +189,10 @@ export default boot(function ({ router }) {
     }
     if (!picked) picked = DEFAULT_ENGLISH;
 
-    if (typeof s.setLanguageObjectSelected === "function") {
-      s.setLanguageObjectSelected(picked);
+    if (typeof s.setTextLanguageObjectSelected === "function") {
+      s.setTextLanguageObjectSelected(picked);
     } else {
-      s.languageObjectSelected = picked;
+      s.textLanguageObjectSelected = picked;
     }
     addToMRU(s, picked);
     // Continue on, so the URL can be updated below from MRU[0]
@@ -214,10 +214,10 @@ export default boot(function ({ router }) {
       query.jf = top.languageCodeJF;
     }
 
-    if (typeof s.setLanguageObjectSelected === "function") {
-      s.setLanguageObjectSelected(top);
+    if (typeof s.setTextLanguageObjectSelected === "function") {
+      s.setTextLanguageObjectSelected(top);
     } else {
-      s.languageObjectSelected = top;
+      s.textLanguageObjectSelected = top;
     }
 
     router

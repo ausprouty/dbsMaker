@@ -12,7 +12,7 @@ export const useSettingsStore = defineStore("settingsStore", {
     currentStudy: "",
     followingHimSegment: "1-0-0",
     jVideoSegments: { segments: [], currentId: 1 },
-    languageObjectSelected: null,
+    textLanguageObjectSelected: null,
     languageSelectorMode: null,
     languages: [],
     languagesLoaded: false,
@@ -26,6 +26,7 @@ export const useSettingsStore = defineStore("settingsStore", {
     seasonalContent: null,
     seasonalExpires: null,
     variantForStudy: {},
+    videoLanguageSelected: "",
   }),
   getters: settingsGetters,
   actions: settingsActions,
@@ -43,7 +44,7 @@ export const useSettingsStore = defineStore("settingsStore", {
           "currentStudy",
           "followingHimSegment",
           "jVideoSegments",
-          "languageSelected",
+          "textLanguageObjectSelected",
           "languageSelectorMode",
           "languages",
           "languagesUsed",
@@ -56,6 +57,7 @@ export const useSettingsStore = defineStore("settingsStore", {
           "seasonalContent",
           "seasonalExpires",
           "variantForStudy",
+          "videoLanguageSelected",
         ],
         // 👇 these hooks run when the plugin restores persisted state
         beforeRestore: (ctx) => {

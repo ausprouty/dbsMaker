@@ -27,7 +27,7 @@ const app = normId(import.meta.env.VITE_APP) || "default";
 
 const { isRTL, applyInterfaceLanguageToWebpage } = useInterfaceLocale();
 const { locale } = useI18n();
-const isRtl = computed(() => isRTL(settingsStore.languageObjectSelected));
+const isRtl = computed(() => isRTL(settingsStore.textLanguageObjectSelected));
 console.log("isRtl =", isRtl.value);
 
 const brandTitle = computed(() => settingsStore.brandTitle || "Not Set");
@@ -71,11 +71,11 @@ const { changeLanguage } = useLanguageRouting();
 console.log("changeLanguage", changeLanguage);
 
 // Keep vue-i18n + <html lang|dir> in sync with the selected language object.
-// This runs on initial load and whenever languageObjectSelected changes.
+// This runs on initial load and whenever textLanguageObjectSelected changes.
 let lastLangReq = 0;
 
 watch(
-  () => settingsStore.languageObjectSelected,
+  () => settingsStore.textLanguageObjectSelected,
   async (langObj) => {
     if (!langObj) return;
 
@@ -141,7 +141,7 @@ async function handleLanguageSelect(languageObject) {
 
   try {
     // 1) Persist selection (MRU etc.)
-    settingsStore.setLanguageObjectSelected(languageObject);
+    settingsStore.setTextLanguageObjectSelected(languageObject);
     // 2) Update the URL (guarded internally to avoid no-ops/loops).
     //    The watcher above will handle loadInterface + locale + html dir/lang.
     await changeLanguage(hl, jf);

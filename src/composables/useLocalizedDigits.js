@@ -103,13 +103,13 @@ function applyRtlDotFix(str, numeralCode, lang) {
  * Composable for converting Latin digits 0–9 into the
  * correct numeral set for the current language.
  *
- * Depends on SettingsStore.languageObjectSelected.numeralSet.
+ * Depends on SettingsStore.textLanguageObjectSelected.numeralSet.
  */
 export function useLocalizedDigits() {
   const settingsStore = useSettingsStore();
 
   const numeralSet = computed(() => {
-    const lang = settingsStore.languageObjectSelected;
+    const lang = settingsStore.textLanguageObjectSelected;
     if (lang && lang.numeralSet) {
       return lang.numeralSet;
     }
@@ -154,7 +154,7 @@ export function useLocalizedDigits() {
     }
 
     // Bidi-friendly dot normalisation for Arabic/Farsi etc.
-    const lang = settingsStore.languageObjectSelected || null;
+    const lang = settingsStore.textLanguageObjectSelected || null;
     out = applyRtlDotFix(out, code, lang);
 
     return out;

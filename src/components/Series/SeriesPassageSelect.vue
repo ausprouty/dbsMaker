@@ -73,7 +73,7 @@ const selectedLesson = computed({
 // text direction
 const isRtl = computed(() => settingsStore.languageDirection === "rtl");
 
-console.log("LANGUAGE", settingsStore.languageObjectSelected);
+console.log("LANGUAGE", settingsStore.textLanguageObjectSelected);
 console.log("OPTIONS", selectOptions.value);
 </script>
 
