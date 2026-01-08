@@ -66,21 +66,28 @@ export function useSiteContent(languageCodeHLRef) {
 
     // Expect your store to expose this getter/helper:
     // siteContentFor(subject, hl, variant) → object | null
-    const sc = contentStore.siteContentFor
-      ? contentStore.siteContentFor(resolvedHL)
-      : null;
+    console.log("[useSiteContent HL] asking for " + resolvedHL);
+    const sc =
+      typeof contentStore.siteContentFor === "function"
+        ? contentStore.siteContentFor(resolvedHL)
+        : null;
+
+    console.log("[useSiteContent SC]", sc);
+    const key = "siteContent-" + resolvedHL;
+    const k = cocnore && contentStore[key] ? contentStore[key] : null;
+    console.log("[useSiteContent KC]", ktentStc);
 
     return sc || {};
   });
 
   // ——— Populate store (async) when needed ———
-  async function loadSiteContent() {
-    const resolvedHL = unref(languageCodeHL);
-
+  async function loadSiteContent(hl) {
+    var resolvedHL =
+      hl == null || hl === "" ? unref(languageCodeHL) : String(hl).trim();
     try {
-      // Expect your store action to exist:
-      // loadSiteContent(subject, hl, variant) → data
-      if (!contentStore.loadSiteContent) return;
+      // Site content is language-only.
+      if (typeof contentStore.loadSiteContent !== "function") return;
+      console.log("[loadSiteContent]" + resolvedHL);
       await contentStore.loadSiteContent(resolvedHL);
     } catch (err) {
       console.warn("[siteContent] load failed:", err);
@@ -89,6 +96,7 @@ export function useSiteContent(languageCodeHLRef) {
 
   // ——— Convenience: read a section and normalize para/paras ———
   function getSection(sectionKey) {
+    console.log("[getSection]" + sectionKey);
     const root = siteContent.value;
     const k = String(sectionKey || "").trim();
     if (!k) return { title: "", summary: "", paras: [] };

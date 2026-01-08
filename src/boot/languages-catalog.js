@@ -3,7 +3,7 @@ import { boot } from "quasar/wrappers";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import bundledCatalog from "src/i18n/metadata/languages.json"; // ultimate fallback
 
-// Basic sanity check: must be a non-empty array with HL + JF codes present
+// Basic sanity check: must be a non-empty array with HL codes present
 function isValidCatalog(list) {
   if (!Array.isArray(list) || list.length === 0) {
     return false;
@@ -13,9 +13,8 @@ function isValidCatalog(list) {
     if (!x) return false;
 
     var hl = x.languageCodeHL || x.hl;
-    var jf = x.languageCodeJF || x.jf;
 
-    return !!hl && !!jf;
+    return !!hl;
   });
 }
 
@@ -36,6 +35,17 @@ function normalizeCatalog(list) {
     var languageCodeJF = x.languageCodeJF || x.jf || "";
     // Prefer textDirection; fall back to legacy "direction" if present
     var textDirection = normalizeTextDirection(x.textDirection || x.direction);
+    var channels = Array.isArray(x.channels) ? x.channels.slice() : null;
+    if (!channels) {
+      channels = [];
+      if (languageCodeHL) channels.push("text");
+      if (languageCodeJF) channels.push("video");
+    }
+    var numeralSet = x.numeralSet || x.numeral_set || x.numerals || "latn";
+    numeralSet =
+      String(numeralSet || "latn")
+        .trim()
+        .toLowerCase() || "latn";
 
     // Spread original object first, then override with normalised fields
     return {
@@ -46,6 +56,8 @@ function normalizeCatalog(list) {
       ethnicName: x.ethnicName || x.nativeName || "",
       languageCodeIso: x.languageCodeIso || x.languageCodeISO || x.iso || "",
       textDirection: textDirection,
+      channels: channels,
+      numeralSet: numeralSet,
     };
   });
 }
@@ -77,11 +89,6 @@ function resolveCandidateUrl(raw, base) {
 
 export default boot(async function () {
   const s = useSettingsStore();
-
-  // If languages already in the store, don't refetch
-  if (Array.isArray(s.languages) && s.languages.length > 0) {
-    return;
-  }
 
   // Normalise base so we always end with a single slash
   const base = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "") + "/";
@@ -162,6 +169,10 @@ export default boot(async function () {
     loaded = normalizeCatalog(bundledCatalog);
     from = "bundled (in-app)";
   }
+
+  // If store already had languages (persisted), prefer the site config/bundled
+  // result we just resolved. This prevents stale persisted master lists from
+  // overriding a smaller site-specific catalog.
 
   s.setLanguages(loaded);
 

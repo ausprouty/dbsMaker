@@ -12,6 +12,11 @@ const mode = computed(() => {
   ).toLowerCase();
   return envMode === "radio" || envMode === "select" ? envMode : "select";
 });
+const textLanguages = computed(() => {
+  return (store.languages || []).filter(
+    (lang) => Array.isArray(lang.channels) && lang.channels.includes("text")
+  );
+});
 
 const Impl = computed(() =>
   mode.value === "radio"
@@ -21,9 +26,9 @@ const Impl = computed(() =>
 
 function findByHL(hl) {
   const list = store && Array.isArray(store.languages) ? store.languages : [];
+  const key = String(hl || "");
   for (let i = 0; i < list.length; i++) {
-    if (String(list[i].languageCodeHL || "") === String(hl || ""))
-      return list[i];
+    if (String(list[i].languageCodeHL || "") === key) return list[i];
   }
   return null;
 }
@@ -31,15 +36,26 @@ function findByHL(hl) {
 function normalizePicked(v) {
   // Child may pass the whole object or just the HL code
   if (v && typeof v === "object") return v;
-  const found = findByHL(v);
-  return found || null;
+  return findByHL(v) || null;
 }
 
 function handlePick(v) {
   const lang = normalizePicked(v);
   if (!lang) return;
-  // Ensure both codes exist
-  if (!lang.languageCodeHL || !lang.languageCodeJF) return;
+
+  // HL is the key for text selection
+  const hl = String(lang.languageCodeHL || "");
+  if (!hl) return;
+
+  // Commit the selection here
+  // Prefer a store action if you have one; fallback to direct assignment.
+  if (typeof store.setTextLanguageObjectSelected === "function") {
+    store.setTextLanguageObjectSelected(lang);
+  } else {
+    store.textLanguageObjectSelected = lang;
+  }
+
+  // Optional: still bubble up for callers that care
   emit("select", lang);
 }
 </script>
@@ -47,13 +63,9 @@ function handlePick(v) {
 <template>
   <component
     :is="Impl"
-    :languages="store.languages"
+    :languages="textLanguages"
     :recents="store.languagesUsed"
-    :selectedHL="
-      store.textLanguageObjectSelected?.languageCodeHL ||
-      store.languageSelected ||
-      ''
-    "
+    :selectedHL="store.textLanguageObjectSelected?.languageCodeHL || ''"
     @select="handlePick"
   />
 </template>

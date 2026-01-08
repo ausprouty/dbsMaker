@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
+const { t, te } = useI18n();
 import { languageLabel } from "src/utils/languageLabel";
 
 const props = defineProps({
@@ -7,9 +9,13 @@ const props = defineProps({
   recents: { type: Array, default: () => [] }, // MRU(2) [{...}]
   selectedHL: { type: String, default: "" }, // currently selected HL
   labelMode: { type: String, default: "ethnicName (name)" },
-  recentLabel: { type: String, default: "Frequently Used" },
 });
 const emit = defineEmits(["select"]);
+const recentLabelText = computed(() =>
+  te("interface.frequentlyUsed")
+    ? t("interface.frequentlyUsed")
+    : "Frequently Used"
+);
 
 // --- helpers ---
 
@@ -81,7 +87,7 @@ function onRadioChange(hl) {
     <!-- MRU chips -->
     <div v-if="recentChips.length" class="q-mb-sm">
       <div class="text-caption q-mb-xs">
-        <strong>{{ recentLabel }}</strong>
+        <strong>{{ recentLabelText }}</strong>
       </div>
       <q-chip
         v-for="lang in recentChips"

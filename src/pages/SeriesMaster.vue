@@ -62,17 +62,9 @@ const computedLanguageJF = computed(() => {
 
 // ✅ Variant — simplest form: just use the getter
 const computedVariant = computed(() => {
-  var v =
-    typeof settingsStore.variantForCurrentStudy === "function"
-      ? settingsStore.variantForCurrentStudy
-      : "default";
-
-  if (v == null) {
-    return "default";
-  }
-
-  var s = String(v).trim();
-  return s.length > 0 ? s : "default";
+  var v = settingsStore.variantForCurrentStudy; // getter value
+  v = v == null ? "" : String(v).trim();
+  return v ? v : "default";
 });
 
 // ---- Lesson content readiness ----
@@ -105,10 +97,18 @@ function onChangeLanguageClick() {
   console.warn("[SeriesMaster] No language UI handler provided");
 }
 
-const { getSection } = useSiteContent();
+const { getSection, loadSiteContent } = useSiteContent();
 
-const section = computed(() => getSection(computedStudy.value));
+const section = computed(() => {
+  // These lines create reactive dependencies (no-op reads)
+  void computedLanguageHL.value;
+  console.log("[SeriesMaster] computing section");
+  const temp = getSection(computedStudy.value);
+  console.log("[SeriesMaster]", temp);
+  return temp;
+});
 
+console.log(section);
 const pageTitle = computed(() => {
   const s = section.value;
   return (
@@ -126,7 +126,12 @@ const pageParas = computed(() => {
 onMounted(() => {
   try {
     loadProgress();
+    console.log("[SeriesMaster] about to loadCommonContent");
     loadCommonContent();
+    if (typeof loadSiteContent === "function") {
+      console.log("[SeriesMaster] about to loadSiteContent");
+      loadSiteContent(computedLanguageHL.value);
+    }
     if (import.meta.env.DEV) {
       patchRouterForLogs(router);
     }
@@ -134,21 +139,52 @@ onMounted(() => {
     console.error("❌ Could not load common content", err);
   }
 });
-
+// update SiteContent when language changes
 watch(
-  [computedLanguageHL, computedLanguageJF, computedStudy, computedVariant],
-  () => {
-    loadCommonContent();
-  }
+  computedLanguageHL,
+  (n, o) => {
+    console.log("[SeriesMaster] HL changed:", o, "→", n);
+    loadSiteContent(n);
+  },
+  { immediate: true }
 );
-
-watch(locale, (newVal, oldVal) => {
-  console.log("[SeriesMaster] interface locale changed:", oldVal, "→", newVal);
-});
+// update CommonContent when language, study or variant change
+watch(
+  [computedStudy, computedVariant, computedLanguageHL],
+  ([study, variant, hl], [oldStudy, oldVariant, oldHl]) => {
+    console.log(
+      "[SeriesMaster] common inputs changed:",
+      { oldStudy, oldVariant, oldHl },
+      "→",
+      { study, variant, hl }
+    );
+    loadCommonContent();
+  },
+  { immediate: true }
+);
 
 function updateLesson(nextLessonNumber) {
   settingsStore.setLessonNumber(computedStudy.value, nextLessonNumber);
 }
+
+watch(computedLanguageHL, (next, prev) => {
+  const selected = textLanguageObjectSelected.value || null;
+  const selectedHL =
+    selected && selected.languageCodeHL ? String(selected.languageCodeHL) : "";
+
+  console.log(
+    "[SeriesMaster] HL changed:",
+    prev,
+    "→",
+    next,
+    "| selected:",
+    selectedHL
+  );
+});
+
+watch(section, (v) =>
+  console.log("[SeriesMaster] section changed →", v && v.title, v)
+);
 </script>
 
 <template>

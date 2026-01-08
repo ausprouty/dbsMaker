@@ -15,7 +15,6 @@ export const useSettingsStore = defineStore("settingsStore", {
     textLanguageObjectSelected: null,
     languageSelectorMode: null,
     languages: [],
-    languagesLoaded: false,
     languagesUsed: [],
     lessonNumber: { ctc: 1, lead: 1, life: 1, jvideo: 1 },
     maxLessons: {},

@@ -87,6 +87,7 @@ export const useContentStore = defineStore("contentStore", {
         );
         return null;
       }
+      console.log(value);
 
       return value;
     },
@@ -237,7 +238,7 @@ export const useContentStore = defineStore("contentStore", {
 
     async loadSiteContent(hl) {
       await getSiteContent(hl); // fetch/cache only
-      console.log("ContentStore.loadInterface changed interface to " + hl);
+      console.log("ContentStore.loadSiteContent loaded site content for " + hl);
     },
 
     // We get the lesson content from

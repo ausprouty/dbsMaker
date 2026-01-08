@@ -1,152 +1,174 @@
 [
   {
-    "id": 0,
-    "name": "Bajau",
-    "ethnicName": "Bahasa Bajau",
-    "languageCodeIso": "bdl",
-    "languageCodeHL": "inz00",
-    "languageCodeJF": "17655",
-    "languageCodeGoogle": "id",
-    "textDirection": "ltr"
-  },
-  {
-    "id": 1,
-    "name": "Cantonese",
-    "ethnicName": "广东话",
-    "languageCodeIso": "yue",
-    "languageCodeHL": "chn-s",
-    "languageCodeJF": "20601",
-    "languageCodeGoogle": "zh-TW",
-    "textDirection": "ltr"
-  },
-  {
-    "id": 2,
-    "name": "Chinese",
-    "ethnicName": "普通话",
+    "name": "Chinese (Simplified)",
+    "ethnicName": "简体中文 / 簡體中文",
     "languageCodeIso": "cmn",
     "languageCodeHL": "chn-s",
-    "languageCodeJF": "20615",
+    "languageCodeJF": "",
     "languageCodeGoogle": "zh-CN",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "channels": ["text"]
   },
   {
-    "id": 3,
+    "name": "Chinese (Traditional)",
+    "ethnicName": "繁體中文 / 繁体中文",
+    "languageCodeIso": "cmn",
+    "languageCodeHL": "chn-t",
+    "languageCodeJF": "",
+    "languageCodeGoogle": "zh-TW",
+    "textDirection": "ltr",
+    "channels": ["text"]
+  },
+  {
     "name": "English",
     "ethnicName": "English",
     "languageCodeIso": "eng",
     "languageCodeHL": "eng00",
     "languageCodeJF": "529",
     "languageCodeGoogle": "en",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "channels": ["text", "video"]
+  },
+
+  {
+    "name": "Bajau",
+    "ethnicName": "Bahasa Bajau",
+    "languageCodeIso": "bdl",
+    "languageCodeHL": "bdl21",
+    "languageCodeJF": "17655",
+    "languageCodeGoogle": "id",
+    "textDirection": "ltr",
+    "channels": ["text", "video"]
   },
   {
-    "id": 4,
+    "name": "Cantonese",
+    "ethnicName": "粤语 / 粵語",
+    "languageCodeIso": "yue",
+    "languageCodeHL": "yuh00",
+    "languageCodeJF": "20601",
+    "languageCodeGoogle": "",
+    "channels": ["video"]
+  },
+  {
     "name": "Hakka",
-    "ethnicName": "客家",
+    "ethnicName": "客家话 / 客家話",
     "languageCodeIso": "hak",
-    "languageCodeHL": "chn-s",
+    "languageCodeHL": "hak00",
     "languageCodeJF": "20611",
-    "languageCodeGoogle": "zh-CN",
-    "textDirection": "ltr"
+    "languageCodeGoogle": "",
+    "textDirection": "ltr",
+    "channels": ["video"]
   },
   {
-    "id": 5,
     "name": "Indonesian",
     "ethnicName": "Bahasa Indonesia",
     "languageCodeIso": "ind",
     "languageCodeHL": "inz00",
     "languageCodeJF": "184566",
     "languageCodeGoogle": "id",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "channels": ["text", "video"]
   },
   {
-    "id": 6,
     "name": "Korean",
     "ethnicName": "한국어",
     "languageCodeIso": "kor",
     "languageCodeHL": "kkn00",
     "languageCodeJF": "3804",
     "languageCodeGoogle": "ko",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "channels": ["text", "video"]
   },
   {
-    "id": 7,
     "name": "Malay",
     "ethnicName": "Bahasa Melayu",
     "languageCodeIso": "zlm",
-    "languageCodeHL": "inz00",
+    "languageCodeHL": "mli00",
     "languageCodeJF": "1927",
     "languageCodeGoogle": "ms",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "channels": ["text", "video"]
   },
   {
-    "id": 8,
+    "name": "Mandarin",
+    "ethnicName": "普通话 / 普通話",
+    "languageCodeIso": "cmn",
+    "languageCodeHL": "chn00",
+    "languageCodeJF": "",
+    "languageCodeGoogle": "",
+    "textDirection": "ltr",
+    "channels": ["video"]
+  },
+  {
     "name": "Mongolian",
     "ethnicName": "Монгол хэл",
     "languageCodeIso": "mon",
     "languageCodeHL": "khk00",
     "languageCodeJF": "18259",
     "languageCodeGoogle": "mn",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "channels": ["text", "video"]
   },
   {
-    "id": 9,
     "name": "Shanghainese",
-    "ethnicName": "上海话",
+    "ethnicName": "上海话 / 上海話",
     "languageCodeIso": "wuu",
-    "languageCodeHL": "chn-s",
+    "languageCodeHL": "wuu00",
     "languageCodeJF": "20623",
-    "languageCodeGoogle": "zh-CN",
-    "textDirection": "ltr"
+    "languageCodeGoogle": "",
+    "textDirection": "ltr",
+    "channels": ["video"]
   },
   {
-    "id": 10,
     "name": "Tagalog",
     "ethnicName": "Tagalog",
     "languageCodeIso": "tgl",
     "languageCodeHL": "tgl00",
     "languageCodeJF": "12551",
     "languageCodeGoogle": "fil",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "channels": ["text", "video"]
   },
   {
-    "id": 11,
     "name": "Tamil",
     "ethnicName": "தமிழ்",
     "languageCodeIso": "tam",
     "languageCodeHL": "tcv00",
     "languageCodeJF": "5871",
     "languageCodeGoogle": "ta",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "tamldec",
+    "channels": ["text", "video"]
   },
   {
-    "id": 12,
     "name": "Teochew",
-    "ethnicName": "潮州",
+    "ethnicName": "潮州话 / 潮州話",
     "languageCodeIso": "nan",
-    "languageCodeHL": "chn-s",
-    "languageCodeJF": "21670",
-    "languageCodeGoogle": "zh-CN",
-    "textDirection": "ltr"
+    "languageCodeHL": "cfr19",
+    "languageCodeJF": "13192",
+    "languageCodeGoogle": "",
+    "textDirection": "ltr",
+    "channels": ["video"]
   },
   {
-    "id": 13,
     "name": "Thai",
     "ethnicName": "ภาษาไทย",
     "languageCodeIso": "tha",
     "languageCodeHL": "thj00",
     "languageCodeJF": "13169",
     "languageCodeGoogle": "th",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "numeralSet": "thai",
+    "channels": ["text", "video"]
   },
   {
-    "id": 14,
     "name": "Vietnamese",
     "ethnicName": "Tiếng Việt",
     "languageCodeIso": "vie",
     "languageCodeHL": "vie00",
     "languageCodeJF": "3887",
     "languageCodeGoogle": "vi",
-    "textDirection": "ltr"
+    "textDirection": "ltr",
+    "channels": ["text", "video"]
   }
 ]
