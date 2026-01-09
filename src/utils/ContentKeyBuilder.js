@@ -11,7 +11,7 @@ function nInt(value) {
   return v ? v : null;
 }
 
-export function buildCommonContentKey(study, languageCodeHL, variant) {
+export function buildCommonContentKey(study, variant, languageCodeHL) {
   const s = nId(study);
   const hl = nId(languageCodeHL);
   if (!s || !hl) return null;
@@ -35,8 +35,8 @@ export function buildCommonContentKey(study, languageCodeHL, variant) {
 
   console.log("[buildCommonContentKey]", {
     study,
-    languageCodeHL,
     variant,
+    languageCodeHL,
     key,
   });
 

@@ -1,9 +1,10 @@
 // src/composables/useSiteContent.js
-import { computed, watch, unref, onMounted } from "vue";
+import { computed, watch, unref, ref } from "vue";
 import { useContentStore } from "stores/ContentStore";
 import { DEFAULTS } from "src/constants/Defaults.js";
-import { normHL, normVariant } from "src/utils/normalize.js";
+import { normHL } from "src/utils/normalize.js";
 
+// Helpers used by getSection/indexParas
 function isPlainObject(v) {
   return !!v && typeof v === "object" && !Array.isArray(v);
 }
@@ -44,6 +45,7 @@ function normalizeSection(section) {
   };
 }
 
+// Optional helper (currently unused in the code you showed)
 function normSubjectKey(subjectRef) {
   const raw = unref(subjectRef);
   const s = String(raw || "")
@@ -54,49 +56,48 @@ function normSubjectKey(subjectRef) {
 
 export function useSiteContent(languageCodeHLRef) {
   const contentStore = useContentStore();
+  const readyHL = ref("");
 
-  // ——— Normalised inputs (single source of truth) ———
   const languageCodeHL = computed(
     () => normHL(languageCodeHLRef) || DEFAULTS.languageCodeHL
   );
 
-  // ——— Read from store (sync) ———
   const siteContent = computed(() => {
     const resolvedHL = unref(languageCodeHL);
-
-    // Expect your store to expose this getter/helper:
-    // siteContentFor(subject, hl, variant) → object | null
-    console.log("[useSiteContent HL] asking for " + resolvedHL);
     const sc =
       typeof contentStore.siteContentFor === "function"
         ? contentStore.siteContentFor(resolvedHL)
         : null;
-
-    console.log("[useSiteContent SC]", sc);
-    const key = "siteContent-" + resolvedHL;
-    const k = cocnore && contentStore[key] ? contentStore[key] : null;
-    console.log("[useSiteContent KC]", ktentStc);
-
     return sc || {};
   });
 
-  // ——— Populate store (async) when needed ———
+  let loadToken = 0;
+
   async function loadSiteContent(hl) {
-    var resolvedHL =
+    const token = ++loadToken;
+    readyHL.value = "";
+
+    const resolvedHL =
       hl == null || hl === "" ? unref(languageCodeHL) : String(hl).trim();
+
     try {
-      // Site content is language-only.
       if (typeof contentStore.loadSiteContent !== "function") return;
-      console.log("[loadSiteContent]" + resolvedHL);
       await contentStore.loadSiteContent(resolvedHL);
+
+      if (token !== loadToken) return; // ignore stale result
+      readyHL.value = resolvedHL;
     } catch (err) {
+      if (token !== loadToken) return;
       console.warn("[siteContent] load failed:", err);
     }
   }
 
-  // ——— Convenience: read a section and normalize para/paras ———
+  function setupAutoLoad() {
+    watch(languageCodeHL, loadSiteContent, { immediate: true });
+  }
+  setupAutoLoad();
+
   function getSection(sectionKey) {
-    console.log("[getSection]" + sectionKey);
     const root = siteContent.value;
     const k = String(sectionKey || "").trim();
     if (!k) return { title: "", summary: "", paras: [] };
@@ -107,11 +108,9 @@ export function useSiteContent(languageCodeHLRef) {
         : null;
 
     const raw = sections && isPlainObject(sections[k]) ? sections[k] : null;
-
     return normalizeSection(raw);
   }
 
-  // ——— Convenience: index paras for the home page ———
   const indexParas = computed(() => {
     const root = siteContent.value;
     const sections =
@@ -123,21 +122,15 @@ export function useSiteContent(languageCodeHLRef) {
     return normalizeSection(sections.index).paras;
   });
 
-  // ——— Convenience: get title/summary for a section ———
   function getTitle(sectionKey) {
     return getSection(sectionKey).title;
   }
-
   function getSummary(sectionKey) {
     return getSection(sectionKey).summary;
   }
-
   function getParas(sectionKey) {
     return getSection(sectionKey).paras;
   }
-
-  onMounted(loadSiteContent);
-  watch([languageCodeHL], loadSiteContent);
 
   return {
     languageCodeHL,
@@ -147,6 +140,6 @@ export function useSiteContent(languageCodeHLRef) {
     getTitle,
     getSummary,
     getParas,
-    loadSiteContent,
+    readyHL,
   };
 }

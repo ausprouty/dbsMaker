@@ -1,63 +1,159 @@
 import * as ContentKeys from "src/utils/ContentKeyBuilder";
+
 const dbName = "MyBibleApp";
 const dbVersion = 3;
+const IDB_TX_MAX_RETRIES = 2; // total retries after the first attempt
+const IDB_TX_RETRY_DELAY_MS = 25;
+
 let dbInstance = null;
+let dbPromise = null;
+let deletingDb = false;
 
 // Vite/Quasar dev flag – safe in both dev and prod builds
 const IS_DEV = import.meta.env && import.meta.env.DEV;
 
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+// ------------------------------------------------------------
+// Open / manage DB (singleton + safe reopen)
+// ------------------------------------------------------------
 export function openDatabase() {
   if (typeof indexedDB === "undefined") {
     console.warn(`IndexedDB not available — skipping IndexedDB caching`);
     return Promise.resolve(null);
   }
 
-  return new Promise((resolve, reject) => {
-    if (dbInstance) {
-      return resolve(dbInstance);
-    }
+  if (deletingDb) {
+    if (IS_DEV) console.debug("[IDB] openDatabase blocked: delete in progress");
+    return Promise.resolve(null);
+  }
 
+  // If we already have a usable open connection, return it.
+  if (dbInstance) return Promise.resolve(dbInstance);
+
+  // Deduplicate concurrent opens.
+  if (dbPromise) return dbPromise;
+
+  dbPromise = new Promise((resolve, reject) => {
     const request = indexedDB.open(dbName, dbVersion);
 
     request.onerror = (event) => {
-      // Reject with the actual error object for better debugging
-      reject(event.target.error);
+      const err = event && event.target ? event.target.error : event;
+      dbPromise = null;
+      reject(err);
+    };
+
+    request.onblocked = () => {
+      // Usually means another tab has the DB open in a way that blocks upgrade.
+      console.warn(`[IDB] open blocked for "${dbName}" (another tab open?)`);
     };
 
     request.onsuccess = (event) => {
       dbInstance = event.target.result;
+
+      // If the browser closes this connection, drop our reference.
+      dbInstance.onclose = () => {
+        if (IS_DEV) console.debug("[IDB] connection closed");
+        dbInstance = null;
+      };
+
+      // If another context upgrades the DB, close and force reopen.
+      dbInstance.onversionchange = () => {
+        if (IS_DEV) console.debug("[IDB] versionchange → closing connection");
+        try {
+          dbInstance.close();
+        } catch (_) {}
+        dbInstance = null;
+      };
+
+      // Some browsers can surface connection-level errors here.
+      dbInstance.onerror = (e) => {
+        if (IS_DEV) console.debug("[IDB] connection error", e);
+        dbInstance = null;
+      };
+
+      dbPromise = null;
       resolve(dbInstance);
     };
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
 
-      if (!db.objectStoreNames.contains("siteContent"))
+      if (!db.objectStoreNames.contains("siteContent")) {
         db.createObjectStore("siteContent");
-
-      if (!db.objectStoreNames.contains("commonContent"))
+      }
+      if (!db.objectStoreNames.contains("commonContent")) {
         db.createObjectStore("commonContent");
-
-      if (!db.objectStoreNames.contains("lessonContent"))
+      }
+      if (!db.objectStoreNames.contains("lessonContent")) {
         db.createObjectStore("lessonContent");
-
-      if (!db.objectStoreNames.contains("interface"))
+      }
+      if (!db.objectStoreNames.contains("interface")) {
         db.createObjectStore("interface");
-
-      if (!db.objectStoreNames.contains("notes")) db.createObjectStore("notes");
-
-      if (!db.objectStoreNames.contains("study_progress"))
+      }
+      if (!db.objectStoreNames.contains("notes")) {
+        db.createObjectStore("notes");
+      }
+      if (!db.objectStoreNames.contains("study_progress")) {
         db.createObjectStore("study_progress");
+      }
     };
   });
+
+  return dbPromise;
+}
+
+// ------------------------------------------------------------
+// Tx helper (handles rare "connection is closing" race)
+// ------------------------------------------------------------
+function isClosingError(err) {
+  const name = err && err.name ? String(err.name) : "";
+  const msg = err && err.message ? String(err.message) : "";
+  return (
+    name === "InvalidStateError" &&
+    msg.toLowerCase().indexOf("connection is closing") !== -1
+  );
+}
+
+async function withTx(storeName, mode, fn, attempt) {
+  attempt = attempt == null ? 0 : attempt;
+
+  const db = await openDatabase();
+  if (!db) return fn(null, null, null);
+
+  try {
+    const tx = db.transaction(storeName, mode);
+    const store = tx.objectStore(storeName);
+    return fn(tx, store, db);
+  } catch (err) {
+    if (isClosingError(err) && attempt < IDB_TX_MAX_RETRIES) {
+      if (IS_DEV) {
+        console.debug(
+          `[IDB] tx failed (closing) → retry ${
+            attempt + 1
+          }/${IDB_TX_MAX_RETRIES}`
+        );
+      }
+
+      // Drop references and retry with a fresh connection.
+      dbInstance = null;
+      dbPromise = null;
+
+      if (IDB_TX_RETRY_DELAY_MS > 0) {
+        await sleep(IDB_TX_RETRY_DELAY_MS);
+      }
+
+      return withTx(storeName, mode, fn, attempt + 1);
+    }
+    throw err;
+  }
 }
 
 // --- IndexedDB core -----------------------------------------
 async function saveItem(storeName, key, value, opts = {}) {
-  const {
-    allowEmpty = false, // if true, permits saving empties (default: refuse)
-    deleteOnEmpty = true, // if value is empty, delete key instead of saving
-  } = opts;
+  const { allowEmpty = false, deleteOnEmpty = true } = opts;
 
   if (key == null) {
     console.warn(`❌ Refusing to save to "${storeName}" because key is null.`);
@@ -72,116 +168,122 @@ async function saveItem(storeName, key, value, opts = {}) {
     return false;
   }
 
-  const db = await openDatabase();
-
   // Block empties (and optionally delete existing)
   if (!allowEmpty && !isMeaningful(value)) {
-    console.log(`Empty/meaningless value for "${key}" — not saving.`);
-    console.log(value);
+    if (IS_DEV) {
+      console.debug(`Empty/meaningless value for "${key}" — not saving.`);
+      console.debug(value);
+    }
+
     if (deleteOnEmpty) {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, "readwrite");
-        const store = tx.objectStore(storeName);
-        const del = store.delete(key);
-        del.onsuccess = () => resolve(true);
-        del.onerror = (e) => reject(e);
+      return withTx(storeName, "readwrite", (tx, store) => {
+        if (!store) {
+          if (IS_DEV) console.debug("[IDB] delete skipped (no db)");
+          return Promise.resolve(false);
+        }
+        return new Promise((resolve, reject) => {
+          const del = store.delete(key);
+          del.onsuccess = () => resolve(true);
+          del.onerror = (e) => reject(e);
+        });
       });
     }
     return false;
   }
 
   // Save meaningful values
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(storeName, "readwrite");
-    const store = tx.objectStore(storeName);
-    const req = store.put(value, key);
-    req.onsuccess = () => resolve(true);
-    req.onerror = (e) => reject(e);
+  return withTx(storeName, "readwrite", (tx, store) => {
+    if (!store) {
+      if (IS_DEV) console.debug("[IDB] save skipped (no db)");
+      return Promise.resolve(false);
+    }
+    return new Promise((resolve, reject) => {
+      const req = store.put(value, key);
+      req.onsuccess = () => resolve(true);
+      req.onerror = (e) => reject(e);
+    });
   });
 }
 
 async function getItem(storeName, key, opts = {}) {
-  const {
-    deleteIfEmpty = true, // delete `{}`/empty-on-read (default: true)
-  } = opts;
+  const { deleteIfEmpty = true } = opts;
 
   if (key == null) {
     console.warn(`❌ Refusing to get from "${storeName}" because key is null.`);
     return null;
   }
 
-  const db = await openDatabase();
-
-  return new Promise((resolve, reject) => {
-    // Use readwrite so we can delete inside the same transaction if empty
-    const tx = db.transaction(
-      storeName,
-      deleteIfEmpty ? "readwrite" : "readonly"
-    );
-    const store = tx.objectStore(storeName);
-    const req = store.get(key);
-
-    req.onsuccess = () => {
-      const val = req.result;
-
-      // Treat true "missing key" as a normal cache miss, not a warning.
-      if (val === undefined) {
-        if (IS_DEV) {
-          console.debug("[IDB] cache miss for", String(key));
-        }
-        resolve(null);
-        return;
+  return withTx(
+    storeName,
+    deleteIfEmpty ? "readwrite" : "readonly",
+    (tx, store) => {
+      if (!store) {
+        if (IS_DEV) console.debug("[IDB] get skipped (no db)");
+        return Promise.resolve(null);
       }
 
-      if (!isMeaningful(val)) {
-        // debug
-        console.warn("[IDB] meaningless value at", String(key), "→", val);
-        console.log(
-          "type:",
-          Object.prototype.toString.call(val),
-          "ctor:",
-          val?.constructor?.name
-        );
-        console.groupCollapsed(`🧹 Purge candidate ${key}`);
-        console.log("preview:", previewVal(val));
-        console.dir(val);
-        console.groupEnd();
-        // Only attempt delete for keys that exist; skip when readonly.
-        if (deleteIfEmpty && tx.mode === "readwrite") {
-          try {
-            // delete is idempotent but keep errors silent
-            store.delete(key);
-            console.warn(
-              `🧹 Purged empty/meaningless "${String(key)}" from IndexedDB.`
-            );
-          } catch (_) {}
-        }
-        resolve(null);
-        return;
-      }
-      resolve(val);
-    };
+      return new Promise((resolve, reject) => {
+        const req = store.get(key);
 
-    req.onerror = (e) => reject(e);
-  });
+        req.onsuccess = () => {
+          const val = req.result;
+
+          // Missing key = cache miss
+          if (val === undefined) {
+            if (IS_DEV) console.debug("[IDB] cache miss for", String(key));
+            resolve(null);
+            return;
+          }
+
+          if (!isMeaningful(val)) {
+            console.warn("[IDB] meaningless value at", String(key), "→", val);
+
+            if (IS_DEV) {
+              console.groupCollapsed(`🧹 Purge candidate ${key}`);
+              console.log("preview:", previewVal(val));
+              console.dir(val);
+              console.groupEnd();
+            }
+
+            if (deleteIfEmpty && tx && tx.mode === "readwrite") {
+              try {
+                store.delete(key);
+                console.warn(
+                  `🧹 Purged empty/meaningless "${String(key)}" from IndexedDB.`
+                );
+              } catch (_) {}
+            }
+            resolve(null);
+            return;
+          }
+
+          resolve(val);
+        };
+
+        req.onerror = (e) => reject(e);
+      });
+    }
+  );
 }
 
 function previewVal(v) {
   if (v == null) return String(v);
-  if (typeof v === "string")
+  if (typeof v === "string") {
     return `"${v.slice(0, 120)}"${v.length > 120 ? `…(${v.length})` : ""}`;
-  if (Array.isArray(v))
+  }
+  if (Array.isArray(v)) {
     return `Array(${v.length}) [${v
       .slice(0, 5)
       .map((x) => (typeof x === "string" ? `"${x.slice(0, 20)}"` : String(x)))
       .join(", ")}${v.length > 5 ? ", …" : ""}]`;
+  }
   if (v instanceof Blob) return `Blob ${v.type} ${v.size}B`;
   if (v instanceof ArrayBuffer) return `ArrayBuffer ${v.byteLength}B`;
   if (v && typeof v === "object") return `Object keys=${Object.keys(v).length}`;
   return String(v);
 }
-// ----------------- Interface Content -----------------
 
+// ----------------- Interface Content -----------------
 export async function getInterfaceFromDB(languageCodeHL) {
   const key = ContentKeys.buildInterfaceKey(languageCodeHL);
   return getItem("interface", key);
@@ -193,7 +295,6 @@ export async function saveInterfaceToDB(languageCodeHL, content) {
 }
 
 // ----------------- Site Content -----------------
-
 export async function getSiteContentFromDB(languageCodeHL) {
   const key = ContentKeys.buildSiteContentKey(languageCodeHL);
   return getItem("siteContent", key);
@@ -205,24 +306,22 @@ export async function saveSiteContentToDB(languageCodeHL, content) {
 }
 
 // ----------------- Common Content -----------------
-
-export async function getCommonContentFromDB(study, languageCodeHL, variant) {
-  const key = ContentKeys.buildCommonContentKey(study, languageCodeHL, variant);
+export async function getCommonContentFromDB(study, variant, languageCodeHL) {
+  const key = ContentKeys.buildCommonContentKey(study, variant, languageCodeHL);
   return getItem("commonContent", key);
 }
 
 export async function saveCommonContentToDB(
   study,
+  variant,
   languageCodeHL,
-  content,
-  variant
+  content
 ) {
-  const key = ContentKeys.buildCommonContentKey(study, languageCodeHL, variant);
+  const key = ContentKeys.buildCommonContentKey(study, variant, languageCodeHL);
   return saveItem("commonContent", key, content);
 }
 
 // ----------------- Lesson Content -----------------
-
 export async function getLessonContentFromDB(
   study,
   languageCodeHL,
@@ -251,13 +350,10 @@ export async function saveLessonContentToDB(
     languageCodeJF,
     lesson
   );
-  console.log("SAVE LESSON CONTENT TO DB");
-  console.log(key);
-  console.log(content);
   return saveItem("lessonContent", key, content);
 }
 
-// ----------------- Study Progress and Last Completed Lesson per Study ---------
+// ----------------- Study Progress -----------------
 export async function getStudyProgress(study) {
   const key = ContentKeys.buildStudyProgressKey(study);
   return getItem("study_progress", key).then(
@@ -268,15 +364,19 @@ export async function getStudyProgress(study) {
 export async function saveStudyProgress(study, progress) {
   // Ensure we store plain objects, not Vue refs
   const safeProgress = {
-    completedLessons: [...progress.completedLessons],
-    lastCompletedLesson: progress.lastCompletedLesson,
+    completedLessons: Array.isArray(progress.completedLessons)
+      ? [...progress.completedLessons]
+      : [],
+    lastCompletedLesson:
+      progress && "lastCompletedLesson" in progress
+        ? progress.lastCompletedLesson
+        : null,
   };
   const key = ContentKeys.buildStudyProgressKey(study);
   return saveItem("study_progress", key, safeProgress);
 }
 
 // ----------------- Notes -----------------
-
 export async function getNoteFromDB(study, lesson, section) {
   const key = ContentKeys.buildNotesKey(study, lesson, section);
   return getItem("notes", key);
@@ -288,37 +388,44 @@ export async function saveNoteToDB(study, lesson, section, content) {
 }
 
 export async function deleteNoteFromDB(study, lesson, section) {
-  const db = await openDatabase();
   const key = ContentKeys.buildNotesKey(study, lesson, section);
-  const tx = db.transaction("notes", "readwrite");
-  tx.objectStore("notes").delete(key);
-  return new Promise((resolve, reject) => {
-    tx.oncomplete = () => resolve(true);
-    tx.onerror = (e) => reject(e);
+
+  return withTx("notes", "readwrite", (tx, store) => {
+    if (!store) {
+      if (IS_DEV) console.debug("[IDB] deleteNote skipped (no db)");
+      return Promise.resolve(false);
+    }
+
+    store.delete(key);
+
+    return new Promise((resolve, reject) => {
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = (e) => reject(e);
+    });
   });
 }
 
 // ----------------- Clear Table -----------------
-
 export async function clearTable(tableName) {
-  const db = await openDatabase();
-
-  return new Promise((resolve, reject) => {
-    if (!db.objectStoreNames.contains(tableName)) {
-      return reject(`Table "${tableName}" not found in database.`);
+  return withTx(tableName, "readwrite", (tx, store, db) => {
+    if (!db || !store) {
+      if (IS_DEV) console.debug("[IDB] clearTable skipped (no db)");
+      return Promise.resolve(false);
     }
 
-    const tx = db.transaction([tableName], "readwrite");
-    const store = tx.objectStore(tableName);
-    const request = store.clear();
+    if (!db.objectStoreNames.contains(tableName)) {
+      return Promise.reject(`Table "${tableName}" not found in database.`);
+    }
 
-    request.onsuccess = () => resolve();
-    request.onerror = () => reject(request.error);
+    return new Promise((resolve, reject) => {
+      const request = store.clear();
+      request.onsuccess = () => resolve(true);
+      request.onerror = () => reject(request.error);
+    });
   });
 }
 
 // --- Clear Database  --------------------------------------
-
 export function clearDatabase() {
   if (typeof indexedDB === "undefined") {
     console.warn("IndexedDB not available — cannot clear MyBibleApp.");
@@ -326,6 +433,9 @@ export function clearDatabase() {
   }
 
   return new Promise((resolve, reject) => {
+    deletingDb = true;
+    dbPromise = null;
+
     // Close existing connection if we have one
     try {
       if (dbInstance) {
@@ -340,21 +450,24 @@ export function clearDatabase() {
 
     req.onsuccess = () => {
       console.log(`IndexedDB database "${dbName}" deleted.`);
+      deletingDb = false;
       resolve(true);
     };
 
     req.onerror = (event) => {
       console.warn(
         `Failed to delete IndexedDB database "${dbName}":`,
-        event.target?.error
+        event && event.target ? event.target.error : event
       );
-      reject(event.target?.error || event);
+      deletingDb = false;
+      reject(event && event.target ? event.target.error : event);
     };
 
     req.onblocked = () => {
       console.warn(
         `Delete for IndexedDB database "${dbName}" is blocked (another tab open?).`
       );
+      // Leave deletingDb true until user resolves the block; avoids reopen loops.
     };
   });
 }

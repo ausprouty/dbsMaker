@@ -20,7 +20,7 @@ export async function getCommonContent(study, languageCodeHL, variant) {
     `/v2/translate/text/common/${studyId}/${hl}` +
     `?variant=${encodeURIComponent(v)}`;
   console.log(apiUrl);
-  const key = buildCommonContentKey(studyId, hl, v);
+  const key = buildCommonContentKey(studyId, v, hl);
   const contentStore = useContentStore();
 
   // Setter used when getContentWithFallback has direct access to the store.
@@ -39,11 +39,11 @@ export async function getCommonContent(study, languageCodeHL, variant) {
   return await getContentWithFallback({
     key,
     store: contentStore,
-    storeGetter: (s) => s.commonContentFor(studyId, hl),
+    storeGetter: (s) => s.commonContentFor(studyId, v, hl),
     storeSetter: setter,
     onInstall: handleInstall, // ensure poll completion updates store the same way
-    dbGetter: () => getCommonContentFromDB(studyId, hl),
-    dbSetter: (data) => saveCommonContentToDB(studyId, hl, data),
+    dbGetter: () => getCommonContentFromDB(studyId, v, hl),
+    dbSetter: (data) => saveCommonContentToDB(studyId, v, hl, data),
     apiUrl,
     languageCodeHL: hl,
     translationType: "commonContent",

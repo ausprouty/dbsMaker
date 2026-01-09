@@ -21,22 +21,22 @@ export function useCommonContent(
 
   //--debug
 
-  const key = buildCommonContentKey(study, languageCodeHL, variant);
+  const key = buildCommonContentKey(study, variant, languageCodeHL);
 
   console.log("[useCommonContent] setup", {
     study: unref(study),
-    hl: unref(languageCodeHL),
     variant: unref(variant),
+    hl: unref(languageCodeHL),
     key: buildCommonContentKey(
       unref(study),
-      unref(languageCodeHL),
-      unref(variant)
+      unref(variant),
+      unref(languageCodeHL)
     ),
   });
 
   // end debug
 
-  // ——— Read from store (sync). NOTE: order = (study, hl, variant) ———
+  // ——— Read from store (sync). NOTE: order = (study,variant, hl) ———
   const commonContent = computed(() => {
     const resolvedStudy = unref(study);
     const resolvedHL = unref(languageCodeHL);
@@ -48,8 +48,8 @@ export function useCommonContent(
     );
     const cc = contentStore.commonContentFor(
       resolvedStudy,
-      resolvedHL,
-      resolvedVariant
+      resolvedVariant,
+      resolvedHL
     );
     console.log(cc);
     return cc || {};
@@ -63,8 +63,8 @@ export function useCommonContent(
     // to debug
     const key = buildCommonContentKey(
       resolvedStudy,
-      resolvedHL,
-      resolvedVariant
+      resolvedVariant,
+      resolvedHL
     );
     console.log("[useCommonContent] loadCommonContent called", {
       key,
@@ -77,8 +77,8 @@ export function useCommonContent(
     try {
       const data = await contentStore.loadCommonContent(
         resolvedStudy,
-        resolvedHL,
-        resolvedVariant
+        resolvedVariant,
+        resolvedHL
       );
       console.log("[useCommonContent] load result", {
         key,
@@ -110,7 +110,7 @@ export function useCommonContent(
   });
 
   onMounted(loadCommonContent);
-  watch([study, languageCodeHL, variant], loadCommonContent);
+  watch([study, variant, languageCodeHL], loadCommonContent);
 
   return { commonContent, topics, loadCommonContent };
 }

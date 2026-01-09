@@ -30,26 +30,24 @@ export const useContentStore = defineStore("contentStore", {
   }),
 
   getters: {
-    commonContentFor:
-      (state) =>
-      (study, hl, variant = null) => {
-        const key = ContentKeys.buildCommonContentKey(study, hl, variant);
-        console.log("CommonContentFor was asked for " + key);
-        const value = state.commonContent[key];
-        console.log(value);
+    commonContentFor: (state) => (study, variant, hl) => {
+      const key = ContentKeys.buildCommonContentKey(study, variant, hl);
+      console.log("CommonContentFor was asked for " + key);
+      const value = state.commonContent[key];
+      console.log(value);
 
-        if (!value) {
-          return null;
-        }
-        if (typeof value !== "object") {
-          console.warn(
-            "[ContentStore.commonContentFor] non-object value in store",
-            { key, study, hl, variant, value }
-          );
-          return null;
-        }
-        return value;
-      },
+      if (!value) {
+        return null;
+      }
+      if (typeof value !== "object") {
+        console.warn(
+          "[ContentStore.commonContentFor] non-object value in store",
+          { key, study, variant, hl, value }
+        );
+        return null;
+      }
+      return value;
+    },
 
     lessonContentFor: (state) => (study, hl, jf, lesson) => {
       const key = ContentKeys.buildLessonContentKey(study, hl, jf, lesson);
@@ -120,12 +118,12 @@ export const useContentStore = defineStore("contentStore", {
     },
 
     // moves retrieved common content into Content Store
-    setCommonContent(study, hl, data, variant = null) {
-      const key = ContentKeys.buildCommonContentKey(study, hl, variant);
+    setCommonContent(study, variant, hl, data) {
+      const key = ContentKeys.buildCommonContentKey(study, variant, hl);
       if (!key) {
         console.warn(
           "setCommonContent: commonContent key is null; skipping set.",
-          { study, hl, variant }
+          { study, variant, hl }
         );
         return;
       }
@@ -133,14 +131,14 @@ export const useContentStore = defineStore("contentStore", {
       if (data && typeof data === "object" && data.$id === "contentStore") {
         console.error(
           "setCommonContent: BUG – received contentStore instance as data.",
-          { key, study, hl, variant }
+          { key, study, variant, hl }
         );
         return;
       }
       if (!data || typeof data !== "object") {
         console.warn(
           "setCommonContent: ignoring non-object commonContent payload.",
-          { key, study, hl, variant, data }
+          { key, study, variant, hl, data }
         );
         return;
       }
@@ -219,37 +217,44 @@ export const useContentStore = defineStore("contentStore", {
     },
     // this is the good stuff.  We get the common content from
     // either the database (if we can), or go to the API
-    async loadCommonContent(study, hl, variant = null) {
-      const data = await getCommonContent(study, hl, variant);
+    async loadCommonContent(study, variant, hl) {
+      //getCommonContent stores it via storeSetter/onInstall
+      const data = await getCommonContent(study, variant, hl); // fetch/cache only
       console.log(
-        "loadCommonContent returned with the following, but I did nothing with it"
+        "ContentStore.loadCommonContent loaded",
+        { study, variant, hl, ok: !!data },
+        data
       );
-      console.log(data);
-      //this.setCommonContent(study, hl, data, variant);
-      //getCommonContent already stores it via storeSetter/onInstall
       return data;
     },
     //  We get the interface content from
     // either the database (if we can), or go to the API
     async loadInterface(hl) {
-      await getTranslatedInterface(hl); // fetch/cache only
-      console.log("ContentStore.loadInterface changed interface to " + hl);
+      const data = await getTranslatedInterface(hl); // fetch/cache only
+      console.log("ContentStore.loadInterface", { hl, hasData: !!data, data });
+      return data;
     },
 
     async loadSiteContent(hl) {
-      await getSiteContent(hl); // fetch/cache only
-      console.log("ContentStore.loadSiteContent loaded site content for " + hl);
+      const data = await getSiteContent(hl); // fetch/cache only
+      console.log("ContentStore.loadSiteContent", {
+        hl,
+        hasData: !!data,
+        data,
+      });
+      return data;
     },
 
     // We get the lesson content from
     // either the database (if we can), or go to the API
+    // lessonContent DOES NOT have a variant value
     async loadLessonContent(study, hl, jf, lesson) {
       const validated = validateLessonNumber(unref(lesson));
       if (validated === null) {
         console.warn(`Invalid lesson '${unref(lesson)}'`);
         return null;
       }
-      return await getLessonContent(study, hl, jf, validated);
+      return await getLessonContent(study, hl, jf, validated); // fetch/cache only
     },
     // I want to get rid of this
     async loadVideoUrls(jf, study) {

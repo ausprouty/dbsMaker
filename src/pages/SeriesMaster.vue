@@ -19,6 +19,9 @@ import SeriesLessonFramework from "src/components/Series/SeriesLessonFramework.v
 const router = useRouter();
 
 const { t, locale } = useI18n({ useScope: "global" });
+const isSiteContentReady = computed(
+  () => readyHL.value === computedLanguageHL.value
+);
 
 import { getActivePinia } from "pinia";
 console.log("[SeriesMaster] activePinia =", getActivePinia());
@@ -71,8 +74,8 @@ const computedVariant = computed(() => {
 
 const { commonContent, topics, loadCommonContent } = useCommonContent(
   computedStudy,
-  computedLanguageHL,
-  computedVariant
+  computedVariant,
+  computedLanguageHL
 );
 
 const {
@@ -97,18 +100,16 @@ function onChangeLanguageClick() {
   console.warn("[SeriesMaster] No language UI handler provided");
 }
 
-const { getSection, loadSiteContent } = useSiteContent();
+const { getSection, readyHL } = useSiteContent(computedLanguageHL);
 
 const section = computed(() => {
-  // These lines create reactive dependencies (no-op reads)
-  void computedLanguageHL.value;
-  console.log("[SeriesMaster] computing section");
-  const temp = getSection(computedStudy.value);
-  console.log("[SeriesMaster]", temp);
-  return temp;
+  const hl = computedLanguageHL.value;
+  if (readyHL.value !== hl) {
+    return { title: "", summary: "", paras: [] };
+  }
+  return getSection(computedStudy.value);
 });
 
-console.log(section);
 const pageTitle = computed(() => {
   const s = section.value;
   return (
@@ -122,16 +123,12 @@ const pageParas = computed(() => {
     (s && s.paras) || (commonContent.value && commonContent.value.paras) || []
   );
 });
-
 onMounted(() => {
   try {
     loadProgress();
     console.log("[SeriesMaster] about to loadCommonContent");
     loadCommonContent();
-    if (typeof loadSiteContent === "function") {
-      console.log("[SeriesMaster] about to loadSiteContent");
-      loadSiteContent(computedLanguageHL.value);
-    }
+
     if (import.meta.env.DEV) {
       patchRouterForLogs(router);
     }
@@ -139,15 +136,7 @@ onMounted(() => {
     console.error("❌ Could not load common content", err);
   }
 });
-// update SiteContent when language changes
-watch(
-  computedLanguageHL,
-  (n, o) => {
-    console.log("[SeriesMaster] HL changed:", o, "→", n);
-    loadSiteContent(n);
-  },
-  { immediate: true }
-);
+
 // update CommonContent when language, study or variant change
 watch(
   [computedStudy, computedVariant, computedLanguageHL],
@@ -188,10 +177,11 @@ watch(section, (v) =>
 </script>
 
 <template>
-  <template v-if="commonContent">
+  <template v-if="commonContent && commonContent.value">
     <q-page padding>
       <h1 class="dbs">
-        {{ pageTitle }}
+        <span v-if="isSiteContentReady">{{ pageTitle }}</span>
+        <span v-else>{{ t("interface.loading") }}</span>
       </h1>
 
       <p v-for="(para, i) in pageParas" :key="i">
@@ -221,9 +211,7 @@ watch(section, (v) =>
       <hr />
 
       <SeriesLessonFramework
-        :key="`${computedStudy}-${
-          computedVariant || ''
-        }-${computedLessonNumber}`"
+        :key="`${computedStudy}-${computedVariant}-${computedLessonNumber}`"
         :languageCodeHL="computedLanguageHL"
         :languageCodeJF="computedLanguageJF"
         :study="computedStudy"
