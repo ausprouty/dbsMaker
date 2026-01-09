@@ -31,7 +31,7 @@ export function buildCommonContentKey(study, variant, languageCodeHL) {
   const v = nId(raw);
   if (!v) return null;
 
-  const key = "commonContent-" + s + "-" + hl + "-" + v;
+  const key = "commonContent-" + s + "-" + v + "-" + hl;
 
   console.log("[buildCommonContentKey]", {
     study,

@@ -43,7 +43,7 @@ export function useVideoMasterVM() {
     commonContent: commonContentRef,
     topics: topicsRef,
     loadCommonContent,
-  } = useCommonContent(currentStudyKeyRef, languageCodeHLRef);
+  } = useCommonContent(currentStudyKeyRef, normVariant, languageCodeHLRef);
 
   // Explicit loading/error for content
   const contentLoadingRef = ref(false);
@@ -231,8 +231,7 @@ export function useVideoMasterVM() {
 
   // Unified page state
   const unifiedLoadingRef = computed(function () {
-    const srcLoad =
-      videoSourceLoadingRef && videoSourceLoadingRef.value;
+    const srcLoad = videoSourceLoadingRef && videoSourceLoadingRef.value;
     const progLoad = progressLoadingRef && progressLoadingRef.value;
     return contentLoadingRef.value || !!srcLoad || !!progLoad;
   });
@@ -262,20 +261,17 @@ export function useVideoMasterVM() {
       return s.trim().length > 0;
     }
     if (s && typeof s === "object") {
-      const candidate1 =
-        s.src != null ? String(s.src).trim() : "";
-      const candidate2 =
-        s.url != null ? String(s.url).trim() : "";
+      const candidate1 = s.src != null ? String(s.src).trim() : "";
+      const candidate2 = s.url != null ? String(s.url).trim() : "";
       return candidate1.length > 0 || candidate2.length > 0;
     }
     return false;
-    }
+  }
 
   const unifiedReadyRef = computed(function () {
     const hasSrc =
       videoSourceRef && hasPlayableSourceValue(videoSourceRef.value);
-    const srcLoad =
-      videoSourceLoadingRef && videoSourceLoadingRef.value;
+    const srcLoad = videoSourceLoadingRef && videoSourceLoadingRef.value;
     const progLoad = progressLoadingRef && progressLoadingRef.value;
     return !!hasSrc && !(contentLoadingRef.value || srcLoad || progLoad);
   });

@@ -5,11 +5,7 @@ import { buildCommonContentKey } from "src/utils/ContentKeyBuilder";
 import { DEFAULTS } from "src/constants/Defaults.js";
 import { normStudyKey, normHL, normVariant } from "src/utils/normalize.js";
 
-export function useCommonContent(
-  studyRef,
-  languageCodeHLRef,
-  variantRef = null
-) {
+export function useCommonContent(studyRef, variantRef, languageCodeHLRef) {
   const contentStore = useContentStore();
 
   // ——— Normalised inputs (single source of truth) ———
@@ -21,17 +17,15 @@ export function useCommonContent(
 
   //--debug
 
-  const key = buildCommonContentKey(study, variant, languageCodeHL);
+  const key = computed(() =>
+    buildCommonContentKey(unref(study), unref(variant), unref(languageCodeHL))
+  );
 
   console.log("[useCommonContent] setup", {
     study: unref(study),
     variant: unref(variant),
     hl: unref(languageCodeHL),
-    key: buildCommonContentKey(
-      unref(study),
-      unref(variant),
-      unref(languageCodeHL)
-    ),
+    key: key,
   });
 
   // end debug
@@ -39,13 +33,15 @@ export function useCommonContent(
   // ——— Read from store (sync). NOTE: order = (study,variant, hl) ———
   const commonContent = computed(() => {
     const resolvedStudy = unref(study);
-    const resolvedHL = unref(languageCodeHL);
     const resolvedVariant = unref(variant);
+    const resolvedHL = unref(languageCodeHL);
+
     console.log("In useCommonContent the resolvedStudy is " + resolvedStudy);
-    console.log("In useCommonContent the resolvedHL is " + resolvedHL);
     console.log(
       "In useCommonContent the resolvedVariant is " + resolvedVariant
     );
+    console.log("In useCommonContent the resolvedHL is " + resolvedHL);
+
     const cc = contentStore.commonContentFor(
       resolvedStudy,
       resolvedVariant,
@@ -58,9 +54,11 @@ export function useCommonContent(
   // ——— Populate store (async) when needed , but we do not do anything with this data ----
   async function loadCommonContent() {
     const resolvedStudy = unref(study);
-    const resolvedHL = unref(languageCodeHL);
     const resolvedVariant = unref(variant);
+    const resolvedHL = unref(languageCodeHL);
+
     // to debug
+    console.log("[buildCommonContentKey called from useCommonContent]");
     const key = buildCommonContentKey(
       resolvedStudy,
       resolvedVariant,
@@ -69,8 +67,8 @@ export function useCommonContent(
     console.log("[useCommonContent] loadCommonContent called", {
       key,
       study: resolvedStudy,
+      variant: resolvedVariant,
       hl: resolvedHL,
-      variant: variant,
     });
 
     // end debug

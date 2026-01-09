@@ -10,10 +10,10 @@ export const settingsActions = {
     payload = payload || {};
 
     var study = payload.study;
+    var variant = payload.variant;
     var lesson = payload.lesson;
     var hl = payload.hl;
     var jf = payload.jf;
-    var variant = payload.variant;
 
     // ---- STUDY ----
     if (study) {

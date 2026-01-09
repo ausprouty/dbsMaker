@@ -79,5 +79,5 @@ export function applyRouteToSettingsStore(route, settingsStore) {
   if (typeof settingsStore.applyRouteContext !== "function") {
     throw new Error("SettingsStore.applyRouteContext is required");
   }
-  settingsStore.applyRouteContext({ study, lesson, hl, jf, variant });
+  settingsStore.applyRouteContext({ study, lesson, variant, hl, jf });
 }
