@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { patchRouterForLogs } from "src/debug/patchRouterForLogs";
+import { buildLessonContentKey } from "src/utils/ContentKeyBuilder";
 
 import { useCommonContent } from "src/composables/useCommonContent";
 import { useSiteContent } from "src/composables/useSiteContent";
@@ -69,6 +70,16 @@ const computedVariant = computed(() => {
   v = v == null ? "" : String(v).trim();
   return v ? v : "default";
 });
+
+const lessonKey = computed(
+  () =>
+    buildLessonContentKey(
+      computedStudy.value,
+      computedLanguageHL.value,
+      computedLanguageJF.value,
+      computedLessonNumber.value
+    ) || "lessonContent-invalid"
+);
 
 // ---- Lesson content readiness ----
 
@@ -177,7 +188,7 @@ watch(section, (v) =>
 </script>
 
 <template>
-  <template v-if="commonContent && commonContent.value">
+  <template v-if="commonContent && commonContent.topic">
     <q-page padding>
       <h1 class="dbs">
         <span v-if="isSiteContentReady">{{ pageTitle }}</span>
@@ -211,7 +222,7 @@ watch(section, (v) =>
       <hr />
 
       <SeriesLessonFramework
-        :key="`${computedStudy}-${computedVariant}-${computedLessonNumber}`"
+        :key="lessonKey"
         :languageCodeHL="computedLanguageHL"
         :languageCodeJF="computedLanguageJF"
         :study="computedStudy"
@@ -234,7 +245,7 @@ watch(section, (v) =>
 
   <template v-else>
     <q-page padding>
-      <div class="text-negative text-h6">Topic Loading.</div>
+      <div class="text-negative text-h6">{{ t("interface.loading") }}</div>
     </q-page>
   </template>
 </template>

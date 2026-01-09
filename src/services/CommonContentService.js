@@ -8,7 +8,7 @@ import {
   saveCommonContentToDB,
 } from "./IndexedDBService";
 
-export async function getCommonContent(study, languageCodeHL, variant) {
+export async function getCommonContent(study, variant, languageCodeHL) {
   const hl = normId(languageCodeHL);
   const studyId = normId(study);
   if (!studyId || !hl) {
@@ -26,14 +26,14 @@ export async function getCommonContent(study, languageCodeHL, variant) {
   // Setter used when getContentWithFallback has direct access to the store.
   // Signature: (store, data)
   const setter = (store, data) => {
-    store.setCommonContent(studyId, hl, data);
+    store.setCommonContent(studyId, v, hl, data);
   };
 
   // Handler used by TranslationPollingService when a poll completes.
   // Signature there is: (hlFromPoll, data)
   const handleInstall = (hlFromPoll, data) => {
     const effectiveHl = hlFromPoll || hl;
-    contentStore.setCommonContent(studyId, effectiveHl, data);
+    contentStore.setCommonContent(studyId, v, effectiveHl, data);
   };
 
   return await getContentWithFallback({

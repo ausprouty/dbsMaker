@@ -318,6 +318,7 @@ export async function saveCommonContentToDB(
   content
 ) {
   const key = ContentKeys.buildCommonContentKey(study, variant, languageCodeHL);
+  console.log(["saveCommonContentToDB"] + key);
   return saveItem("commonContent", key, content);
 }
 

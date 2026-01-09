@@ -127,6 +127,10 @@ export const useContentStore = defineStore("contentStore", {
         );
         return;
       }
+      if (variant && typeof variant === "object") {
+        console.error("variant is not a string", { variant });
+      }
+
       // Guard against accidentally storing the store itself
       if (data && typeof data === "object" && data.$id === "contentStore") {
         console.error(
@@ -142,6 +146,12 @@ export const useContentStore = defineStore("contentStore", {
         );
         return;
       }
+      console.log("[setCommonContent call]", {
+        study: typeof study,
+        variant: typeof variant,
+        hl: typeof hl,
+      });
+
       this.commonContent[key] = data;
     },
 
