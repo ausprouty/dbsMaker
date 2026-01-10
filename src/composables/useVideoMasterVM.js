@@ -39,11 +39,16 @@ export function useVideoMasterVM() {
   });
 
   // Common content
+
+  const variantRef = computed(() =>
+    settingsStore.variantForCurrentStudy(currentStudyKeyRef.value)
+  );
+
   const {
     commonContent: commonContentRef,
     topics: topicsRef,
     loadCommonContent,
-  } = useCommonContent(currentStudyKeyRef, normVariant, languageCodeHLRef);
+  } = useCommonContent(currentStudyKeyRef, variantRef, languageCodeHLRef);
 
   // Explicit loading/error for content
   const contentLoadingRef = ref(false);

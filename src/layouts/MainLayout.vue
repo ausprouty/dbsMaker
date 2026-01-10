@@ -1,13 +1,5 @@
 <script setup>
-import {
-  ref,
-  provide,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-  createApp,
-} from "vue";
+import { ref, provide, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import LanguageOptions from "src/components/Language/LanguageOptions.vue";
 import ShareLink from "src/components/ShareLink.vue";
 import SeasonalHeader from "src/components/Seasonal/SeasonalHeader.vue";
@@ -54,15 +46,14 @@ provide("openLanguageSelect", openLanguageSelect);
 const { ensureSeasonalValid, refreshSeasonal } = useSeasonalService();
 
 async function loadSeasonalIfNeeded() {
-  console.log("[loadSeasonalIfNeeded]");
   ensureSeasonalValid();
-  console.log("[loadSeasonalIfNeeded] ensure SeasonValid");
   if (!settingsStore.seasonalContent) {
-    console.log("[loadSeasonalIfNeeded] !settingsStore.seasonalContent");
-    const lang = String(languageCodeGoogle.value || "en").trim() || "en";
-    console.log("[loadSeasonalIfNeeded] lang: " + lang);
+    const obj = settingsStore.textLanguageObjectSelected || null;
+    const lang =
+      String(
+        obj && obj.languageCodeGoogle ? obj.languageCodeGoogle : "en"
+      ).trim() || "en";
     await refreshSeasonal(app, lang);
-    console.log("[loadSeasonalIfNeeded] lang: " + lang);
   }
 }
 
@@ -70,25 +61,34 @@ async function loadSeasonalIfNeeded() {
 const { changeLanguage } = useLanguageRouting();
 console.log("changeLanguage", changeLanguage);
 
-// Keep vue-i18n + <html lang|dir> in sync with the selected language object.
-// This runs on initial load and whenever textLanguageObjectSelected changes.
+// Keep vue-i18n + <html lang|dir> in sync with the selected language.
+// Watch only HL (string) to avoid re-running when unrelated props change.
+const selectedHL = computed(() => {
+  const obj = settingsStore.textLanguageObjectSelected || null;
+  const hl = obj && obj.languageCodeHL ? String(obj.languageCodeHL) : "";
+  return hl.trim();
+});
+
 let lastLangReq = 0;
 
 watch(
-  () => settingsStore.textLanguageObjectSelected,
-  async (langObj) => {
-    if (!langObj) return;
+  selectedHL,
+  async (hl) => {
+    if (!hl) return;
 
     const reqId = ++lastLangReq;
 
-    const hl = String(langObj.languageCodeHL || "");
-    if (!hl) return;
-
-    const google = String(langObj.languageCodeGoogle || "");
+    const langObj = settingsStore.textLanguageObjectSelected || null;
+    const google =
+      String(
+        langObj && langObj.languageCodeGoogle
+          ? langObj.languageCodeGoogle
+          : "en"
+      ).trim() || "en";
 
     applyInterfaceLanguageToWebpage(langObj);
 
-    // Start both in parallel
+    // Start all in parallel
     const interfacePromise = contentStore.loadInterface(hl);
     const siteContentPromise = contentStore.loadSiteContent(hl);
     const seasonalPromise = refreshSeasonal(app, google);
@@ -103,9 +103,7 @@ watch(
     // If another language change happened, stop here (do not apply effects)
     if (reqId !== lastLangReq) return;
 
-    if (locale.value !== hl) {
-      locale.value = hl;
-    }
+    if (locale.value !== hl) locale.value = hl;
 
     // Let the others finish, but do not throw if they fail
     const settled = await Promise.allSettled([
@@ -127,7 +125,7 @@ watch(
       console.warn("[Seasonal] refreshSeasonal failed:", settled[1].reason);
     }
   },
-  { immediate: true, deep: true }
+  { immediate: true }
 );
 
 async function handleLanguageSelect(languageObject) {
@@ -177,7 +175,7 @@ const appbarStyle = computed(function () {
   // Fallback: global site meta
   var siteMeta;
   try {
-    siteMeta = globalThisettingsStore.__SITE_META__;
+    siteMeta = globalThis.__SITE_META__;
   } catch (_e) {
     siteMeta = null;
   }
@@ -197,9 +195,9 @@ const scrolled = ref(false);
 function onScroll() {
   scrolled.value = window.scrollY > 2;
 }
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener("scroll", onScroll, { passive: true });
-  loadSeasonalIfNeeded;
+  await loadSeasonalIfNeeded();
 });
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", onScroll);

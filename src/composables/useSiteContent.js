@@ -45,22 +45,18 @@ function normalizeSection(section) {
   };
 }
 
-// Optional helper (currently unused in the code you showed)
-function normSubjectKey(subjectRef) {
-  const raw = unref(subjectRef);
-  const s = String(raw || "")
-    .trim()
-    .toLowerCase();
-  return s || null;
-}
-
 export function useSiteContent(languageCodeHLRef) {
   const contentStore = useContentStore();
   const readyHL = ref("");
 
-  const languageCodeHL = computed(
-    () => normHL(languageCodeHLRef) || DEFAULTS.languageCodeHL
-  );
+  // IMPORTANT:
+  // - Callers should pass a ref/computed for reactivity.
+  // - Still be defensive: if a plain string is passed, unref() is safe.
+  const languageCodeHL = computed(() => {
+    const raw = unref(languageCodeHLRef);
+    const v = normHL(raw) || DEFAULTS.languageCodeHL;
+    return v;
+  });
 
   const siteContent = computed(() => {
     const resolvedHL = unref(languageCodeHL);
@@ -68,7 +64,10 @@ export function useSiteContent(languageCodeHLRef) {
       typeof contentStore.siteContentFor === "function"
         ? contentStore.siteContentFor(resolvedHL)
         : null;
-    return sc || {};
+    // IMPORTANT:
+    // Returning {} here can mask a load problem and can also cause UI to
+    // "look valid" while still being empty. Keep null-ish distinct.
+    return sc && typeof sc === "object" ? sc : null;
   });
 
   let loadToken = 0;
@@ -77,8 +76,10 @@ export function useSiteContent(languageCodeHLRef) {
     const token = ++loadToken;
     readyHL.value = "";
 
+    // Always normalize what we load with.
     const resolvedHL =
-      hl == null || hl === "" ? unref(languageCodeHL) : String(hl).trim();
+      normHL(hl == null || hl === "" ? unref(languageCodeHL) : hl) ||
+      DEFAULTS.languageCodeHL;
 
     try {
       if (typeof contentStore.loadSiteContent !== "function") return;
@@ -92,14 +93,29 @@ export function useSiteContent(languageCodeHLRef) {
     }
   }
 
-  function setupAutoLoad() {
-    watch(languageCodeHL, loadSiteContent, { immediate: true });
+  // Auto-load by default.
+  // If you also watch+load in MainLayout, pass { autoLoad:false } to avoid
+  // duplicate fetches.
+  const autoLoad = !(
+    arguments.length > 1 &&
+    arguments[1] &&
+    arguments[1].autoLoad === false
+  );
+
+  if (autoLoad) {
+    // Watch the normalized HL string only.
+    watch(
+      () => languageCodeHL.value,
+      (hl) => loadSiteContent(hl),
+      { immediate: true }
+    );
   }
-  setupAutoLoad();
 
   function getSection(sectionKey) {
     const root = siteContent.value;
-    const k = String(sectionKey || "").trim();
+    const k = String(sectionKey || "")
+      .trim()
+      .toLowerCase();
     if (!k) return { title: "", summary: "", paras: [] };
 
     const sections =

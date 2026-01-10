@@ -135,6 +135,7 @@ export const settingsGetters = {
     if (!map || typeof map !== "object") return "default";
 
     var v = map[s];
-    return v ? String(v) : "default";
+    v = v == null ? "" : String(v).trim().toLowerCase();
+    return v || "default";
   },
 };

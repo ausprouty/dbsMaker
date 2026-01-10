@@ -85,7 +85,7 @@ const lessonKey = computed(
 
 const { commonContent, topics, loadCommonContent } = useCommonContent(
   computedStudy,
-  computedVariant,
+  computedVariant, //this is a ref
   computedLanguageHL
 );
 

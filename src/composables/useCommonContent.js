@@ -13,7 +13,7 @@ export function useCommonContent(studyRef, variantRef, languageCodeHLRef) {
   const languageCodeHL = computed(
     () => normHL(languageCodeHLRef) || DEFAULTS.languageCodeHL
   );
-  const variant = computed(() => normVariant(variantRef)); // string or null
+  const variant = computed(() => normVariant(unref(variantRef)));
 
   //--debug
 

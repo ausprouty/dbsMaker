@@ -4,17 +4,26 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { useSiteContent } from "src/composables/useSiteContent";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
 const { t, te } = useI18n({ useScope: "global" });
 const settingsStore = useSettingsStore();
+const { textLanguageObjectSelected } = storeToRefs(settingsStore);
+
+const hl = computed(() => {
+  var obj = textLanguageObjectSelected.value || null;
+  var code = obj && obj.languageCodeHL ? String(obj.languageCodeHL) : "";
+  code = code.trim();
+  return code ? code : "eng00";
+});
 
 // useSiteContent is the single source of truth for already-normalized siteContent
 // Assume it returns:
 //   - siteContent (root object)
 //   - indexParas (array of strings)
 //   - getSection(key) -> { title, summary, paras }
-const { siteContent, indexParas, getSection } = useSiteContent();
+const { indexParas, getSection } = useSiteContent(hl);
 
 const loading = computed(
   () =>
@@ -37,13 +46,21 @@ const menuItemsResolved = computed(() => {
   return items.map((item) => {
     const sectionKey = getSectionKeyFromMenuItem(item);
 
-    const rawSection =
-      typeof getSection === "function" ? getSection(sectionKey) : null;
-    const section = unref(rawSection) || { title: "", summary: "", paras: [] };
+    const section =
+      typeof getSection === "function"
+        ? getSection(sectionKey)
+        : { title: "", summary: "", paras: [] };
 
-    const title = section?.title || item?.title || item?.devName || "";
+    var title =
+      (section && section.title ? section.title : "") ||
+      (item && item.title ? item.title : "") ||
+      (item && item.devName ? item.devName : "") ||
+      "";
 
-    const summary = section?.summary || item?.summary || "";
+    var summary =
+      (section && section.summary ? section.summary : "") ||
+      (item && item.summary ? item.summary : "") ||
+      "";
 
     return Object.assign({}, item, {
       _title: title,
