@@ -1,6 +1,6 @@
 <script setup>
 import { ref, provide, computed, onMounted, onBeforeUnmount, watch } from "vue";
-import LanguageOptions from "src/components/Language/LanguageOptions.vue";
+import LanguageOptions from "src/components/Language/TextLanguageOptions.vue";
 import ShareLink from "src/components/ShareLink.vue";
 import SeasonalHeader from "src/components/Seasonal/SeasonalHeader.vue";
 import { useContentStore } from "src/stores/ContentStore";

@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { useLocalizedDigits } from "src/composables/useLocalizedDigits";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { useI18n } from "vue-i18n";
+import { useSafeI18n } from "src/composables/useSafeI18n";
 
 const props = defineProps({
   study: String,
@@ -15,11 +16,12 @@ const props = defineProps({
 
 const emit = defineEmits(["updateLesson"]);
 const settingsStore = useSettingsStore();
-const { t } = useI18n({ useScope: "global" });
+
+const { safeT, i18nReady } = useSafeI18n();
 const { toLocalizedDigits } = useLocalizedDigits();
 
 // Label reacts to locale changes
-const topicLabel = computed(() => t("interface.topic"));
+const topicLabel = computed(() => safeT("interface.topic"));
 
 // Normalize completed lessons once
 const completedSet = computed(
@@ -45,7 +47,7 @@ const selectOptions = computed(() => {
     const baseLabel =
       topic.label ||
       topic.title ||
-      t("interface.lessonNumber", { n: lessonNumber });
+      safeT("interface.lessonNumber", { n: lessonNumber });
 
     return {
       ...topic,

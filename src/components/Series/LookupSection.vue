@@ -6,6 +6,7 @@ import VideoBar from "src/components/Video/VideoBar.vue";
 import NoteSection from "src/components/Notes/NoteSection.vue";
 import { useContentStore } from "stores/ContentStore";
 import { useI18n } from "vue-i18n";
+import { useSafeI18n } from "src/composables/useSafeI18n";
 
 const props = defineProps({
   studySection: { type: String, required: true },
@@ -21,6 +22,7 @@ const props = defineProps({
 const numeralClass = useNumeralClass();
 const contentStore = useContentStore();
 const { t, getLocaleMessage } = useI18n({ useScope: "global" });
+const { safeT, i18nReady } = useSafeI18n();
 
 // reactive state
 const lessonContent = ref(null);
@@ -103,7 +105,7 @@ const videoTitle = computed(() => {
     aria-live="polite"
   >
     <span class="lesson-loading-label">
-      {{ t("interface.lessonLoading") }}
+      {{ safeT("interface.lessonLoading") }}
     </span>
   </div>
   <div v-else-if="loadError" class="text-negative">

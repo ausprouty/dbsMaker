@@ -41,7 +41,7 @@ export function useVideoParams(options) {
   });
 
   var languageCodeJF = computed(function () {
-    var v = settingsStore.videoLanguageSelected;
+    var v = settingsStore.videoLanguageObjectSelected;
     v = v == null ? "" : String(v).trim();
     if (v) return v;
 

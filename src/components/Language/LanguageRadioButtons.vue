@@ -7,7 +7,12 @@ import { languageLabel } from "src/utils/languageLabel";
 const props = defineProps({
   languages: { type: Array, default: () => [] }, // full catalog
   recents: { type: Array, default: () => [] }, // MRU(2) [{...}]
-  selectedHL: { type: String, default: "" }, // currently selected HL
+  // Back-compat: selectedHL is still accepted for TEXT pickers
+  selectedHL: { type: String, default: "" },
+  // New: generic selected value (HL, JF, etc.)
+  selectedValue: { type: String, default: "" },
+  // New: which field to use as the radio value (languageCodeHL, languageCodeJF, ...)
+  valueKey: { type: String, default: "languageCodeHL" },
   labelMode: { type: String, default: "ethnicName (name)" },
 });
 const emit = defineEmits(["select"]);
@@ -26,23 +31,36 @@ function labelFor(lang) {
   return languageLabel(lang, props.labelMode);
 }
 
-function findByHL(hl) {
+function getKeyValue(lang) {
+  if (!lang || typeof lang !== "object") return "";
+  const k = props.valueKey || "languageCodeHL";
+  return String(lang[k] || "");
+}
+function findByValue(val) {
   const list = Array.isArray(props.languages) ? props.languages : [];
-  const key = String(hl || "");
+  const key = String(val || "");
   for (let i = 0; i < list.length; i++) {
-    if (String(list[i].languageCodeHL || "") === key) return list[i];
+    const v = getKeyValue(list[i]);
+    if (v === key) return list[i];
   }
   return null;
 }
 
-// --- radios use HL string as the value ---
-const model = ref(props.selectedHL || "");
+function initialSelected() {
+  // Prefer generic selectedValue if provided, else fall back to selectedHL for older callers.
+  const v = props.selectedValue ? String(props.selectedValue) : "";
+  if (v) return v;
+  return String(props.selectedHL || "");
+}
+
+// --- radios use selected value string as the value ---
+const model = ref(initialSelected());
 
 // keep in sync if parent changes selectedHL
 watch(
-  () => props.selectedHL,
-  (hl) => {
-    model.value = String(hl || "");
+  () => [props.selectedValue, props.selectedHL, props.valueKey],
+  () => {
+    model.value = initialSelected();
   }
 );
 
@@ -51,34 +69,35 @@ const options = computed(() => {
   const list = Array.isArray(props.languages) ? props.languages : [];
   return list.map((x) => ({
     label: labelFor(x),
-    value: String(x.languageCodeHL || ""),
+    value: getKeyValue(x),
   }));
 });
 
-// normalized MRU(2) for chips (dedup by HL)
+// normalized MRU(2) for chips (dedup by valueKey)
 const recentChips = computed(() => {
   const seen = new Set();
   const src = Array.isArray(props.recents) ? props.recents : [];
   const out = [];
   for (let i = 0; i < src.length && out.length < 2; i++) {
-    const hl = String(src[i]?.languageCodeHL || "");
-    if (!hl || seen.has(hl)) continue;
-    seen.add(hl);
-    out.push(src[i]);
+    const item = src[i];
+    const v = getKeyValue(item);
+    if (!v || seen.has(v)) continue;
+    seen.add(v);
+    out.push(item);
   }
   return out;
 });
 
-function pickHL(hl) {
-  const lang = findByHL(hl);
+function pickValue(val) {
+  const lang = findByValue(val);
   if (!lang) return;
   // update the radio selection to reflect chip click
-  model.value = String(lang.languageCodeHL || "");
+  model.value = getKeyValue(lang);
   emit("select", lang);
 }
 
-function onRadioChange(hl) {
-  pickHL(hl);
+function onRadioChange(val) {
+  pickValue(val);
 }
 </script>
 
@@ -91,12 +110,12 @@ function onRadioChange(hl) {
       </div>
       <q-chip
         v-for="lang in recentChips"
-        :key="lang.languageCodeHL"
+        :key="getKeyValue(lang) || labelFor(lang)"
         clickable
         color="primary"
         text-color="white"
         class="q-mr-sm q-mb-sm"
-        @click="pickHL(lang.languageCodeHL)"
+        @click="pickValue(getKeyValue(lang))"
       >
         {{ languageLabel(lang) }}
       </q-chip>

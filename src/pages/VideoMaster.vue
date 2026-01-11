@@ -1,6 +1,5 @@
 <script setup>
-import { inject, computed, ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, ref, watch } from "vue";
 import { useSafeI18n } from "src/composables/useSafeI18n";
 import { useVideoMasterVM } from "src/composables/useVideoMasterVM";
 import VideoPlayer from "src/components/Video/VideoPlayer.vue";
@@ -8,6 +7,8 @@ import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 import VideoQuestions from "src/components/Video/VideoQuestions.vue";
 import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings";
 import { useSettingsStore } from "src/stores/SettingsStore";
+import VideoLanguageOptions from "src/components/Language/VideoLanguageOptions.vue";
+import { languageLabel } from "src/utils/languageLabel";
 
 function isObjectLike(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);
@@ -17,8 +18,10 @@ function toNonEmptyString(v) {
   const s = String(v == null ? "" : v).trim();
   return s;
 }
-
-const toggleRightDrawer = inject("toggleRightDrawer", function () {});
+const showVideoLangPanel = ref(false);
+function toggleVideoLanguageSelect() {
+  showVideoLangPanel.value = !showVideoLangPanel.value;
+}
 
 const settingsStore = useSettingsStore();
 useApplyRouteToSettings(settingsStore);
@@ -185,6 +188,22 @@ const { safeT, i18nReady } = useSafeI18n();
       class="mark-complete-btn q-mb-md"
       @click="toggleVideoLanguageSelect()"
     />
+    <!-- Right-side panel (same styling approach as text picker) -->
+    <q-drawer
+      v-model="showVideoLangPanel"
+      side="right"
+      bordered
+      overlay
+      :width="360"
+    >
+      <div class="q-pa-md">
+        <div class="text-subtitle1 q-mb-sm">
+          {{ safeT("interface.videoLanguage", "Video language") }}
+        </div>
+
+        <VideoLanguageOptions @select="showVideoLangPanel = false" />
+      </div>
+    </q-drawer>
 
     <SeriesPassageSelect
       v-if="showSeriesPassage"

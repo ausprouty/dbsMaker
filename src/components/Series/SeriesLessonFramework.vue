@@ -1,6 +1,7 @@
 <script>
 import { computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
+import { useSafeI18n } from "src/composables/useSafeI18n";
 
 import DbsSection from "src/components/Series/DbsSection.vue";
 import LookupSection from "src/components/Series/LookupSection.vue";
@@ -19,17 +20,17 @@ export default {
   },
 
   setup(props) {
-    const { t, locale, getLocaleMessage } = useI18n({ useScope: "global" });
-
+    const { locale, getLocaleMessage } = useI18n({ useScope: "global" });
+    const { safeT, i18nReady } = useSafeI18n();
     // i18n-driven placeholders (reactive to locale)
     const lookBackNoteInstruction = computed(function () {
-      return t("interface.lookBackNoteInstruction");
+      return safeT("interface.lookBackNoteInstruction");
     });
     const lookUpNoteInstruction = computed(function () {
-      return t("interface.lookUpNoteInstruction");
+      return safeT("interface.lookUpNoteInstruction");
     });
     const lookForwardNoteInstruction = computed(function () {
-      return t("interface.lookForwardNoteInstruction");
+      return safeT("interface.lookForwardNoteInstruction");
     });
 
     // Safe fallbacks for template (no optional chaining)
@@ -68,7 +69,7 @@ export default {
 
       console.log(
         't("interface.lessonLoading") →',
-        t("interface.lessonLoading")
+        safeT("interface.lessonLoading")
       );
     });
 

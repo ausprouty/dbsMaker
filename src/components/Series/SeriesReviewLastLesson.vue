@@ -4,8 +4,9 @@ import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { getNote } from "src/services/NoteService";
 import { getStudyProgress } from "src/services/IndexedDBService";
+import { useSafeI18n } from "src/composables/useSafeI18n";
 
-const { t } = useI18n();
+const { safeT, i18nReady } = useSafeI18n();
 const settingsStore = useSettingsStore();
 
 const cleanedNote = ref("");
@@ -60,7 +61,7 @@ function loadIntroParagraphs() {
   let index = 1;
   while (true) {
     const key = `review.p${index}`;
-    const text = t(key);
+    const text = safeT(key);
     if (!text || text === key) break;
     paragraphs.push(text);
     index++;
@@ -86,7 +87,7 @@ watch(() => settingsStore.currentStudySelected, loadPreviousNote);
       </p>
     </template>
     <template v-else>
-      <p>{{ t("review.empty") }}</p>
+      <p>{{ safeT("review.empty") }}</p>
     </template>
   </div>
 </template>
