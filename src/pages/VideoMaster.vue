@@ -1,5 +1,7 @@
 <script setup>
 import { inject, computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { useSafeI18n } from "src/composables/useSafeI18n";
 import { useVideoMasterVM } from "src/composables/useVideoMasterVM";
 import VideoPlayer from "src/components/Video/VideoPlayer.vue";
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
@@ -162,6 +164,9 @@ function markThisLessonComplete(n) {
     /* no-op */
   }
 }
+
+// for interface:
+const { safeT, i18nReady } = useSafeI18n();
 </script>
 
 <template>
@@ -174,11 +179,11 @@ function markThisLessonComplete(n) {
 
     <q-btn
       v-if="showLanguageSelect"
-      :label="$t('interface.changeLanguage')"
+      :label="safeT('interface.changeVideoLanguage', 'Change video language')"
       icon="language"
       no-caps
       class="mark-complete-btn q-mb-md"
-      @click="toggleRightDrawer()"
+      @click="toggleVideoLanguageSelect()"
     />
 
     <SeriesPassageSelect
@@ -212,7 +217,7 @@ function markThisLessonComplete(n) {
       <VideoPlayer :source="safeVideoSourceRef" />
     </div>
     <q-banner v-else inline-actions class="bg-warning text-black q-mb-md">
-      {{ $t("interface.videoUnavailable") || "Video is not available." }}
+      {{ safeT("interface.videoUnavailable", "Video is not available.") }}
     </q-banner>
 
     <VideoQuestions
@@ -227,8 +232,8 @@ function markThisLessonComplete(n) {
     <q-btn
       :label="
         isThisLessonCompleted(lesson)
-          ? $t('interface.completed')
-          : $t('interface.notCompleted')
+          ? safeT('interface.completed', 'Completed')
+          : safeT('interface.notCompleted', 'Mark Completed')
       "
       :disable="isThisLessonCompleted(lesson)"
       class="mark-complete-btn q-mt-md"

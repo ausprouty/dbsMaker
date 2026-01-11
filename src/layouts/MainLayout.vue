@@ -283,11 +283,7 @@ const actionBtnColor = computed(() =>
   border-bottom: 1px solid
     color-mix(in srgb, var(--color-border) 50%, transparent);
 }
-.toolbar-title {
-  color: inherit;
-  text-decoration: none;
-  font-size: 1.5rem;
-}
+
 .footer {
   background-color: darkgrey;
   color: white;
@@ -299,13 +295,56 @@ const actionBtnColor = computed(() =>
 h2 {
   font-size: 2rem;
 }
-.q-toolbar__title {
-  font-size: 16px;
-}
+
 .toolbar-width,
 .page-width {
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
+}
+/* --- Responsive app title: wraps + shrinks on small screens --- */
+
+/* Let the Quasar title area actually wrap */
+.q-toolbar__title {
+  white-space: normal !important; /* override Quasar nowrap */
+  overflow: visible; /* avoid clipping */
+  line-height: 1.15;
+  padding-right: 8px; /* a little breathing room */
+}
+
+/* Make the router-link behave like a two-line title */
+.q-toolbar__title {
+  white-space: normal !important;
+  line-height: 1.15;
+}
+
+.toolbar-title {
+  color: inherit;
+  text-decoration: none;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  /* 2-line clamp (WebKit/Blink) */
+  -webkit-line-clamp: 2;
+
+  /* helpful wrapping behaviour */
+  word-break: break-word;
+  line-height: 1.15;
+}
+
+/* Smaller screens: reduce font and keep 2-line clamp */
+@media (max-width: 600px) {
+  .toolbar-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Very small screens: slightly smaller again */
+@media (max-width: 360px) {
+  .toolbar-title {
+    font-size: 1rem;
+  }
 }
 </style>

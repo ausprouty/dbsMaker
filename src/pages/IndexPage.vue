@@ -54,7 +54,6 @@ const menuItemsResolved = computed(() => {
     var title =
       (section && section.title ? section.title : "") ||
       (item && item.title ? item.title : "") ||
-      (item && item.devName ? item.devName : "") ||
       "";
 
     var summary =

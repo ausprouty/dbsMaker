@@ -16,10 +16,13 @@ import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings
 
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 import SeriesLessonFramework from "src/components/Series/SeriesLessonFramework.vue";
+import { useSafeI18n } from "src/composables/useSafeI18n";
 
 const router = useRouter();
 
 const { t, locale } = useI18n({ useScope: "global" });
+const { safeT, i18nReady } = useSafeI18n();
+
 const isSiteContentReady = computed(
   () => readyHL.value === computedLanguageHL.value
 );
@@ -192,7 +195,7 @@ watch(section, (v) =>
     <q-page padding>
       <h1 class="dbs">
         <span v-if="isSiteContentReady">{{ pageTitle }}</span>
-        <span v-else>{{ t("interface.loading") }}</span>
+        <span v-else>{{ safeT("interface.loading", "Loading") }}</span>
       </h1>
 
       <p v-for="(para, i) in pageParas" :key="i">
@@ -201,7 +204,7 @@ watch(section, (v) =>
 
       <q-btn
         v-if="showLanguageSelect"
-        :label="t('interface.changeLanguage')"
+        :label="safeT('interface.changeTextLanguage', 'Change text language')"
         icon="language"
         no-caps
         class="mark-complete-btn q-mb-md"
@@ -233,8 +236,8 @@ watch(section, (v) =>
       <q-btn
         :label="
           isLessonCompleted(computedLessonNumber)
-            ? t('interface.completed')
-            : t('interface.notCompleted')
+            ? safeT('interface.completed', 'Completed')
+            : safeT('interface.notCompleted', 'Mark Complet')
         "
         :disable="isLessonCompleted(computedLessonNumber)"
         class="mark-complete-btn"
@@ -245,7 +248,9 @@ watch(section, (v) =>
 
   <template v-else>
     <q-page padding>
-      <div class="text-negative text-h6">{{ t("interface.loading") }}</div>
+      <div class="text-negative text-h6">
+        {{ safeT("interface.loading", "Loading") }}
+      </div>
     </q-page>
   </template>
 </template>
