@@ -85,33 +85,13 @@ export const settingsActions = {
     }
     out.unshift(lang);
     this.languagesUsed = out.slice(0, 2);
-    try {
-      localStorage.setItem("lang:recents", JSON.stringify(this.languagesUsed));
-    } catch {}
   },
   clearLanguagePrefs() {
     this.textLanguageObjectSelected = null;
     this.languagesUsed = [];
-    try {
-      localStorage.removeItem("lang:selected");
-      localStorage.removeItem("lang:recents");
-    } catch {}
     applyDirection("ltr");
   },
-  loadLanguagePrefs() {
-    try {
-      var rawR = localStorage.getItem("lang:recents");
-      this.languagesUsed = rawR ? JSON.parse(rawR) : [];
-    } catch {
-      this.languagesUsed = [];
-    }
-    try {
-      var rawS = localStorage.getItem("lang:selected");
-      this.textLanguageObjectSelected = rawS ? JSON.parse(rawS) : null;
-    } catch {
-      this.textLanguageObjectSelected = null;
-    }
-  },
+
   findByHL(hl) {
     var key = String(hl || "");
     var list = Array.isArray(this.languages) ? this.languages : [];
@@ -119,20 +99,6 @@ export const settingsActions = {
       if (String(list[i].languageCodeHL || "") === key) return list[i];
     }
     return null;
-  },
-
-  loadLanguagePrefs() {
-    try {
-      var r = localStorage.getItem("lang:recents");
-      this.languagesUsed = r ? JSON.parse(r) : [];
-    } catch {
-      this.languagesUsed = [];
-    }
-    try {
-      var s = localStorage.getItem("lang:selected");
-      var sel = s ? JSON.parse(s) : null;
-      if (sel) this.setTextLanguageObjectSelected(sel);
-    } catch {}
   },
   normalizeShapes() {
     if (
@@ -189,23 +155,27 @@ export const settingsActions = {
     console.log("entered store to setTextLanguageObjectSelected");
     // Keep this for API stability (also updates MRU + direction)
     if (!lang) return;
-    console.log("have language");
-    console.log(lang);
     this.textLanguageObjectSelected = lang;
     this.addRecentLanguage(lang);
-    try {
-      localStorage.setItem("text:lang:selected", JSON.stringify(lang));
-    } catch {}
-    console.log("about to applyDirection");
     applyDirection(detectDirection(lang));
   },
-  setVideoLanguageSelected(value) {
-    var v = value == null ? "" : String(value);
-    v = v.trim();
-    this.videoLanguageSelected = v;
-    try {
-      localStorage.setItem("video:lang:selected", v);
-    } catch {}
+
+  setVideoLanguageObjectSelected(lang) {
+    if (!lang || typeof lang !== "object") {
+      this.videoLanguageObjectSelected = null;
+      return;
+    }
+    // Keep codes clean and consistent (strings, trimmed)
+    var jf =
+      lang.languageCodeJF != null ? String(lang.languageCodeJF).trim() : "";
+    var hl =
+      lang.languageCodeHL != null ? String(lang.languageCodeHL).trim() : "";
+
+    this.videoLanguageObjectSelected = {
+      ...lang,
+      languageCodeJF: jf,
+      languageCodeHL: hl,
+    };
   },
 
   // this routine has to be wrong

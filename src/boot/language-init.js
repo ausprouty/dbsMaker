@@ -119,88 +119,138 @@ function addToMRU(store, lang) {
   var list = Array.isArray(store.languagesUsed) ? store.languagesUsed : [];
   var filtered = [];
   for (var i = 0; i < list.length; i++) {
-    if (String(list[i].languageCodeHL || "") !== key) filtered.push(list[i]);
+    var item = list[i];
+    // Guard against legacy/corrupt entries (e.g., strings) in MRU
+    var itemHL =
+      item && typeof item === "object" ? String(item.languageCodeHL || "") : "";
+    if (itemHL !== key) filtered.push(item);
   }
   filtered.unshift(lang);
   store.languagesUsed = filtered.slice(0, 2); // keep two
-
-  try {
-    localStorage.setItem("lang:recents", JSON.stringify(store.languagesUsed));
-  } catch (e) {}
-  try {
-    localStorage.setItem("lang:selected", JSON.stringify(lang));
-  } catch (e) {}
 }
 
-function loadMRU(store) {
-  try {
-    var raw = localStorage.getItem("lang:recents");
-    store.languagesUsed = raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    store.languagesUsed = [];
+function asTrimmed(v) {
+  return String(v == null ? "" : v).trim();
+}
+
+function hasValidHL(obj) {
+  return !!(obj && obj.languageCodeHL != null && asTrimmed(obj.languageCodeHL));
+}
+
+function resolveCatalogLanguageByHL(store, hl) {
+  var catalog = store && Array.isArray(store.languages) ? store.languages : [];
+  var key = asTrimmed(hl);
+  if (!key) return null;
+  return findByHL(catalog, key);
+}
+
+function getDefaultLanguageFromCatalog(store) {
+  // Requirement: selection must yield one of the catalog entries by HL.
+  var d = resolveCatalogLanguageByHL(store, DEFAULT_ENGLISH.languageCodeHL);
+  return d || null;
+}
+
+function isValidSelectedInCatalog(store, obj) {
+  if (!hasValidHL(obj)) return false;
+  var hl = asTrimmed(obj.languageCodeHL);
+  return !!resolveCatalogLanguageByHL(store, hl);
+}
+function setSelectedTextLanguage(store, langObj) {
+  if (typeof store.setTextLanguageObjectSelected === "function") {
+    store.setTextLanguageObjectSelected(langObj);
+  } else {
+    store.textLanguageObjectSelected = langObj;
   }
-  try {
-    var rawSel = localStorage.getItem("lang:selected");
-    store.textLanguageObjectSelected = rawSel ? JSON.parse(rawSel) : null;
-  } catch (e) {
-    store.textLanguageObjectSelected = null;
+}
+
+function normalizeTextSelectionToCatalog(store, candidate) {
+  // Always return a catalog-backed language object (by languageCodeHL),
+  // falling back to DEFAULT_ENGLISH (by HL) when needed.
+  var picked = null;
+  if (isValidSelectedInCatalog(store, candidate)) {
+    picked = resolveCatalogLanguageByHL(store, candidate.languageCodeHL);
   }
+  if (!picked) picked = getDefaultLanguageFromCatalog(store);
+  return picked;
 }
 
 export default boot(function ({ router }) {
   var s = useSettingsStore();
-
-  // Load persisted prefs (use store method if you have it)
-  if (typeof s.loadLanguagePrefs === "function") {
-    try {
-      s.loadLanguagePrefs();
-    } catch (e) {}
-  } else {
-    loadMRU(s);
-  }
 
   var r = router.currentRoute.value;
   var fromRoute = pickFromRoute(r);
 
   // If URL specifies languages, adopt them and update MRU
   if (fromRoute.hl && fromRoute.jf) {
-    var lang = findByHL(s.languages, fromRoute.hl) || {
-      languageCodeHL: fromRoute.hl,
-      languageCodeJF: fromRoute.jf,
-      name: fromRoute.hl,
-      ethnicName: "",
-    };
+    // Must yield a catalog language by HL.
+    var langFromCatalog = resolveCatalogLanguageByHL(s, fromRoute.hl);
+    var chosen = langFromCatalog || getDefaultLanguageFromCatalog(s);
 
-    if (typeof s.setTextLanguageObjectSelected === "function") {
-      s.setTextLanguageObjectSelected(lang);
-    } else {
-      s.textLanguageObjectSelected = lang;
+    if (chosen) {
+      setSelectedTextLanguage(s, chosen);
+      addToMRU(s, chosen);
+
+      // If the route HL did not resolve, normalize URL to the chosen catalog HL/JF.
+      if (!langFromCatalog) {
+        var nameN = r.name;
+        var paramsN = Object.assign({}, r.params);
+        var queryN = Object.assign({}, r.query);
+        var hashN = r.hash || "";
+
+        if (routeHasLangParams(r)) {
+          paramsN.languageCodeHL = chosen.languageCodeHL;
+          paramsN.languageCodeJF = chosen.languageCodeJF;
+        } else {
+          queryN.hl = chosen.languageCodeHL;
+          queryN.jf = chosen.languageCodeJF;
+        }
+
+        router
+          .replace({ name: nameN, params: paramsN, query: queryN, hash: hashN })
+          .catch(function () {});
+      }
     }
-    addToMRU(s, lang);
     return;
   }
+
+  // If we already have a selection, ensure it is valid and catalog-backed.
+  if (
+    s.textLanguageObjectSelected &&
+    !isValidSelectedInCatalog(s, s.textLanguageObjectSelected)
+  ) {
+    var normalized = normalizeTextSelectionToCatalog(
+      s,
+      s.textLanguageObjectSelected
+    );
+    if (normalized) {
+      setSelectedTextLanguage(s, normalized);
+      addToMRU(s, normalized);
+    }
+  }
+
   // If nothing is selected yet, try browser language (match by languageCodeGoogle)
-  if (!s.textLanguageObjectSelected) {
+  if (!isValidSelectedInCatalog(s, s.textLanguageObjectSelected)) {
     var prefs = getBrowserGooglePrefs();
     var picked = null;
     for (var p = 0; p < prefs.length; p++) {
       picked = findByGoogle(s.languages, prefs[p]);
       if (picked) break;
     }
-    if (!picked) picked = DEFAULT_ENGLISH;
-
-    if (typeof s.setTextLanguageObjectSelected === "function") {
-      s.setTextLanguageObjectSelected(picked);
-    } else {
-      s.textLanguageObjectSelected = picked;
+    if (!picked) picked = getDefaultLanguageFromCatalog(s);
+    // If catalog is not ready, do not set a non-catalog stub.
+    if (picked) {
+      setSelectedTextLanguage(s, picked);
+      addToMRU(s, picked);
     }
-    addToMRU(s, picked);
     // Continue on, so the URL can be updated below from MRU[0]
   }
 
   // Otherwise, use MRU[0] if present and update the URL
   if (Array.isArray(s.languagesUsed) && s.languagesUsed.length > 0) {
-    var top = s.languagesUsed[0];
+    // Must yield a catalog language by HL.
+    var topRaw = s.languagesUsed[0];
+    var top = normalizeTextSelectionToCatalog(s, topRaw);
+    if (!top) return;
     var name = r.name;
     var params = Object.assign({}, r.params);
     var query = Object.assign({}, r.query);
@@ -214,11 +264,7 @@ export default boot(function ({ router }) {
       query.jf = top.languageCodeJF;
     }
 
-    if (typeof s.setTextLanguageObjectSelected === "function") {
-      s.setTextLanguageObjectSelected(top);
-    } else {
-      s.textLanguageObjectSelected = top;
-    }
+    setSelectedTextLanguage(s, top);
 
     router
       .replace({ name: name, params: params, query: query, hash: hash })

@@ -9,7 +9,7 @@ export function syncLanguageFromRoute(route) {
 
   if (!langCodeFromRoute) return;
 
-  const currentHL = settingsStore.languageSelected?.languageCodeHL;
+  const currentHL = settingsStore.textLanguageSelected?.languageCodeHL;
   console.log("current languageCodeHL:" + currentHL);
   if (langCodeFromRoute !== currentHL) {
     //const languageObject = getLanguageObjectFromHL(langCodeFromRoute);

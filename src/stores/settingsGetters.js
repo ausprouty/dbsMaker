@@ -58,11 +58,22 @@ export const settingsGetters = {
   },
 
   languageCodeJFSelected(state) {
-    var ls = state.textLanguageObjectSelected || {};
-    var raw = ls.languageCodeJF != null ? String(ls.languageCodeJF) : "";
+    // 1) video language object (preferred)
+    var v = state.videoLanguageObjectSelected || null;
+    var raw = v && v.languageCodeJF != null ? String(v.languageCodeJF) : "";
     var c = normJF(raw); // digits only
-    return c || DEFAULTS.languageCodeJF; // e.g., "529"
+    if (c) return c;
+
+    // 2) fallback to text language object
+    var t = state.textLanguageObjectSelected || null;
+    raw = t && t.languageCodeJF != null ? String(t.languageCodeJF) : "";
+    c = normJF(raw);
+    if (c) return c;
+
+    // 3) default
+    return DEFAULTS.languageCodeJF; // e.g., "529"
   },
+
   languageDirection(state) {
     const ls = state.textLanguageObjectSelected || {};
     const dir = (ls.textDirection || "").toLowerCase();
@@ -76,13 +87,29 @@ export const settingsGetters = {
   },
 
   // Always safe to read: returns selected object or a fallback stub
-  languageSelected(state) {
-    const ls = state.textLanguageObjectSelected || {};
-    if (ls.languageCodeHL || ls.languageCodeJF) return ls;
-    console.log("returning defaults in languageSelected");
+  textLanguageSelected(state) {
+    // Prefer the selected object if it looks valid
+    var ls = state.textLanguageObjectSelected || null;
+    var hl =
+      ls && ls.languageCodeHL != null ? String(ls.languageCodeHL).trim() : "";
+    if (hl) return ls;
+
+    // Try to resolve DEFAULTS.languageCodeHL to a real object in the catalog
+    var list = Array.isArray(state.languages) ? state.languages : [];
+    var defHL = String(DEFAULTS.languageCodeHL || "").trim();
+
+    for (var i = 0; i < list.length; i++) {
+      var itemHL =
+        list[i] && list[i].languageCodeHL != null
+          ? String(list[i].languageCodeHL).trim()
+          : "";
+      if (itemHL && itemHL === defHL) return list[i];
+    }
+
+    // Last resort: return a consistent minimal object (still an object)
     return {
-      languageCodeHL: DEFAULTS.languageCodeHL,
-      languageCodeJF: DEFAULTS.languageCodeJF,
+      languageCodeHL: defHL,
+      languageCodeJF: String(DEFAULTS.languageCodeJF || "").trim(),
     };
   },
 
