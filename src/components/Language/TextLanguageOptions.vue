@@ -61,7 +61,7 @@ function handlePick(v) {
 </script>
 
 <template>
-  <p>Text Language</p>
+  <h2>Text Language</h2>
   <component
     :is="Impl"
     :languages="textLanguages"

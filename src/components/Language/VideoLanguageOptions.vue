@@ -64,7 +64,7 @@ const selectedJF = computed(() => {
 </script>
 
 <template>
-  <p>Video Language</p>
+  <h2>Video Language</h2>
   <component
     :is="Impl"
     :languages="videoLanguages"

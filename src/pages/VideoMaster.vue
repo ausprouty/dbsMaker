@@ -103,6 +103,33 @@ const topicSelectOptionsRef = computed(function () {
   return out;
 });
 
+const currentVideoLanguageLabel = computed(() => {
+  const start = t("interface.current_language") || "Current Language";
+
+  const vid = settingsStore.videoLanguageObjectSelected || null;
+  const txt = settingsStore.textLanguageObjectSelected || null;
+
+  // Decide which language object we are using for video
+  const chosen =
+    (vid && vid.languageCodeJF ? vid : null) ||
+    (txt && txt.languageCodeJF ? txt : null) ||
+    null;
+
+  const formatLanguageName = (obj) => {
+    if (!obj) return ""; // or "Unknown"
+
+    const ethnic = obj.ethnicName ? String(obj.ethnicName).trim() : "";
+    const english = obj.name ? String(obj.name).trim() : "";
+
+    if (ethnic && english) return `${ethnic} (${english})`;
+    if (ethnic) return ethnic; // no parentheses
+    return english || ""; // last resort
+  };
+
+  const name = formatLanguageName(chosen);
+  return name ? `${start}: ${name}` : start;
+});
+
 const hasTopicFallbackSelectRef = computed(function () {
   return (
     !showSeriesPassage.value &&
@@ -180,14 +207,25 @@ const { safeT, i18nReady } = useSafeI18n();
       <p v-for="(p, i) in safeParasRef" :key="'para-' + i">{{ p }}</p>
     </div>
 
-    <q-btn
-      v-if="showLanguageSelect"
-      :label="safeT('interface.changeVideoLanguage', 'Change video language')"
-      icon="language"
-      no-caps
-      class="mark-complete-btn q-mb-md"
-      @click="toggleVideoLanguageSelect()"
-    />
+    <div class="current-lang-row q-mb-md">
+      <q-btn
+        v-if="showLanguageSelect"
+        :label="safeT('interface.changeVideoLanguage', 'Change video language')"
+        icon="language"
+        no-caps
+        class="mark-complete-btn"
+        @click="toggleVideoLanguageSelect()"
+      />
+
+      <div
+        v-if="currentVideoLanguageLabel"
+        class="current-lang-pill"
+        :title="currentVideoLanguageLabel"
+      >
+        <span class="current-lang-text">{{ currentVideoLanguageLabel }}</span>
+      </div>
+    </div>
+
     <!-- Right-side panel (same styling approach as text picker) -->
     <q-drawer
       v-model="showVideoLangPanel"
@@ -197,7 +235,7 @@ const { safeT, i18nReady } = useSafeI18n();
       :width="360"
     >
       <div class="q-pa-md">
-        <div class="text-subtitle1 q-mb-sm">
+        <div class="h2">
           {{ safeT("interface.videoLanguage", "Video language") }}
         </div>
 
@@ -261,8 +299,50 @@ const { safeT, i18nReady } = useSafeI18n();
   </q-page>
 </template>
 
-<style>
+<style scoped>
 .q-page {
   background-color: white;
+}
+
+.current-lang-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.current-lang-pill {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+
+  max-width: 100%;
+}
+
+.current-lang-text {
+  display: inline-block;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+
+  max-width: 60ch; /* tune as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .current-lang-row {
+    align-items: flex-start;
+  }
+  .current-lang-text {
+    max-width: 34ch;
+  }
 }
 </style>

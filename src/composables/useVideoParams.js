@@ -40,15 +40,17 @@ export function useVideoParams(options) {
     return hl || "eng00";
   });
 
-  var languageCodeJF = computed(function () {
-    var v = settingsStore.videoLanguageObjectSelected;
-    v = v == null ? "" : String(v).trim();
-    if (v) return v;
+  const languageCodeJF = computed(() => {
+    const v = settingsStore.videoLanguageObjectSelected;
+    const t = settingsStore.textLanguageObjectSelected;
 
-    // Useful fallback if video language has not been chosen yet
-    var obj = settingsStore.textLanguageObjectSelected;
-    var jf = obj && obj.languageCodeJF ? String(obj.languageCodeJF) : "";
-    return jf || "529";
+    const videoJF =
+      v && v.languageCodeJF != null ? String(v.languageCodeJF).trim() : "";
+    if (videoJF) return videoJF;
+
+    const textJF =
+      t && t.languageCodeJF != null ? String(t.languageCodeJF).trim() : "";
+    return textJF || "529";
   });
 
   var sectionKey = computed(function () {
