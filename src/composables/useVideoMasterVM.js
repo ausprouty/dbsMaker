@@ -40,9 +40,7 @@ export function useVideoMasterVM() {
 
   // Common content
 
-  const variantRef = computed(() =>
-    settingsStore.variantForCurrentStudy(currentStudyKeyRef.value)
-  );
+  const variantRef = computed(() => settingsStore.variantForCurrentStudy);
 
   const {
     commonContent: commonContentRef,

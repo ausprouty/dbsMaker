@@ -42,28 +42,29 @@ function normalizePicked(v) {
 function handlePick(v) {
   const lang = normalizePicked(v);
   if (!lang) return;
-
-  // JF is the key for video selection
-  const jf = String(lang.languageCodeJF || "");
-  if (!jf) return;
-
-  if (typeof store.setVideoLanguageSelected === "function") {
-    store.setVideoLanguageSelected(jf);
+  // Store the FULL object for video selection
+  if (typeof store.setVideoLanguageObjectSelected === "function") {
+    store.setVideoLanguageObjectSelected(lang);
   } else {
-    store.videoLanguageSelected = jf;
+    store.videoLanguageObjectSelected = lang;
   }
-
   emit("select", lang);
 }
 
 const selectedJF = computed(() => {
-  return store && store.videoLanguageSelected
-    ? String(store.videoLanguageSelected)
-    : "";
+  // UI still selects by JF, but source of truth is the selected object
+  const obj =
+    store && store.videoLanguageObjectSelected
+      ? store.videoLanguageObjectSelected
+      : null;
+  const jf =
+    obj && obj.languageCodeJF != null ? String(obj.languageCodeJF) : "";
+  return jf.trim();
 });
 </script>
 
 <template>
+  <p>Video Language</p>
   <component
     :is="Impl"
     :languages="videoLanguages"

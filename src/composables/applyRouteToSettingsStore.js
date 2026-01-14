@@ -52,23 +52,22 @@ export function applyRouteToSettingsStore(route, settingsStore) {
     ) ||
     // legacy
     normHL(
-      settingsStore.languageObjectSelected &&
-        settingsStore.languageObjectSelected.languageCodeHL
+      settingsStore.textLanguageObjectSelected &&
+        settingsStore.textLanguageObjectSelected.languageCodeHL
     ) ||
     DEFAULTS.languageCodeHL;
 
   var jf =
     normJF(rawJF) ||
-    // prefer videoLanguageSelected as you requested
-    normJF(settingsStore.videoLanguageSelected) ||
+    // prefer videoLanguageObjectSelected
+    normJF(
+      settingsStore.videoLanguageObjectSelected &&
+        settingsStore.videoLanguageObjectSelected.languageCodeJF
+    ) ||
     // fallback to text selection's JF if video is not chosen yet
     normJF(
       settingsStore.textLanguageObjectSelected &&
         settingsStore.textLanguageObjectSelected.languageCodeJF
-    ) ||
-    normJF(
-      settingsStore.languageObjectSelected &&
-        settingsStore.languageObjectSelected.languageCodeJF
     ) ||
     DEFAULTS.languageCodeJF;
 

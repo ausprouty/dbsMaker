@@ -11,6 +11,10 @@ var DEFAULT_ENGLISH = {
   textDirection: "ltr",
 };
 
+function asTrimmed(v) {
+  return String(v == null ? "" : v).trim();
+}
+
 function routeHasLangParams(r) {
   return (
     r &&
@@ -80,12 +84,12 @@ function pickFromRoute(r) {
 
 function findByGoogle(catalog, googleCode) {
   var list = Array.isArray(catalog) ? catalog : [];
-  var key = String(googleCode || "");
+  var key = asTrimmed(googleCode);
   if (!key) return null;
 
   // 1) Exact match first (important for zh-CN, zh-TW)
   for (var i = 0; i < list.length; i++) {
-    if (String(list[i].languageCodeGoogle || "") === key) return list[i];
+    if (asTrimmed(list[i].languageCodeGoogle) === key) return list[i];
   }
 
   // 2) If it is zh special, do not degrade to "zh"
@@ -96,7 +100,7 @@ function findByGoogle(catalog, googleCode) {
   var base = key.split("-")[0];
   if (base && base !== key) {
     for (var k = 0; k < list.length; k++) {
-      if (String(list[k].languageCodeGoogle || "") === base) return list[k];
+      if (asTrimmed(list[k].languageCodeGoogle) === base) return list[k];
     }
   }
 
@@ -105,36 +109,48 @@ function findByGoogle(catalog, googleCode) {
 
 function findByHL(catalog, hl) {
   var list = Array.isArray(catalog) ? catalog : [];
+  var key = asTrimmed(hl);
+  if (!key) return null;
   for (var i = 0; i < list.length; i++) {
-    if (String(list[i].languageCodeHL || "") === String(hl || "")) {
+    if (asTrimmed(list[i].languageCodeHL) === key) {
       return list[i];
     }
   }
   return null;
 }
 
+function findByJF(catalog, jf) {
+  var list = Array.isArray(catalog) ? catalog : [];
+  var key = asTrimmed(jf);
+  if (!key) return null;
+  for (var i = 0; i < list.length; i++) {
+    if (asTrimmed(list[i].languageCodeJF) === key) return list[i];
+  }
+  return null;
+}
+
 function addToMRU(store, lang) {
-  var key = String((lang && lang.languageCodeHL) || "");
+  var key = asTrimmed(lang && lang.languageCodeHL);
   if (!key) return;
   var list = Array.isArray(store.languagesUsed) ? store.languagesUsed : [];
   var filtered = [];
   for (var i = 0; i < list.length; i++) {
     var item = list[i];
     // Guard against legacy/corrupt entries (e.g., strings) in MRU
-    var itemHL =
-      item && typeof item === "object" ? String(item.languageCodeHL || "") : "";
+    var itemHL = "";
+    if (item && typeof item === "object")
+      itemHL = asTrimmed(item.languageCodeHL);
     if (itemHL !== key) filtered.push(item);
   }
   filtered.unshift(lang);
   store.languagesUsed = filtered.slice(0, 2); // keep two
 }
 
-function asTrimmed(v) {
-  return String(v == null ? "" : v).trim();
-}
-
 function hasValidHL(obj) {
   return !!(obj && obj.languageCodeHL != null && asTrimmed(obj.languageCodeHL));
+}
+function hasValidJF(obj) {
+  return !!(obj && obj.languageCodeJF != null && asTrimmed(obj.languageCodeJF));
 }
 
 function resolveCatalogLanguageByHL(store, hl) {
@@ -143,6 +159,12 @@ function resolveCatalogLanguageByHL(store, hl) {
   if (!key) return null;
   return findByHL(catalog, key);
 }
+function resolveCatalogLanguageByJF(store, jf) {
+  var catalog = store && Array.isArray(store.languages) ? store.languages : [];
+  var key = asTrimmed(jf);
+  if (!key) return null;
+  return findByJF(catalog, key);
+}
 
 function getDefaultLanguageFromCatalog(store) {
   // Requirement: selection must yield one of the catalog entries by HL.
@@ -150,16 +172,34 @@ function getDefaultLanguageFromCatalog(store) {
   return d || null;
 }
 
+function getDefaultVideoLanguageFromCatalog(store) {
+  // Default video selection by JF (usually matches English 529)
+  var d = resolveCatalogLanguageByJF(store, DEFAULT_ENGLISH.languageCodeJF);
+  return d || getDefaultLanguageFromCatalog(store);
+}
+
 function isValidSelectedInCatalog(store, obj) {
   if (!hasValidHL(obj)) return false;
   var hl = asTrimmed(obj.languageCodeHL);
   return !!resolveCatalogLanguageByHL(store, hl);
+}
+function isValidVideoSelectedInCatalog(store, obj) {
+  if (!hasValidJF(obj)) return false;
+  var jf = asTrimmed(obj.languageCodeJF);
+  return !!resolveCatalogLanguageByJF(store, jf);
 }
 function setSelectedTextLanguage(store, langObj) {
   if (typeof store.setTextLanguageObjectSelected === "function") {
     store.setTextLanguageObjectSelected(langObj);
   } else {
     store.textLanguageObjectSelected = langObj;
+  }
+}
+function setSelectedVideoLanguage(store, langObj) {
+  if (typeof store.setVideoLanguageObjectSelected === "function") {
+    store.setVideoLanguageObjectSelected(langObj);
+  } else {
+    store.videoLanguageObjectSelected = langObj;
   }
 }
 
@@ -174,14 +214,27 @@ function normalizeTextSelectionToCatalog(store, candidate) {
   return picked;
 }
 
+function normalizeVideoSelectionToCatalog(store, candidate) {
+  // Always return a catalog-backed language object (by languageCodeJF),
+  // falling back to DEFAULT video (by JF) when needed.
+  var picked = null;
+  if (isValidVideoSelectedInCatalog(store, candidate)) {
+    picked = resolveCatalogLanguageByJF(store, candidate.languageCodeJF);
+  }
+  if (!picked) picked = getDefaultVideoLanguageFromCatalog(store);
+  return picked;
+}
+
 export default boot(function ({ router }) {
   var s = useSettingsStore();
 
   var r = router.currentRoute.value;
   var fromRoute = pickFromRoute(r);
 
-  // If URL specifies languages, adopt them and update MRU
-  if (fromRoute.hl && fromRoute.jf) {
+  // If URL specifies HL (and optionally JF), adopt HL and normalize to catalog.
+  // JF in the URL is treated as advisory; the selected object always comes
+  // from the catalog (by HL), so JF will be corrected if needed.
+  if (asTrimmed(fromRoute.hl)) {
     // Must yield a catalog language by HL.
     var langFromCatalog = resolveCatalogLanguageByHL(s, fromRoute.hl);
     var chosen = langFromCatalog || getDefaultLanguageFromCatalog(s);
@@ -190,8 +243,8 @@ export default boot(function ({ router }) {
       setSelectedTextLanguage(s, chosen);
       addToMRU(s, chosen);
 
-      // If the route HL did not resolve, normalize URL to the chosen catalog HL/JF.
-      if (!langFromCatalog) {
+      // Also normalize if route JF was missing/blank, so the URL becomes complete.
+      if (!langFromCatalog || !asTrimmed(fromRoute.jf)) {
         var nameN = r.name;
         var paramsN = Object.assign({}, r.params);
         var queryN = Object.assign({}, r.query);
@@ -243,6 +296,29 @@ export default boot(function ({ router }) {
       addToMRU(s, picked);
     }
     // Continue on, so the URL can be updated below from MRU[0]
+  }
+
+  // ---- Video language normalization (boot-time) ----
+  // Ensure videoLanguageObjectSelected is catalog-backed by JF.
+  // If missing/invalid, derive from textLanguageObjectSelected.languageCodeJF if possible.
+  if (!isValidVideoSelectedInCatalog(s, s.videoLanguageObjectSelected)) {
+    var derived = null;
+    if (hasValidJF(s.textLanguageObjectSelected)) {
+      derived = resolveCatalogLanguageByJF(
+        s,
+        s.textLanguageObjectSelected.languageCodeJF
+      );
+    }
+    if (!derived) {
+      derived = normalizeVideoSelectionToCatalog(
+        s,
+        s.videoLanguageObjectSelected
+      );
+    }
+    // If catalog not ready, derived may be null; do not set a stub.
+    if (derived) {
+      setSelectedVideoLanguage(s, derived);
+    }
   }
 
   // Otherwise, use MRU[0] if present and update the URL

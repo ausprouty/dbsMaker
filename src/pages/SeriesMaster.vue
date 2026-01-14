@@ -38,8 +38,11 @@ try {
   throw e;
 }
 
-const { textLanguageObjectSelected, videoLanguageSelected, variantForStudy } =
-  storeToRefs(settingsStore);
+const {
+  textLanguageObjectSelected,
+  videoLanguageObjectSelected,
+  variantForStudy,
+} = storeToRefs(settingsStore);
 
 const computedStudy = computed(
   () => settingsStore.currentStudySelected || "dbs"
@@ -63,8 +66,8 @@ const computedLanguageHL = computed(() => {
 
 // ✅ VIDEO language (JF) — reactive
 const computedLanguageJF = computed(() => {
-  var jf = videoLanguageSelected.value;
-  return jf != null && String(jf).trim().length > 0 ? String(jf).trim() : "";
+  var obj = videoLanguageObjectSelected.value;
+  return obj && obj.languageCodeJF ? String(obj.languageCodeJF) : "529";
 });
 
 // ✅ Variant — simplest form: just use the getter
