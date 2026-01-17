@@ -1,20 +1,22 @@
+// utils/languageLabel.js
 // receives a language object
-// returns a properly formatted selection
-// with ethnic name if different from English name
-//
-
-export function languageLabel(lang) {
+// returns a properly formatted label
+// style:
+//   - "ethnic-first":  "हिन्दी (Hindi)"
+//   - "name-first":    "Hindi (हिन्दी)"
+export function languageLabel(lang, style = "ethnic-first") {
   if (!lang) return "";
 
   const name = String(lang.name || "").trim();
   const ethnic = String(lang.ethnicName || "").trim();
 
   if (!name) return ethnic;
-
   if (!ethnic) return name;
 
-  const nameLower = name.toLocaleLowerCase();
-  const ethnicLower = ethnic.toLocaleLowerCase();
+  if (name.localeCompare(ethnic, undefined, { sensitivity: "accent" }) === 0) {
+    return name;
+  }
 
-  return nameLower === ethnicLower ? name : name + " (" + ethnic + ")";
+  if (style === "name-first") return `${name} (${ethnic})`;
+  return `${ethnic} (${name})`;
 }

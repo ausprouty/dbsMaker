@@ -13,7 +13,8 @@
     "VITE_LESSON": "1",
     "VITE_LANGUAGE_CODE_HL": "eng00",
     "VITE_LANGUAGE_CODE_JF": "529",
-    "VITE_LANGUAGE_PICKER_TYPE": "select"
+    "VITE_LANGUAGE_PICKER_TYPE": "select",
+    "VITE_LANGUAGE_DATA": "src/i18n/metadata/languages.json"
   },
   "dev": {
     "host": "localhost",

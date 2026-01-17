@@ -66,6 +66,9 @@ const safeLanguageCodeJFRef = computed(function () {
   return toNonEmptyString(languageCodeJF.value) || "529";
 });
 
+// for interface:
+const { safeT, i18nReady } = useSafeI18n();
+
 /* Topic select fallback:
    Build [{ label, value }] where value maps to lesson numbers.
    Priority: topic.lesson || topic.id || topic.code || index+1
@@ -104,30 +107,32 @@ const topicSelectOptionsRef = computed(function () {
 });
 
 const currentVideoLanguageLabel = computed(() => {
-  const start = t("interface.current_language") || "Current Language";
+  const start = safeT("interface.current_language", "Current Language");
 
   const vid = settingsStore.videoLanguageObjectSelected || null;
   const txt = settingsStore.textLanguageObjectSelected || null;
 
-  // Decide which language object we are using for video
+  const hasJF = (obj) =>
+    obj && obj.languageCodeJF != null && String(obj.languageCodeJF).trim();
+
+  const chosen = (hasJF(vid) ? vid : null) || (hasJF(txt) ? txt : null);
+
+  const label = languageLabel(chosen); // your util
+  return label ? `${start}: ${label}` : start;
+});
+
+const currentVideoLanguageLabelx = computed(() => {
+  const start = safeT("interface.current_language", "Current Language");
+
+  const vid = settingsStore.videoLanguageObjectSelected || null;
+  const txt = settingsStore.textLanguageObjectSelected || null;
+
   const chosen =
-    (vid && vid.languageCodeJF ? vid : null) ||
-    (txt && txt.languageCodeJF ? txt : null) ||
-    null;
+    (vid && String(vid.languageCodeJF || "").trim() ? vid : null) ||
+    (txt && String(txt.languageCodeJF || "").trim() ? txt : null);
 
-  const formatLanguageName = (obj) => {
-    if (!obj) return ""; // or "Unknown"
-
-    const ethnic = obj.ethnicName ? String(obj.ethnicName).trim() : "";
-    const english = obj.name ? String(obj.name).trim() : "";
-
-    if (ethnic && english) return `${ethnic} (${english})`;
-    if (ethnic) return ethnic; // no parentheses
-    return english || ""; // last resort
-  };
-
-  const name = formatLanguageName(chosen);
-  return name ? `${start}: ${name}` : start;
+  const label = languageLabel(chosen, "ethnic-first");
+  return label ? `${start}: ${label}` : start;
 });
 
 const hasTopicFallbackSelectRef = computed(function () {
@@ -194,9 +199,6 @@ function markThisLessonComplete(n) {
     /* no-op */
   }
 }
-
-// for interface:
-const { safeT, i18nReady } = useSafeI18n();
 </script>
 
 <template>
@@ -274,7 +276,7 @@ const { safeT, i18nReady } = useSafeI18n();
       <VideoPlayer :source="safeVideoSourceRef" />
     </div>
     <q-banner v-else inline-actions class="bg-warning text-black q-mb-md">
-      {{ safeT("interface.videoUnavailable", "Video is not available.") }}
+      {{ safeT("interface.videoLoading", "Video Loading.") }}
     </q-banner>
 
     <VideoQuestions
