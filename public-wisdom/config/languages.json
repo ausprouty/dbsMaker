@@ -3,8 +3,8 @@
     "name": "Chinese (Simplified)",
     "ethnicName": "简体中文 / 簡體中文",
     "languageCodeIso": "cmn",
-    "languageCodeHL": "zhhans",
-    "languageCodeJF": "",
+    "languageCodeHL": "zhs26",
+    "languageCodeJF": "20615",
     "languageCodeGoogle": "zh-CN",
     "textDirection": "ltr",
     "channels": ["text"]
@@ -13,8 +13,8 @@
     "name": "Chinese (Traditional)",
     "ethnicName": "繁體中文 / 繁体中文",
     "languageCodeIso": "cmn",
-    "languageCodeHL": "zhhant",
-    "languageCodeJF": "",
+    "languageCodeHL": "zht26",
+    "languageCodeJF": "20615",
     "languageCodeGoogle": "zh-TW",
     "textDirection": "ltr",
     "channels": ["text"]

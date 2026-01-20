@@ -107,7 +107,7 @@ const topicSelectOptionsRef = computed(function () {
 });
 
 const currentVideoLanguageLabel = computed(() => {
-  const start = safeT("interface.current_language", "Current Language");
+  const start = safeT("interface.currentLanguage", "Current Language");
 
   const vid = settingsStore.videoLanguageObjectSelected || null;
   const txt = settingsStore.textLanguageObjectSelected || null;
@@ -122,7 +122,7 @@ const currentVideoLanguageLabel = computed(() => {
 });
 
 const currentVideoLanguageLabelx = computed(() => {
-  const start = safeT("interface.current_language", "Current Language");
+  const start = safeT("interface.currentLanguage", "Current Language");
 
   const vid = settingsStore.videoLanguageObjectSelected || null;
   const txt = settingsStore.textLanguageObjectSelected || null;

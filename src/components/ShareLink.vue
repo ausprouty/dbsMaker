@@ -6,12 +6,10 @@ import { normId, normKey, fromObjId, normPathSeg } from "src/utils/normalize";
 import { getAllowedStudyKeys } from "src/utils/allowedStudies";
 import { useI18n } from "vue-i18n";
 
-
 export default {
   name: "ShareLink",
   setup() {
-    const { t, te} = useI18n({ useScope: 'global' });
-
+    const { t, te } = useI18n({ useScope: "global" });
     const $q = useQuasar();
     const store = useSettingsStore();
 
@@ -23,7 +21,6 @@ export default {
     const isAllowedSeries = (seriesLike) => {
       const k = normKey(seriesLike);
       return allowed.value.size === 0 || allowed.value.has(k);
-      // if not yet loaded, don't block - allow temporarily
     };
 
     const pickLessonFor = (seriesLike) => {
@@ -37,7 +34,6 @@ export default {
         if (normKey(k) === wanted) return normId(ln[k]);
       }
 
-      // default-ish keys can be configured in the store
       const fallbacks = store.lessonKeyFallbacks || ["default", "current"];
       for (let i = 0; i < fallbacks.length; i++) {
         const fk = fallbacks[i];
@@ -67,7 +63,7 @@ export default {
     const videoUrlLink = (root) => {
       const codeJF = normId(store.languageCodeJFSelected);
       const codeHL = normId(store.languageCodeHLSelected);
-      const lesson = pickLessonFor("jvideo"); // no hard coding elsewhere
+      const lesson = pickLessonFor("jvideo");
       return (
         root +
         "/jvideo/" +
@@ -78,15 +74,14 @@ export default {
         normPathSeg(codeJF)
       );
     };
-    const ready = computed(() => te('interface.share') && te('interface.copyLink'))
+
     const seriesUrlLink = (root) => {
       const codeHL = normId(store.languageCodeHLSelected);
       const series = fromObjId(store.currentStudySelected);
 
-      // gate on allowed studies from menu.json
       if (!isAllowedSeries(series)) {
         console.warn("Blocked non-allowed series:", series);
-        return root; // safe fallback
+        return root;
       }
 
       const lesson = pickLessonFor(series);
@@ -101,23 +96,49 @@ export default {
       );
     };
 
+    const safeT = (key, fallback) => {
+      const fb = fallback == null ? "" : String(fallback);
+      if (!key) return fb;
+      return te(key) ? t(key) : fb;
+    };
+
+    const readyInterface = computed(() => {
+      return te("interface.share") && te("interface.copyLink");
+    });
+
+    const readySite = computed(() => {
+      return te("siteContent.shareTitle") || te("siteContent.shareMessage");
+    });
+
     const shareUrl = async () => {
-      const subject = "Discovering Spiritual Community";
-      const message = "Here is the link";
+      const subject = safeT(
+        "siteContent.shareTitle",
+        "Discovering Spiritual Community"
+      );
+      const message = safeT("siteContent.shareMessage", "Here is the link");
       const url = getUrlLink.value;
 
       if (navigator.share) {
         try {
           await navigator.share({ title: subject, text: message, url });
-          $q.notify({ type: "positive", message: "Shared successfully!" });
+          $q.notify({
+            type: "positive",
+            message: safeT("interface.shareSuccess", "Shared successfully!"),
+          });
         } catch (e) {
           console.error("Error sharing:", e);
-          $q.notify({ type: "negative", message: "Sharing failed!" });
+          $q.notify({
+            type: "negative",
+            message: safeT("interface.shareFailed", "Sharing failed!"),
+          });
         }
       } else {
         $q.notify({
           type: "warning",
-          message: "Sharing not supported. Using fallback.",
+          message: safeT(
+            "interface.shareUnsupported",
+            "Sharing not supported. Using fallback."
+          ),
         });
         shareFallback(url, subject, message);
       }
@@ -126,6 +147,7 @@ export default {
     const shareFallback = (url, subject, message) => {
       const encodedSubject = encodeURIComponent(subject);
       const encodedMessage = encodeURIComponent(message + ": " + url);
+
       const shareOptions = {
         email: "mailto:?subject=" + encodedSubject + "&body=" + encodedMessage,
         whatsapp: "https://api.whatsapp.com/send?text=" + encodedMessage,
@@ -137,9 +159,10 @@ export default {
           "https://www.linkedin.com/sharing/share-offsite/?url=" +
           encodeURIComponent(url),
       };
+
       $q.dialog({
-        title: "Share via",
-        message: "Choose a platform:",
+        title: safeT("interface.shareVia", "Share via"),
+        message: safeT("interface.choosePlatform", "Choose a platform:"),
         options: Object.keys(shareOptions).map((p) => ({
           label: p.charAt(0).toUpperCase() + p.slice(1),
           handler: () => window.open(shareOptions[p], "_blank"),
@@ -150,15 +173,29 @@ export default {
 
     const copyToClipboard = async (text) => {
       try {
-        await navigator.clipboard.writeText(text);
-        $q.notify({ type: "positive", message: "Link copied to clipboard!" });
+        await navigator.clipboard.writeText(String(text || ""));
+        $q.notify({
+          type: "positive",
+          message: safeT("interface.linkCopied", "Link copied to clipboard!"),
+        });
       } catch (err) {
         console.error("Failed to copy:", err);
-        $q.notify({ type: "negative", message: "Failed to copy the link." });
+        $q.notify({
+          type: "negative",
+          message: safeT("interface.copyFailed", "Failed to copy the link."),
+        });
       }
     };
 
-    return { shareUrl, copyToClipboard, getUrlLink, t , ready};
+    return {
+      shareUrl,
+      copyToClipboard,
+      getUrlLink,
+      t,
+      safeT,
+      readyInterface,
+      readySite,
+    };
   },
 };
 </script>
@@ -170,7 +207,7 @@ export default {
       dense
       round
       icon="share"
-       :aria-label="ready ? t('interface.share') : 'Share'"
+      :aria-label="readyInterface ? t('interface.share') : 'Share'"
       @click="shareUrl"
     />
     <q-btn
@@ -178,10 +215,12 @@ export default {
       dense
       round
       icon="content_copy"
-        :aria-label="ready ? t('interface.copyLink') : 'Copy link'"
+      :aria-label="readyInterface ? t('interface.copyLink') : 'Copy link'"
       @click="copyToClipboard(getUrlLink)"
     >
-      <q-tooltip>{{ t("interface.copyLink") }}</q-tooltip>
+      <q-tooltip>
+        {{ readyInterface ? t("interface.copyLink") : "Copy link" }}
+      </q-tooltip>
     </q-btn>
   </div>
 </template>

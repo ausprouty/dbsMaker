@@ -87,45 +87,65 @@ function resolveCandidateUrl(raw, base) {
   return base + s.replace(/^\/+/, "");
 }
 
+function isBundledSelector(raw) {
+  if (!raw) return false;
+  var s = String(raw).trim();
+  if (!s) return false;
+
+  // Treat any src/* path as a request to use the bundled import,
+  // since it is not a runtime URL that fetch() can load.
+  if (s.indexOf("src/") === 0 || s.indexOf("./src/") === 0) return true;
+
+  // Allow explicit sentinel too.
+  if (s.toLowerCase() === "bundled") return true;
+
+  return false;
+}
+
 export default boot(async function () {
   const s = useSettingsStore();
 
   // Normalise base so we always end with a single slash
   const base = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "") + "/";
 
-  // Figure out which build we are (guru, hope, jvideo, etc.)
-  // VITE_APP is set in .env.guru, .env.hope, etc.
-  const appBuild = (
-    import.meta.env.VITE_APP ||
-    import.meta.env.VITE_SITE_MODE ||
-    ""
-  ).trim();
+  // Single source of truth:
+  // - "src/..." => bundled (no fetch)
+  // - otherwise treated as URL/path to fetch (e.g. "config/languages.json")
+  const languageData = String(import.meta.env.VITE_LANGUAGE_DATA || "").trim();
 
-  // Dev-only quirk: per-build folder like
-  // public-guru/config/languages.json
-  const devBuildCatalog =
-    import.meta.env.DEV && appBuild
-      ? base + "public-" + appBuild + "/config/languages.json"
-      : null;
+  let loaded = null;
+  let from = "bundled";
 
-  // Optional override via env (absolute or relative URL)
-  const overrideCatalog = resolveCandidateUrl(
+  // If env requests bundled, do not fetch anything
+  if (isBundledSelector(languageData)) {
+    loaded = normalizeCatalog(bundledCatalog);
+    from = "bundled (VITE_LANGUAGE_DATA)";
+    s.setLanguages(loaded);
+    if (import.meta.env.DEV) {
+      console.log(
+        "[languages] loaded " + loaded.length + " entries from: " + from
+      );
+    }
+    return;
+  }
+
+  // Otherwise, fetch the configured path (or default to config/languages.json)
+  const primaryUrl = resolveCandidateUrl(
+    languageData || "config/languages.json",
+    base
+  );
+
+  // Candidates: primary first, then optional legacy var, then root default, then bundled fallback
+  const legacyUrl = resolveCandidateUrl(
     import.meta.env.VITE_LANG_CONFIG_PATH || null,
     base
   );
 
-  // Order matters: first match that returns a valid catalog wins
-  const candidates = [
-    // Primary (prod & dev when served from /public or site root)
-    base + "config/languages.json",
-    // Dev-only per-build path (public-guru, public-hope, etc.)
-    devBuildCatalog,
-    // Optional explicit override
-    overrideCatalog,
-  ].filter(Boolean); // drop null/empty entries
-
-  let loaded = null;
-  let from = "bundled";
+  const candidates = [primaryUrl, legacyUrl]
+    .filter(Boolean)
+    .filter(function (v, i, a) {
+      return a.indexOf(v) === i;
+    });
 
   for (const url of candidates) {
     try {
