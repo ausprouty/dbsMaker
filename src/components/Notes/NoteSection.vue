@@ -94,7 +94,7 @@ export default {
     };
 
     const saveNoteContent = debounce(async (newVal) => {
-      console.log("saveNoteContent" + newVal);
+      console.log("saveNoteContent: " + newVal);
       if (!ready.value) return;
       console.log("saveNoteContentReady");
       try {

@@ -2,8 +2,8 @@
   "base": "/",
   "publicDir": "public-guru",
   "varsPath": "src/sites/guru/quasar.variables.scss",
-  "title": "Paths of Light",
-  "description": "Paths of Light",
+  "title": "A Worthy Guru",
+  "description": "Explore the life and teachings of Lord Jesus",
   "appbar": { "style": "surface" },
   "env": {
     "VITE_APP": "guru",
@@ -23,9 +23,9 @@
   },
   "pwa": {
     "id": "PoL",
-    "name": "Paths of Light",
-    "short_name": "Paths of Light",
-    "description": "Paths to help you grow spiritually",
+    "name": "A Worthy Guru",
+    "short_name": "A Worthy Guru",
+    "description": "Explore the life and teachings of Lord Jesus",
     "theme_color": "darkgreen",
     "background_color": "#ffffff",
     "display": "standalone",

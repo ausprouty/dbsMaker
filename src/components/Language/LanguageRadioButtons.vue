@@ -127,7 +127,13 @@ function onRadioChange(val) {
       :options="options"
       type="radio"
       @update:model-value="onRadioChange"
-      class="q-mt-sm"
+      class="q-mt-sm lang-radios"
     />
   </div>
 </template>
+<style scoped>
+/* add vertical space between each language row */
+.lang-radios :deep(.q-radio) {
+  margin-bottom: 20px; /* adjust as desired */
+}
+</style>

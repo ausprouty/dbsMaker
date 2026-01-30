@@ -1,23 +1,44 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { getNote } from "src/services/NoteService";
 import { getStudyProgress } from "src/services/IndexedDBService";
-
-import { useSafeSiteContent } from "src/composables/useSafeSiteContent";
+import { useSiteContent } from "src/composables/useSiteContent";
 
 const settingsStore = useSettingsStore();
-const { safeSiteT } = useSafeSiteContent();
+
+const hl = computed(function () {
+  var obj = settingsStore.textLanguageObjectSelected || null;
+  var code = obj && obj.languageCodeHL ? String(obj.languageCodeHL) : "";
+  code = code.trim();
+  return code ? code : "eng00";
+});
 
 const cleanedNote = ref("");
 const noteLines = ref([]);
 const hasNote = ref(false);
-const reviewIntro = ref([]);
+
+// get siteContent for this language
+const { getSection } = useSiteContent(hl);
+const review = computed(function () {
+  return getSection("review");
+});
+
+const reviewIntro = computed(function () {
+  return review.value.paras || [];
+});
+const reviewEmpty = computed(function () {
+  var s = review.value.empty || "";
+  s = String(s).trim();
+  return s;
+});
 
 // Load previous note and intro paragraphs
 const loadPreviousNote = async () => {
   const study = settingsStore.currentStudySelected;
+  console.log(study);
   if (!study) {
+    console.log("[SeriesReview] study not found");
     resetNote();
     return;
   }
@@ -27,19 +48,21 @@ const loadPreviousNote = async () => {
     const lastLesson = progress?.lastCompletedLesson;
 
     if (!lastLesson || typeof lastLesson !== "number") {
+      console.log("[SeriesReview] can not find last lesson");
       resetNote();
       return;
     }
     const note = await getNote(study, lastLesson, "look_forward");
-
+    console.log("[SeriesReview] note: ", note);
     const trimmed = note?.trim();
+    console.log("[SeriesReview] trimmed: ", trimmed);
     if (trimmed) {
       cleanedNote.value = trimmed;
       noteLines.value = trimmed
         .split(/\r?\n/)
         .filter((line) => line.trim() !== "");
       hasNote.value = true;
-      reviewIntro.value = loadIntroParagraphs();
+      console.log("[SeriesReview] hasNote: ", hasNote.value);
     } else {
       resetNote();
     }
@@ -50,23 +73,10 @@ const loadPreviousNote = async () => {
 };
 
 function resetNote() {
+  console.log("[SeriesReview] resetNote() called");
   hasNote.value = false;
   cleanedNote.value = "";
   noteLines.value = [];
-  reviewIntro.value = [];
-}
-
-function loadIntroParagraphs() {
-  const paragraphs = [];
-  let index = 1;
-  while (true) {
-    const key = `review.p${index}`;
-    const text = safeSiteT(key, "");
-    if (!text) break;
-    paragraphs.push(text);
-    index++;
-  }
-  return paragraphs;
 }
 
 onMounted(loadPreviousNote);
@@ -81,13 +91,12 @@ watch(() => settingsStore.currentStudySelected, loadPreviousNote);
       <p v-for="(para, index) in reviewIntro" :key="'review-' + index">
         {{ para }}
       </p>
-      <p><strong>📝 Last week you said:</strong></p>
       <p v-for="(line, index) in noteLines" :key="'note-' + index">
-        {{ line }}
+        <b> {{ line }}</b>
       </p>
     </template>
     <template v-else>
-      <p>{{ safeSiteT("review.empty", "") }}</p>
+      <p>{{ reviewEmpty }}</p>
     </template>
   </div>
 </template>

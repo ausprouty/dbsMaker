@@ -10,7 +10,14 @@ function isPlainObject(v) {
 }
 
 function normalizeSection(section) {
-  if (!isPlainObject(section)) return { title: "", summary: "", paras: [] };
+  if (!isPlainObject(section)) {
+    return { title: "", summary: "", paras: [], empty: "" };
+  }
+
+  var empty = "";
+  if (typeof section.empty === "string") {
+    empty = section.empty;
+  }
 
   // New schema: paras: []
   if (Array.isArray(section.paras)) {
@@ -20,6 +27,7 @@ function normalizeSection(section) {
       paras: section.paras.filter(
         (p) => typeof p === "string" && p.trim().length > 0
       ),
+      empty: String(empty || ""),
     };
   }
 
@@ -42,6 +50,7 @@ function normalizeSection(section) {
     title: String(section.title || ""),
     summary: String(section.summary || ""),
     paras,
+    empty: String(empty || ""),
   };
 }
 

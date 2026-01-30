@@ -115,9 +115,9 @@ const handleImageClick = (to) => {
 
 <style scoped>
 .menu-container {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 16px;
 }
 
 .menu-container p {
@@ -126,23 +126,23 @@ const handleImageClick = (to) => {
 
 .menu-grid {
   display: grid;
-  gap: 16px;
-  grid-template-columns: 1fr; /* phones: 1 across */
-  max-width: 1200px; /* optional cap so cards don’t sprawl */
-  margin: 0 auto;
+  gap: 20px;
+  /*
+    Auto-fit gives you a "nice" number of columns naturally.
+    The min width controls card size; tweak 280/300 to taste.
+  */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
 }
 
-/* tablets */
-@media (min-width: 600px) {
-  .menu-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 across */
+/* Give extra breathing room on very wide screens */
+@media (min-width: 1400px) {
+  .menu-container {
+    max-width: 1600px;
   }
-}
-
-/* desktops and larger laptops */
-@media (min-width: 1024px) {
   .menu-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 across */
+    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
 }
 
@@ -156,10 +156,13 @@ const handleImageClick = (to) => {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  text-align: center;
+  text-align: left;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   height: 100%;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 p.menu-summary {
   text-align: left;
@@ -172,20 +175,34 @@ p.menu-summary {
 
 .menu-picture {
   display: block;
-  width: 85%;
-  margin: 12px auto 2px auto;
+  width: 100%;
+  margin: 0;
+  /* Consistent image block improves desktop grid a lot */
+  aspect-ratio: 16 / 9;
   height: auto;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .menu-label h6 {
   margin: 0 0 4px 0; /* top, right, bottom, left */
-  font-size: 1.5rem; /* Optional: adjust text size */
-  text-align: center;
+  font-size: 1.25rem;
+  text-align: left;
+  line-height: 1.2;
 }
 
 .menu-label p {
   margin: 0;
+}
+p.menu-summary {
+  line-height: 1.35;
+  /* Keep card heights more consistent */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  /* standard property (newer spec) */
+  line-clamp: 4;
+  overflow: hidden;
 }
 
 img.icon {
@@ -193,6 +210,8 @@ img.icon {
   cursor: pointer;
 }
 .intro {
-  font-size: 14pt;
+  /* Scales nicely across phone -> desktop */
+  font-size: clamp(14pt, 1.2vw, 18pt);
+  line-height: 1.35;
 }
 </style>

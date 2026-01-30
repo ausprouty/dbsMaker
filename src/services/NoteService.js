@@ -22,7 +22,7 @@ export async function getNote(study, lesson, section) {
   const sectionId = String(section).trim();
 
   if (!studyId || !lessonId || !ALLOWED_SECTIONS.has(sectionId)) {
-    console.error("getNote missing/invalid params", {
+    console.error("[NoteService] getNote missing/invalid params", {
       study,
       lesson,
       section,
@@ -34,13 +34,16 @@ export async function getNote(study, lesson, section) {
   store.lessonContent ||= {};
 
   const key = buildNotesKey(studyId, lessonId, sectionId);
+  console.log("[NoteService]", key);
 
   if (store.lessonContent[key] !== undefined) {
+    console.log("[NoteService] used store");
     return store.lessonContent[key];
   }
 
   const note = await getNoteFromDB(studyId, lessonId, sectionId);
   if (note !== undefined) {
+    console.log("[NoteService] used database");
     store.lessonContent[key] = note;
     return note;
   }
@@ -49,14 +52,14 @@ export async function getNote(study, lesson, section) {
 }
 
 export async function saveNote(study, lesson, section, content) {
-  console.log("saveNote has content " + content);
+  console.log("[NoteService] saveNote has content: " + content);
   const studyId = normId(study);
   const lessonId = normIntish(lesson);
   const sectionId = String(section).trim();
   const text = String(unref(content) ?? "");
 
   if (!studyId || !lessonId || !ALLOWED_SECTIONS.has(sectionId)) {
-    console.error("saveNote missing/invalid params", {
+    console.error("[NoteService]saveNote missing/invalid params", {
       study,
       lesson,
       section,

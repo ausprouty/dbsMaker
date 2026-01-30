@@ -1,12 +1,5 @@
 [
   {
-    "key": "mountain",
-    "devName": "Mountain of God",
-    "image": "/images/mountain.webp",
-    "route": "/video/mountain",
-    "maxLessons": 1
-  },
-  {
     "key": "wisemen",
     "devName": "Birth of the Guru",
     "image": "/images/christmas.webp",
@@ -28,18 +21,6 @@
     "maxLessons": 23
   },
   {
-    "key": "karma",
-    "devName": "Karma",
-    "image": "/images/karma.webp",
-    "route": "/page/karma"
-  },
-  {
-    "key": "Deepavali",
-    "devName": "Deepavali",
-    "image": "/images/deepavali.webp",
-    "route": "/page/deepavali"
-  },
-  {
     "key": "ctc",
     "devName": "Creation to Church",
     "image": "/images/scroll.webp",
@@ -53,6 +34,26 @@
     "route": "/video/following",
     "maxLessons": 5
   },
+  {
+    "key": "mountain",
+    "devName": "Mountain of God",
+    "image": "/images/mountain.webp",
+    "route": "/video/mountain",
+    "maxLessons": 1
+  },
+  {
+    "key": "karma",
+    "devName": "Karma",
+    "image": "/images/karma.webp",
+    "route": "/page/karma"
+  },
+  {
+    "key": "Deepavali",
+    "devName": "Deepavali",
+    "image": "/images/deepavali.webp",
+    "route": "/page/deepavali"
+  },
+
   {
     "key": "ask",
     "devName": "Ask",
