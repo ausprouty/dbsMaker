@@ -1,0 +1,63 @@
+{
+  "day": 4,
+  "key": "day_4_completion_and_time",
+  "version": 1,
+  "updated_at": "2026-02-01",
+  "title": {
+    "en": "God Completes Creation and Blesses Time"
+  },
+  "intro": {
+    "en": [
+      "God completes all that He has made and declares it good.",
+      "He also blesses time itself, setting apart a day for rest."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "completion",
+        "icon": "check_circle",
+        "label": { "en": "Creation Declared Good" },
+        "lines": [
+          "God saw all that He had made,",
+          "and it was very good.",
+          "There was evening,",
+          "and there was morning—",
+          "the sixth day."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "wholeness",
+        "icon": "public",
+        "label": { "en": "Heaven and Earth Completed" },
+        "lines": [
+          "Thus the heavens and the earth",
+          "were completed",
+          "in all their vast array."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "rest",
+        "icon": "hotel",
+        "label": { "en": "A Day Blessed and Set Apart" },
+        "lines": [
+          "By the seventh day,",
+          "God had finished the work He had been doing;",
+          "so on the seventh day",
+          "He rested from all His work.",
+          "God blessed the seventh day",
+          "and made it holy,",
+          "because on it He rested",
+          "from all the work of creating",
+          "that He had done."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about how God completes His work and sets apart time in this passage?"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "day": 2,
+  "key": "day_2_provision_responsibility",
+  "version": 1,
+  "updated_at": "2026-02-01",
+  "title": {
+    "en": "God Provides and Gives Responsibility"
+  },
+  "intro": {
+    "en": [
+      "God places the man in a garden He has prepared.",
+      "He provides generously, gives meaningful work, and sets a clear boundary."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "garden",
+        "icon": "yard",
+        "label": { "en": "A Garden Prepared" },
+        "lines": [
+          "The Lord God planted a garden in the east, in Eden,",
+          "and there He placed the man He had formed."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "provision",
+        "icon": "local_florist",
+        "label": { "en": "Generous Provision" },
+        "lines": [
+          "The Lord God caused all kinds of trees to grow from the ground—",
+          "trees that were pleasing to the eye",
+          "and good for food.",
+          "In the middle of the garden",
+          "were the tree of life",
+          "and the tree of the knowledge of good and evil."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "stewardship",
+        "icon": "handyman",
+        "label": { "en": "Work and Care" },
+        "lines": [
+          "The Lord God took the man",
+          "and placed him in the Garden of Eden",
+          "to work it",
+          "and to take care of it."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "command",
+        "icon": "rule",
+        "label": { "en": "A Clear Boundary" },
+        "lines": [
+          "The Lord God commanded the man, saying,",
+          "“You are free to eat from any tree in the garden,",
+          "but you must not eat from the tree of the knowledge of good and evil.",
+          "When you eat from it, you will surely die.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about the way God combines provision, responsibility, and command?"
+  },
+  "further_reading": {
+    "en": ["Genesis 2:8–17"]
+  }
+}

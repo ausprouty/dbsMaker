@@ -1,0 +1,86 @@
+[
+  {
+    "key": "jvideo",
+    "devName": "Jesus Video",
+    "image": "/images/jesus.webp",
+    "route": "/video/jvideo",
+    "maxLessons": 61
+  },
+  {
+    "key": "life",
+    "devName": "Life Issues",
+    "image": "/images/life.webp",
+    "route": "/series/life",
+    "maxLessons": 23
+  },
+  {
+    "key": "ctc",
+    "devName": "Creation to Church",
+    "image": "/images/community.webp",
+    "route": "/series/ctc",
+    "maxLessons": 23
+  },
+  {
+    "key": "obey",
+    "devName": "Obey",
+    "image": "/images/obey.webp",
+    "route": "/series/obey",
+    "maxLessons": 8
+  },
+  {
+    "key": "give",
+    "devName": "Give",
+    "image": "/images/give.webp",
+    "route": "/series/give",
+    "maxLessons": 9
+  },
+  {
+    "key": "relate",
+    "devName": "Relate",
+    "image": "/images/relate.webp",
+    "route": "/series/relate",
+    "maxLessons": 9
+  },
+  {
+    "key": "serve",
+    "devName": "Serve",
+    "image": "/images/serve.webp",
+    "route": "/series/serve",
+    "maxLessons": 9
+  },
+  {
+    "key": "hope",
+    "devName": "Seven Stories of Hope",
+    "image": "/images/hope.webp",
+    "route": "/series/hope",
+    "maxLessons": 7
+  },
+  {
+    "key": "share",
+    "devName": "Share",
+    "image": "/images/share.webp",
+    "route": "/series/share",
+    "maxLessons": 9
+  },
+  {
+    "key": "trust",
+    "devName": "Trust",
+    "image": "/images/trust.webp",
+    "route": "/series/trust",
+    "maxLessons": 17
+  },
+  {
+    "key": "lead",
+    "devName": "Lead",
+    "image": "/images/lead.webp",
+    "route": "/series/lead",
+    "maxLessons": 25
+  },
+  {
+    "key": "disciple",
+    "devName": "Disciple",
+    "image": "/images/disciple.webp",
+    "route": "/series/disciple",
+    "maxLessons": 8
+  }
+]

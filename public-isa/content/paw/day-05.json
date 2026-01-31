@@ -1,0 +1,111 @@
+{
+  "day": 5,
+  "key": "day_5_rebellion",
+  "version": 1,
+  "updated_at": "2026-02-01",
+  "title": { "en": "Human Choice and Rebellion Against God" },
+  "intro": {
+    "en": [
+      "God gives clear guidance, but human beings are free to choose.",
+      "This passage shows how deception, desire, and disobedience enter human life."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "deception",
+        "icon": "bug_report",
+        "label": { "en": "Deception" },
+        "lines": [
+          "The serpent was more crafty than any of the wild animals the Lord God had made.",
+          "He said to the woman,",
+          "“Did God really say,",
+          "‘You must not eat from any tree in the garden’?”",
+          "The woman said,",
+          "“We may eat fruit from the trees in the garden,",
+          "but God did say,",
+          "‘You must not eat from the tree in the middle of the garden,",
+          "or you will die.’”",
+          "The serpent said,",
+          "“You will not surely die.",
+          "God knows that when you eat from it,",
+          "your eyes will be opened,",
+          "and you will be like God,",
+          "knowing good and evil.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "choice",
+        "icon": "touch_app",
+        "label": { "en": "The Choice" },
+        "lines": [
+          "When the woman saw that the fruit was good for food",
+          "and pleasing to the eye,",
+          "and desirable for gaining wisdom,",
+          "she took some and ate it.",
+          "She also gave some to her husband,",
+          "who was with her,",
+          "and he ate it."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "awareness",
+        "icon": "visibility_off",
+        "label": { "en": "Awareness and Shame" },
+        "lines": [
+          "Then the eyes of both of them were opened,",
+          "and they realized they were naked.",
+          "They sewed fig leaves together",
+          "and made coverings for themselves."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "hiding",
+        "icon": "forest",
+        "label": { "en": "Fear and Hiding" },
+        "lines": [
+          "They heard the Lord God walking in the garden",
+          "in the cool of the day,",
+          "and they hid among the trees.",
+          "But the Lord God called to the man,",
+          "“Where are you?”",
+          "He answered,",
+          "“I heard You in the garden,",
+          "and I was afraid because I was naked;",
+          "so I hid.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "accountability",
+        "icon": "gavel",
+        "label": { "en": "Accountability" },
+        "lines": [
+          "God said,",
+          "“Who told you that you were naked?",
+          "Have you eaten from the tree",
+          "that I commanded you not to eat from?”",
+          "The man said,",
+          "“The woman You put here with me",
+          "gave me fruit from the tree,",
+          "and I ate it.”",
+          "God said to the woman,",
+          "“What is this you have done?”",
+          "She said,",
+          "“The serpent deceived me,",
+          "and I ate.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about how deception, choice, and responsibility appear in this story?"
+  },
+  "further_reading": {
+    "en": ["Genesis 3:1–13", "Genesis 2:15–17"]
+  }
+}

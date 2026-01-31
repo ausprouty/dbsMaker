@@ -1,9 +1,9 @@
 [
   {
-    "key": "wisemen",
-    "devName": "Birth of the Guru",
+    "key": "ibrahim",
+    "devName": "Celebrating the faithfulness of Ibrahim",
     "image": "/images/christmas.webp",
-    "route": "/video/wisemen",
+    "route": "/video/ibrahim",
     "maxLessons": 1
   },
   {
@@ -14,25 +14,24 @@
     "maxLessons": 61
   },
   {
-    "key": "life",
-    "devName": "Life Principles",
-    "image": "/images/community.webp",
-    "route": "/series/life",
+    "key": "paw",
+    "devName": "Prophets and the Word",
+    "image": "/images/scroll.webp",
+    "route": "/book/paw",
     "maxLessons": 23
   },
   {
     "key": "ctc",
     "devName": "Creation to Church",
-    "image": "/images/scroll.webp",
-    "route": "/series/ctc",
-    "maxLessons": 23
-  },
-  {
-    "key": "following",
-    "devName": "Following Him",
     "image": "/images/follow.webp",
     "route": "/video/following",
     "maxLessons": 5
+  },
+  {
+    "key": "ask",
+    "devName": "Ask",
+    "image": "/images/ask.webp",
+    "route": "/ask?url=everyperson.com/contact.php"
   },
   {
     "key": "mountain",
@@ -52,12 +51,5 @@
     "devName": "Deepavali",
     "image": "/images/deepavali.webp",
     "route": "/page/deepavali"
-  },
-
-  {
-    "key": "ask",
-    "devName": "Ask",
-    "image": "/images/ask.webp",
-    "route": "/ask?url=everyperson.com/contact.php"
   }
 ]
