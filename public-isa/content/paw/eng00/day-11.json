@@ -1,0 +1,58 @@
+{
+  "day": 11,
+  "key": "day_11_line_to_abraham",
+  "version": 1,
+  "updated_at": "2026-02-01",
+  "title": {
+    "en": "Descendants of Adam, Continued"
+  },
+  "intro": {
+    "en": [
+      "From Noah comes a continuing family line.",
+      "Through this line, God brings forth Abraham, a key figure in the history of faith."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "lineage",
+        "icon": "timeline",
+        "label": { "en": "From Noah to Eber" },
+        "lines": [
+          "Noah was the father of Shem,",
+          "Shem the father of Arphaxad,",
+          "Arphaxad the father of Cainan,",
+          "Cainan the father of Shelah,",
+          "Shelah the father of Eber."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "continuation",
+        "icon": "arrow_forward",
+        "label": { "en": "The Line Continues" },
+        "lines": [
+          "Eber was the father of Peleg,",
+          "Peleg the father of Reu,",
+          "Reu the father of Serug,",
+          "Serug the father of Nahor,",
+          "Nahor the father of Terah."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "calling",
+        "icon": "star",
+        "label": { "en": "Toward Abraham" },
+        "lines": ["Terah was the father of Abraham."]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about how this family line leads toward Abraham?"
+  },
+  "further_reading": {
+    "en": ["Genesis 11:10–26"]
+  }
+}

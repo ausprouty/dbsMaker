@@ -1,0 +1,80 @@
+{
+  "day": 8,
+  "key": "day_8_care_and_boundary",
+  "version": 1,
+  "updated_at": "2026-02-01",
+  "title": {
+    "en": "God’s Loving Care and Protective Boundaries"
+  },
+  "intro": {
+    "en": [
+      "Even after disobedience, God shows care for the man and the woman.",
+      "At the same time, He sets boundaries to protect life and uphold His purpose."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "care",
+        "icon": "checkroom",
+        "label": { "en": "God Covers Their Shame" },
+        "lines": [
+          "The Lord God made garments of skin",
+          "for Adam and his wife",
+          "and clothed them."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "knowledge",
+        "icon": "psychology",
+        "label": { "en": "Knowledge and Limitation" },
+        "lines": [
+          "The Lord God said,",
+          "“The man has now become like one of us,",
+          "knowing good and evil.",
+          "He must not be allowed",
+          "to reach out his hand",
+          "and take also from the tree of life",
+          "and eat,",
+          "and live forever.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "removal",
+        "icon": "exit_to_app",
+        "label": { "en": "Removed from the Garden" },
+        "lines": [
+          "So the Lord God banished him",
+          "from the Garden of Eden",
+          "to work the ground",
+          "from which he had been taken."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "guarding",
+        "icon": "security",
+        "label": { "en": "The Way Is Guarded" },
+        "lines": [
+          "After He drove the man out,",
+          "He placed on the east side",
+          "of the Garden of Eden",
+          "cherubim",
+          "and a flaming sword",
+          "flashing back and forth",
+          "to guard the way",
+          "to the tree of life."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about how God shows care while also setting firm boundaries in this passage?"
+  },
+  "further_reading": {
+    "en": ["Genesis 3:21–24"]
+  }
+}

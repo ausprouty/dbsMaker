@@ -1,0 +1,95 @@
+{
+  "day": 10,
+  "key": "day_10_noah_rescued",
+  "version": 1,
+  "updated_at": "2026-02-01",
+  "title": {
+    "en": "God Rescues Righteous Noah"
+  },
+  "intro": {
+    "en": [
+      "As corruption spreads across the earth, one man remains faithful to God.",
+      "God warns Noah of what is coming and provides a way of rescue for him and his family."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "righteousness",
+        "icon": "verified",
+        "label": { "en": "A Righteous Man" },
+        "lines": [
+          "Noah found favor in the eyes of the Lord.",
+          "Noah was a righteous man,",
+          "blameless among the people of his time,",
+          "and he walked with God."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "corruption",
+        "icon": "warning",
+        "label": { "en": "The Earth Is Corrupt" },
+        "lines": [
+          "Now the earth was corrupt in God’s sight",
+          "and was full of violence.",
+          "God saw how corrupt the earth had become,",
+          "for all the people on earth",
+          "had corruped their ways"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "covenant",
+        "icon": "handshake",
+        "label": { "en": "A Covenant of Rescue" },
+        "lines": [
+          "So God said to Noah,",
+          "“I am going to bring floodwaters on the earth",
+          "to destroy all life under the heavens,",
+          "every creature that has the breath of life in it.",
+          "Everything on earth will perish.",
+          "But I will establish my covenant with you,",
+          "and you will enter the ark—",
+          "you and your sons,",
+          "and your wife,",
+          "and your sons’ wives with you.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "obedience",
+        "icon": "construction",
+        "label": { "en": "Faithful Obedience" },
+        "lines": [
+          "By faith Noah,",
+          "when warned about things not yet seen,",
+          "in holy fear",
+          "built an ark",
+          "to save his family."
+        ]
+      },
+
+      {
+        "type": "text",
+        "marker": "blessing",
+        "icon": "celebration",
+        "label": { "en": "Blessing and New Beginning" },
+        "lines": [
+          "Then God blessed Noah and his sons,",
+          "saying to them,",
+          "“Be fruitful",
+          "and increase in number",
+          "and fill the earth.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about how righteousness, warning, obedience, and rescue are connected in this story?"
+  },
+  "further_reading": {
+    "en": ["Genesis 6:5–22", "Genesis 9:1", "Hebrews 11:7"]
+  }
+}
