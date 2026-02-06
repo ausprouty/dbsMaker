@@ -1,9 +1,9 @@
 [
   {
-    "key": "ibrahim",
-    "devName": "Celebrating the faithfulness of Ibrahim",
+    "key": "wisemen",
+    "devName": "Birth of the Guru",
     "image": "/images/christmas.webp",
-    "route": "/video/ibrahim",
+    "route": "/video/wisemen",
     "maxLessons": 1
   },
   {
@@ -14,15 +14,22 @@
     "maxLessons": 61
   },
   {
-    "key": "paw",
-    "devName": "Prophets and the Word",
-    "image": "/images/scroll.webp",
-    "route": "/book/paw",
+    "key": "life",
+    "devName": "Life Principles",
+    "image": "/images/community.webp",
+    "route": "/series/life",
     "maxLessons": 23
   },
   {
     "key": "ctc",
     "devName": "Creation to Church",
+    "image": "/images/scroll.webp",
+    "route": "/series/ctc",
+    "maxLessons": 23
+  },
+  {
+    "key": "following",
+    "devName": "Following Him",
     "image": "/images/follow.webp",
     "route": "/video/following",
     "maxLessons": 5
@@ -47,7 +54,7 @@
     "route": "/page/karma"
   },
   {
-    "key": "Deepavali",
+    "key": "deepavali",
     "devName": "Deepavali",
     "image": "/images/deepavali.webp",
     "route": "/page/deepavali"

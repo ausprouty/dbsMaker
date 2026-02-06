@@ -67,7 +67,6 @@ div.bible-text {
   margin-top: 10px;
   margin-left: 0;
   margin-right: 0;
-  background-color: var(--color-warning);
 }
 
 .q-gutter-y-md,
@@ -158,34 +157,49 @@ li.dbs {
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5,
+h6 {
   font-family: "Arial", sans-serif;
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
-h1.dbs {
-  font-size: 2rem;
-  line-height: 2.5rem;
-  font-weight: bold;
+h1 {
+  font-size: 1.6rem;
+  line-height: 2rem;
+  font-weight: 700;
+  margin-block: 0.6em 0.35em;
 }
 
-h2.dbs {
-  font-size: 1.5rem;
-  line-height: 1.7rem;
-  font-weight: bold;
+h2 {
+  font-size: 1.3rem;
+  line-height: 1.65rem;
+  font-weight: 700;
+  margin-block: 0.7em 0.3em;
 }
 
-h3.dbs {
-  margin-block-end: 0.3em;
-  font-size: 1.2rem;
-  line-height: 1.5rem;
-  font-weight: bold;
+h3 {
+  font-size: 1.1rem;
+  line-height: 1.45rem;
+  font-weight: 600;
+  margin-block: 0.6em 0.25em;
 }
 
-h4.dbs {
-  margin-block: 0;
+h4 {
   font-size: 1rem;
-  line-height: 1.2rem;
+  line-height: 1.35rem;
+  font-weight: 600;
+  margin-block: 0.5em 0.2em;
+}
+@media (max-width: 600px) {
+  h1.dbs {
+    font-size: 1.45rem;
+    line-height: 1.85rem;
+  }
+  h2.dbs {
+    font-size: 1.2rem;
+    line-height: 1.55rem;
+  }
 }
 
 /* ----------------------
@@ -339,8 +353,8 @@ td[clickable]:active::after {
 ----------------------- */
 
 .mark-complete-btn {
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
   font-weight: bold;
   border-radius: 8px;
   transition: filter 0.2s ease;

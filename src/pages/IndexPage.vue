@@ -75,9 +75,13 @@ const handleImageClick = (to) => {
 
 <template>
   <q-page class="bg-white q-pa-md">
-    <p v-for="(intro, i) in indexParas" :key="i" class="intro">
-      {{ intro }}
-    </p>
+    <div class="introPanel">
+      <div class="intro">
+        <p v-for="(intro, i) in indexParas" :key="i">
+          {{ intro }}
+        </p>
+      </div>
+    </div>
     <div class="menu-container">
       <div v-if="error" class="text-negative q-mt-md">{{ error }}</div>
       <div v-else-if="loading" class="q-mt-md">Loading…</div>
@@ -152,48 +156,65 @@ const handleImageClick = (to) => {
 }
 
 .menu-card {
-  background-color: #dddddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  text-align: left;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+
   height: 100%;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
+
 p.menu-summary {
   text-align: left;
 }
 
 .menu-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
 }
 
 .menu-picture {
   display: block;
   width: 100%;
-  margin: 0;
-  /* Consistent image block improves desktop grid a lot */
   aspect-ratio: 16 / 9;
-  height: auto;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 0; /* important: image is edge-to-edge */
+}
+
+/* move padding to the label area, not the whole card */
+.menu-label {
+  padding: 12px 14px 14px;
 }
 
 .menu-label h6 {
-  margin: 0 0 4px 0; /* top, right, bottom, left */
-  font-size: 1.25rem;
-  text-align: left;
+  color: var(--color-text); /* charcoal-ish */
+  font-weight: 800;
+  font-size: 1.15rem;
   line-height: 1.2;
+  margin: 0 0 6px 0;
+}
+/* add a small amber cue instead of full amber text */
+.menu-label h6::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin-top: 8px;
+  background: var(--color-secondary); /* amber */
+  border-radius: 3px;
+  opacity: 0.95;
 }
 
 .menu-label p {
   margin: 0;
 }
+
 p.menu-summary {
   line-height: 1.35;
   /* Keep card heights more consistent */
@@ -209,9 +230,32 @@ img.icon {
   height: 30px;
   cursor: pointer;
 }
+.introPanel {
+  max-width: 1200px; /* match cards container */
+  margin: 14px auto 12px; /* tightens space above/below */
+  padding: 14px 18px;
+  background: rgba(248, 243, 238, 0.9); /* your $neutral */
+
+  /* accent line all around */
+  border: 3px solid #d59744; /* your $secondary */
+  border-radius: 14px;
+
+  /* no lopsided shadow */
+  box-shadow: none;
+}
+
 .intro {
-  /* Scales nicely across phone -> desktop */
   font-size: clamp(14pt, 1.2vw, 18pt);
   line-height: 1.35;
+  max-width: 92ch;
+  margin: 0;
+}
+
+.intro p {
+  margin: 0 0 0.8em 0; /* vertical space between paragraphs */
+}
+
+.intro p:last-child {
+  margin-bottom: 0;
 }
 </style>

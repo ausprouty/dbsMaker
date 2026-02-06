@@ -262,89 +262,102 @@ const actionBtnColor = computed(() =>
 </template>
 
 <style>
+/* Base appbar */
 .appbar {
+  /* defaults (used if a class forgets to set them) */
+  --appbar-bg: var(--color-surface);
+  --appbar-fg: var(--color-text);
+  --appbar-border: transparent;
+
   background: var(--appbar-bg);
   color: var(--appbar-fg);
   transition: background 120ms ease, color 120ms ease, box-shadow 120ms ease;
 }
-.appbar--surface {
-  --appbar-bg: var(--color-surface);
-  --appbar-fg: var(--color-text);
-  border-bottom: 1px solid var(--color-border);
-}
-.appbar--primary {
-  --appbar-bg: var(--color-primary);
-  --appbar-fg: var(--color-on-primary);
-}
-.appbar--transparent {
-  --appbar-bg: color-mix(in srgb, var(--color-surface) 75%, transparent);
-  --appbar-fg: var(--color-text);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--color-border) 50%, transparent);
-}
 
-.footer {
-  background-color: darkgrey;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  width: 100%;
-  margin: 0 auto;
-}
-h2 {
-  font-size: 2rem;
-}
-
-.toolbar-width,
-.page-width {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-}
 /* --- Responsive app title: wraps + shrinks on small screens --- */
-
-/* Let the Quasar title area actually wrap */
-.q-toolbar__title {
-  white-space: normal !important; /* override Quasar nowrap */
-  overflow: visible; /* avoid clipping */
-  line-height: 1.15;
-  padding-right: 8px; /* a little breathing room */
-}
-
-/* Make the router-link behave like a two-line title */
-.q-toolbar__title {
+/* Override Quasar's default nowrap/ellipsis on the title container */
+.appbar .q-toolbar__title {
   white-space: normal !important;
+  overflow: visible;
   line-height: 1.15;
+  min-width: 0; /* important in flex toolbars so wrapping can occur */
+  padding-right: 8px;
 }
 
-.toolbar-title {
-  color: inherit;
-  text-decoration: none;
-
+/* Two-line clamp for the link text */
+.appbar .toolbar-title {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-
-  /* 2-line clamp (WebKit/Blink) */
   -webkit-line-clamp: 2;
-
-  /* helpful wrapping behaviour */
+  overflow: hidden;
+  white-space: normal;
   word-break: break-word;
   line-height: 1.15;
 }
 
-/* Smaller screens: reduce font and keep 2-line clamp */
 @media (max-width: 600px) {
-  .toolbar-title {
+  .appbar .toolbar-title {
     font-size: 1.1rem;
   }
 }
 
-/* Very small screens: slightly smaller again */
 @media (max-width: 360px) {
-  .toolbar-title {
+  .appbar .toolbar-title {
     font-size: 1rem;
   }
+}
+
+/* Variants only set variables */
+.appbar--surface {
+  --appbar-bg: var(--color-surface);
+  --appbar-fg: var(--color-text);
+  --appbar-border: var(--color-border);
+  border-bottom: 1px solid var(--appbar-border);
+}
+
+.appbar--primary {
+  --appbar-bg: var(--color-primary);
+  --appbar-fg: var(--color-on-primary);
+}
+
+.appbar--transparent {
+  --appbar-bg: color-mix(in srgb, var(--color-surface) 75%, transparent);
+  --appbar-fg: var(--color-text);
+  --appbar-border: color-mix(in srgb, var(--color-border) 50%, transparent);
+
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--appbar-border);
+}
+
+/* One underline rule */
+.appbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--q-secondary);
+  opacity: 0.95;
+  pointer-events: none;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Make the title look like header text, not a browser link */
+.toolbar-title,
+.toolbar-title:link,
+.toolbar-title:visited,
+.toolbar-title:hover,
+.toolbar-title:focus,
+.toolbar-title:active {
+  color: var(--appbar-fg);
+  text-decoration: none;
+}
+
+/* Optional: a subtle hover cue */
+.toolbar-title:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 </style>
