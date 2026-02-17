@@ -1,0 +1,67 @@
+{
+  "day": 59,
+  "key": "day_59_eternal_life_and_glory",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Eternal Life and Glory"
+  },
+  "intro": {
+    "en": [
+      "Before his arrest, Jesus looked toward heaven and prayed.",
+      "His prayer revealed his mission and his relationship with the Father."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "authority",
+        "icon": "public",
+        "label": { "en": "Authority to Give Life" },
+        "lines": [
+          "Jesus prayed,",
+          "“Father, the time has come.",
+          "Glorify your Son,",
+          "that your Son may glorify you.",
+          "You granted him authority over all people,",
+          "that he might give eternal life",
+          "to all those you have given him.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "eternal_life",
+        "icon": "favorite",
+        "label": { "en": "What Is Eternal Life?" },
+        "lines": [
+          "“Now this is eternal life:",
+          "that they may know you,",
+          "the only true God,",
+          "and Jesus Christ,",
+          "whom you have sent.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "glory",
+        "icon": "auto_awesome",
+        "label": { "en": "Before the World Began" },
+        "lines": [
+          "“I have brought you glory on earth",
+          "by completing the work you gave me to do.",
+          "And now, Father,",
+          "glorify me in your presence",
+          "with the glory I had with you",
+          "before the world began.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Jesus speaks of knowing the only true God, and of sharing glory before the world began. What do these words suggest about his identity and mission?"
+  },
+  "further_reading": {
+    "en": ["John 17:1–5"]
+  }
+}

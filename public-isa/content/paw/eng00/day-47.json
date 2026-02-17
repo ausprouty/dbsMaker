@@ -1,0 +1,85 @@
+{
+  "day": 47,
+  "key": "day_47_good_shepherd",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "The Good Shepherd"
+  },
+  "intro": {
+    "en": [
+      "Jesus used the image of a shepherd to describe himself.",
+      "His words caused both reflection and division."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "shepherd",
+        "icon": "pets",
+        "label": { "en": "I Am the Good Shepherd" },
+        "lines": [
+          "Jesus said,",
+          "“I am the good shepherd;",
+          "I know my sheep",
+          "and my sheep know me—",
+          "just as the Father knows me",
+          "and I know the Father—",
+          "and I lay down my life for the sheep.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "oneflock",
+        "icon": "groups",
+        "label": { "en": "One Flock, One Shepherd" },
+        "lines": [
+          "“I have other sheep",
+          "that are not of this sheep pen.",
+          "I must bring them also.",
+          "They too will listen to my voice,",
+          "and there shall be one flock",
+          "and one shepherd.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "authority",
+        "icon": "verified",
+        "label": { "en": "Authority to Lay It Down" },
+        "lines": [
+          "“The reason my Father loves me",
+          "is that I lay down my life—",
+          "only to take it up again.",
+          "No one takes it from me,",
+          "but I lay it down of my own accord.",
+          "I have authority to lay it down",
+          "and authority to take it up again.",
+          "This command I received from my Father.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "division",
+        "icon": "warning",
+        "label": { "en": "A Divided Response" },
+        "lines": [
+          "At these words the people were divided.",
+          "Some said,",
+          "“He is demon-possessed and raving mad.",
+          "Why listen to him?”",
+          "But others said,",
+          "“These are not the sayings of a man possessed by a demon.",
+          "Can a demon open the eyes of the blind?”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What stands out to you about how Jesus describes himself—and why do you think people were divided?"
+  },
+  "further_reading": {
+    "en": ["John 10:11–21"]
+  }
+}

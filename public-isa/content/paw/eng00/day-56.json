@@ -1,0 +1,66 @@
+{
+  "day": 56,
+  "key": "day_56_triumphal_entry",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The King Enters Jerusalem"
+  },
+  "intro": {
+    "en": [
+      "After raising Lazarus, Jesus traveled to Jerusalem for the Feast.",
+      "A great crowd gathered to welcome him."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "crowd",
+        "icon": "celebration",
+        "label": { "en": "Hosanna!" },
+        "lines": [
+          "The crowd took palm branches",
+          "and went out to meet him.",
+          "They shouted,",
+          "“Hosanna!”",
+          "“Blessed is he who comes",
+          "in the name of the Lord!”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "king",
+        "icon": "emoji_events",
+        "label": { "en": "Your King Is Coming" },
+        "lines": [
+          "Jesus found a young donkey",
+          "and sat upon it,",
+          "as it is written:",
+          "“Do not be afraid,",
+          "O Daughter of Zion;",
+          "see, your king is coming,",
+          "seated on a donkey’s colt.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "understanding",
+        "icon": "lightbulb",
+        "label": { "en": "Written About Him" },
+        "lines": [
+          "At first his disciples did not understand.",
+          "Only later did they realize",
+          "that these things had been written about him,",
+          "and that they had done these things to him."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why would a king enter a city on a donkey instead of a war horse? What kind of king is being presented here?"
+  },
+  "further_reading": {
+    "en": ["John 12:12–16"]
+  }
+}

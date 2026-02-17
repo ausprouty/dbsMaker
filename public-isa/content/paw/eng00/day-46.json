@@ -1,0 +1,69 @@
+{
+  "day": 46,
+  "key": "day_46_what_makes_unclean",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "What Makes a Person Unclean?"
+  },
+  "intro": {
+    "en": [
+      "Religious leaders questioned Jesus about ritual washing.",
+      "He responded by speaking about what truly defiles a person."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "question",
+        "icon": "help",
+        "label": { "en": "A Question About Tradition" },
+        "lines": [
+          "The Pharisees and some teachers of the law",
+          "saw that some of his disciples ate food",
+          "with hands that were ceremonially unwashed.",
+          "They asked Jesus,",
+          "“Why do your disciples not live according",
+          "to the tradition of the elders?”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "teaching",
+        "icon": "record_voice_over",
+        "label": { "en": "Listen and Understand" },
+        "lines": [
+          "Jesus called the crowd to him and said,",
+          "“Listen to me, everyone, and understand this.",
+          "Nothing outside a person",
+          "can make them unclean by going into them.",
+          "Rather, it is what comes out of a person",
+          "that makes them unclean.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "heart",
+        "icon": "favorite",
+        "label": { "en": "From Within the Heart" },
+        "lines": [
+          "For from within,",
+          "out of the heart,",
+          "come evil thoughts,",
+          "sexual immorality, theft, murder, adultery,",
+          "greed, malice, deceit,",
+          "envy, slander, arrogance and folly.",
+          "All these evils come from inside",
+          "and make a person unclean."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What does Jesus say is the true source of moral uncleanness?"
+  },
+  "further_reading": {
+    "en": ["Mark 7:1–23"]
+  }
+}

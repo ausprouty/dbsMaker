@@ -1,0 +1,83 @@
+{
+  "day": 54,
+  "key": "day_54_resurrection_and_life",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The Resurrection and the Life"
+  },
+  "intro": {
+    "en": [
+      "By the time Jesus arrived, Lazarus had been in the tomb four days.",
+      "Grief filled the house.",
+      "Martha went out to meet him."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "grief",
+        "icon": "sentiment_dissatisfied",
+        "label": { "en": "If You Had Been Here" },
+        "lines": [
+          "Martha said,",
+          "“Lord, if you had been here,",
+          "my brother would not have died.",
+          "But I know that even now",
+          "God will give you whatever you ask.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "iam",
+        "icon": "priority_high",
+        "label": { "en": "I Am the Resurrection and the Life" },
+        "lines": [
+          "Jesus said to her,",
+          "“Your brother will rise again.”",
+          "Martha answered,",
+          "“I know he will rise again",
+          "in the resurrection at the last day.”",
+          "Jesus said,",
+          "“I am the resurrection and the life.",
+          "He who believes in me will live,",
+          "even though he dies;",
+          "and whoever lives and believes in me",
+          "will never die.",
+          "Do you believe this?”",
+          "She said,",
+          "“Yes, Lord.",
+          "I believe that you are the Christ,",
+          "the Son of God,",
+          "who was to come into the world.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "glory",
+        "icon": "light_mode",
+        "label": { "en": "Lazarus, Come Out!" },
+        "lines": [
+          "Jesus came to the tomb.",
+          "It was a cave with a stone across the entrance.",
+          "“Take away the stone,” he said.",
+          "He prayed aloud so that the people would believe",
+          "that the Father had sent him.",
+          "Then he called in a loud voice,",
+          "“Lazarus, come out!”",
+          "The dead man came out,",
+          "his hands and feet wrapped with linen.",
+          "Jesus said,",
+          "“Take off the grave clothes and let him go.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Jesus said, 'I am the resurrection and the life.' What do you think this means? Why did he ask Martha, 'Do you believe this?'"
+  },
+  "further_reading": {
+    "en": ["John 11:17–44"]
+  }
+}

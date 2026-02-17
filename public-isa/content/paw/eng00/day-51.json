@@ -1,0 +1,67 @@
+{
+  "day": 51,
+  "key": "day_51_children_of_abraham",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "Children of Abraham and True Freedom"
+  },
+  "intro": {
+    "en": [
+      "Jesus spoke to those who believed him about truth and freedom.",
+      "The discussion turned to Abraham and what it means to belong to God."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "truth",
+        "icon": "menu_book",
+        "label": { "en": "The Truth Will Set You Free" },
+        "lines": [
+          "Jesus said,",
+          "“If you hold to my teaching,",
+          "you are really my disciples.",
+          "Then you will know the truth,",
+          "and the truth will set you free.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "freedom",
+        "icon": "lock_open",
+        "label": { "en": "Free Indeed" },
+        "lines": [
+          "They answered,",
+          "“We are Abraham’s descendants.",
+          "How can you say we shall be set free?”",
+          "Jesus replied,",
+          "“Everyone who sins is a slave to sin.",
+          "If the Son sets you free,",
+          "you will be free indeed.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "abraham",
+        "icon": "groups",
+        "label": { "en": "Doing the Works of Abraham" },
+        "lines": [
+          "They said,",
+          "“Abraham is our father.”",
+          "Jesus said,",
+          "“If you were Abraham’s children,",
+          "you would do the things Abraham did.",
+          "I have told you the truth that I heard from God.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you think Jesus means by true freedom—and how does he connect this to Abraham?"
+  },
+  "further_reading": {
+    "en": ["John 8:31–41"]
+  }
+}
