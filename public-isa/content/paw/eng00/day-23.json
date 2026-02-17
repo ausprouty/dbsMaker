@@ -1,0 +1,93 @@
+{
+  "day": 23,
+  "key": "day_23_gods_commands_through_moses",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "God’s Commands Through Moses"
+  },
+  "intro": {
+    "en": [
+      "After leading the people out of Egypt, God speaks to them at the mountain.",
+      "Through Moses, He gives commands that shape their worship and their way of life."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "identity",
+        "icon": "verified",
+        "label": { "en": "Who God Is" },
+        "lines": [
+          "I am the Lord your God.",
+          "You shall have no other gods before me.",
+          "You shall not make for yourself an idol",
+          "in the form of anything in heaven above",
+          "or on the earth beneath",
+          "or in the waters below."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "reverence",
+        "icon": "record_voice_over",
+        "label": { "en": "Reverence for His Name" },
+        "lines": [
+          "You shall not misuse the name of the Lord your God,",
+          "for the Lord will not hold anyone guiltless",
+          "who misuses his name."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "worship",
+        "icon": "event",
+        "label": { "en": "Remember and Honor" },
+        "lines": [
+          "Remember the Sabbath day by keeping it holy.",
+          "Honor your father and your mother,",
+          "so that you may live long in the land",
+          "the Lord your God is giving you."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "justice",
+        "icon": "balance",
+        "label": { "en": "Commands for Life Together" },
+        "lines": [
+          "You shall not murder.",
+          "You shall not commit adultery.",
+          "You shall not steal.",
+          "You shall not give false testimony against your neighbour.",
+          "You shall not covet your neighbour’s house.",
+          "You shall not covet your neighbour’s wife,",
+          "or his servant,",
+          "or his ox or donkey,",
+          "or anything that belongs to your neighbour."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "oneness",
+        "icon": "public",
+        "label": { "en": "The Lord Is One" },
+        "lines": [
+          "Hear, O Israel:",
+          "The Lord our God, the Lord is one.",
+          "Love the Lord your God",
+          "with all your heart",
+          "and with all your soul",
+          "and with all your strength."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do these commands show about who God is—and how people are meant to live before Him and with one another?"
+  },
+  "further_reading": {
+    "en": ["Exodus 20:1–17", "Deuteronomy 6:4–5"]
+  }
+}

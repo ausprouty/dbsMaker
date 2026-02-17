@@ -1,0 +1,76 @@
+{
+  "day": 39,
+  "key": "day_39_jesus_casts_out_spirit",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "Jesus Speaks with Authority"
+  },
+  "intro": {
+    "en": [
+      "In Capernaum, Jesus teaches in the synagogue.",
+      "His words—and what follows—leave the people astonished."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "teaching",
+        "icon": "menu_book",
+        "label": { "en": "Authority in Teaching" },
+        "lines": [
+          "He went down to Capernaum, a town in Galilee,",
+          "and on the Sabbath began to teach the people.",
+          "They were amazed at his teaching,",
+          "because his message had authority."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "demon",
+        "icon": "warning",
+        "label": { "en": "The Spirit Cries Out" },
+        "lines": [
+          "In the synagogue there was a man possessed by an evil spirit.",
+          "He cried out,",
+          "“What do you want with us, Jesus of Nazareth?",
+          "Have you come to destroy us?",
+          "I know who you are—the Holy One of God!”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "command",
+        "icon": "campaign",
+        "label": { "en": "Be Quiet and Come Out" },
+        "lines": [
+          "“Be quiet!” Jesus said sternly.",
+          "“Come out of him!”",
+          "Then the demon threw the man down before them all",
+          "and came out without injuring him."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "reaction",
+        "icon": "groups",
+        "label": { "en": "What Is This Teaching?" },
+        "lines": [
+          "All the people were amazed and said to each other,",
+          "“What is this teaching?",
+          "With authority and power",
+          "he gives orders to evil spirits and they come out!”",
+          "And the news about him spread",
+          "throughout the surrounding area."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about the authority Jesus demonstrates in this scene?"
+  },
+  "further_reading": {
+    "en": ["Luke 4:31–37"]
+  }
+}

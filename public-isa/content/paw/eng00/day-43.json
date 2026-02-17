@@ -1,0 +1,70 @@
+{
+  "day": 43,
+  "key": "day_43_who_do_you_say_i_am",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "Who Do You Say I Am?"
+  },
+  "intro": {
+    "en": [
+      "One day Jesus asked his disciples a direct question.",
+      "Their answer—and his response—mark a turning point."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "question",
+        "icon": "help",
+        "label": { "en": "Who Do the Crowds Say?" },
+        "lines": [
+          "Jesus asked his disciples,",
+          "“Who do the crowds say I am?”",
+          "They replied,",
+          "“Some say John the Baptist;",
+          "others say Elijah;",
+          "and still others,",
+          "that one of the prophets of long ago",
+          "has come back to life.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "peter",
+        "icon": "record_voice_over",
+        "label": { "en": "The Christ of God" },
+        "lines": [
+          "“But what about you?” he asked.",
+          "“Who do you say I am?”",
+          "Peter answered,",
+          "“The Christ of God.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "prediction",
+        "icon": "schedule",
+        "label": { "en": "He Must Suffer" },
+        "lines": [
+          "Jesus strictly warned them",
+          "not to tell this to anyone.",
+          "And he said,",
+          "“The Son of Man must suffer many things",
+          "and be rejected by the elders,",
+          "chief priests and teachers of the law,",
+          "and he must be killed",
+          "and on the third day",
+          "be raised to life.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why do you think Jesus connects his identity with suffering and rejection?"
+  },
+  "further_reading": {
+    "en": ["Luke 9:18–22"]
+  }
+}

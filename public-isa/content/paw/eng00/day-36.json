@@ -1,0 +1,94 @@
+{
+  "day": 36,
+  "key": "day_36_jesus_tested_in_wilderness",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "Jesus Is Tested in the Wilderness"
+  },
+  "intro": {
+    "en": [
+      "After his baptism, Jesus goes into the desert.",
+      "There he is tested."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "fasting",
+        "icon": "landscape",
+        "label": { "en": "Forty Days in the Desert" },
+        "lines": [
+          "Jesus, full of the Holy Spirit,",
+          "returned from the Jordan",
+          "and was led by the Spirit in the desert,",
+          "where for forty days he was tempted by the devil.",
+          "He ate nothing during those days,",
+          "and at the end of them he was hungry."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "bread",
+        "icon": "restaurant",
+        "label": { "en": "Stones to Bread" },
+        "lines": [
+          "The devil said to him,",
+          "“If you are the Son of God,",
+          "tell this stone to become bread.”",
+          "Jesus answered,",
+          "“It is written:",
+          "‘Man does not live on bread alone.’”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "kingdoms",
+        "icon": "public",
+        "label": { "en": "All the Kingdoms" },
+        "lines": [
+          "The devil showed him all the kingdoms of the world.",
+          "He said,",
+          "“If you worship me,",
+          "it will all be yours.”",
+          "Jesus answered,",
+          "“It is written:",
+          "‘Worship the Lord your God",
+          "and serve him only.’”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "temple",
+        "icon": "account_balance",
+        "label": { "en": "Do Not Test God" },
+        "lines": [
+          "The devil had him stand on the highest point of the temple.",
+          "“If you are the Son of God,” he said,",
+          "“throw yourself down from here.”",
+          "Jesus answered,",
+          "“It says:",
+          "‘Do not put the Lord your God to the test.’”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "departure",
+        "icon": "exit_to_app",
+        "label": { "en": "The Devil Leaves" },
+        "lines": [
+          "When the devil had finished all this tempting,",
+          "he left him",
+          "until an opportune time."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about how Jesus responds to testing—and what he refuses?"
+  },
+  "further_reading": {
+    "en": ["Luke 4:1–13"]
+  }
+}

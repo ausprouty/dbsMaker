@@ -1,0 +1,98 @@
+{
+  "day": 32,
+  "key": "day_32_gabriel_announces_birth",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "The Angel Gabriel Announces the Birth of Jesus"
+  },
+  "intro": {
+    "en": [
+      "God sent the angel Gabriel to a young woman named Mary.",
+      "Gabriel brings a message about the child who will be born."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "arrival",
+        "icon": "person",
+        "label": { "en": "Gabriel Is Sent" },
+        "lines": [
+          "In the sixth month,",
+          "God sent the angel Gabriel",
+          "to Nazareth, a town in Galilee,",
+          "to a virgin pledged to be married",
+          "to a man named Joseph,",
+          "a descendant of David.",
+          "The virgin’s name was Mary."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "message",
+        "icon": "campaign",
+        "label": { "en": "Do Not Be Afraid" },
+        "lines": [
+          "The angel went to her and said,",
+          "“Greetings, you who are highly favored!",
+          "The Lord is with you.”",
+          "Mary was greatly troubled at his words.",
+          "But the angel said to her,",
+          "“Do not be afraid, Mary,",
+          "you have found favor with God.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "promise",
+        "icon": "child_care",
+        "label": { "en": "A Son Will Be Born" },
+        "lines": [
+          "“You will be with child",
+          "and give birth to a son,",
+          "and you are to give him the name Jesus.",
+          "He will be great",
+          "and will be called the Son of the Most High.",
+          "The Lord God will give him",
+          "the throne of his father David,",
+          "and he will reign over the house of Jacob forever;",
+          "his kingdom will never end.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "question",
+        "icon": "help",
+        "label": { "en": "Mary Asks How" },
+        "lines": [
+          "“How will this be,” Mary asked the angel,",
+          "“since I am a virgin?”",
+          "The angel answered,",
+          "“The Holy Spirit will come upon you,",
+          "and the power of the Most High will overshadow you.",
+          "So the holy one to be born",
+          "will be called the Son of God.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "response",
+        "icon": "verified",
+        "label": { "en": "Mary Responds" },
+        "lines": [
+          "“I am the Lord’s servant,” Mary answered.",
+          "“May it be to me as you have said.”",
+          "Then the angel left her."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What stands out to you about what the angel Gabriel says about this child?"
+  },
+  "further_reading": {
+    "en": ["Luke 1:26–38"]
+  }
+}

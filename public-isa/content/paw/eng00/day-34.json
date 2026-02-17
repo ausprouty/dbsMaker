@@ -1,0 +1,98 @@
+{
+  "day": 34,
+  "key": "day_34_angel_announces_good_news",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "An Angel Announces Good News"
+  },
+  "intro": {
+    "en": [
+      "On the night Jesus was born, shepherds were watching their flocks.",
+      "An angel appears to them with a message."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "appearance",
+        "icon": "nightlight",
+        "label": { "en": "An Angel Appears" },
+        "lines": [
+          "There were shepherds living out in the fields nearby,",
+          "keeping watch over their flocks at night.",
+          "An angel of the Lord appeared to them,",
+          "and the glory of the Lord shone around them,",
+          "and they were terrified."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "message",
+        "icon": "campaign",
+        "label": { "en": "Good News of Great Joy" },
+        "lines": [
+          "But the angel said to them,",
+          "“Do not be afraid.",
+          "I bring you good news of great joy",
+          "that will be for all the people.",
+          "Today in the town of David",
+          "a Savior has been born to you;",
+          "he is the Messiah, the Lord.",
+          "This will be a sign to you:",
+          "You will find a baby wrapped in cloths",
+          "and lying in a manger.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "praise",
+        "icon": "music_note",
+        "label": { "en": "Heavenly Praise" },
+        "lines": [
+          "Suddenly a great company of the heavenly host appeared,",
+          "praising God and saying:",
+          "“Glory to God in the highest,",
+          "and on earth peace",
+          "to those on whom his favor rests.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "response",
+        "icon": "visibility",
+        "label": { "en": "The Shepherds Go" },
+        "lines": [
+          "When the angels had left them,",
+          "the shepherds said to one another,",
+          "“Let us go to Bethlehem",
+          "and see this thing that has happened,",
+          "which the Lord has told us about.”",
+          "So they hurried off",
+          "and found Mary and Joseph,",
+          "and the baby,",
+          "who was lying in the manger.",
+          "When they had seen him,",
+          "they spread the word",
+          "concerning what had been told them",
+          "about this child.",
+          "And all who heard it were amazed",
+          "at what the shepherds said to them.",
+          "But Mary treasured up all these things",
+          "and pondered them in her heart.",
+          "The shepherds returned,",
+          "glorifying and praising God",
+          "for all the things they had heard and seen,",
+          "which were just as they had been told."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What stands out to you about the angel’s message—and about how the shepherds and Mary responded?"
+  },
+  "further_reading": {
+    "en": ["Luke 2:8–20"]
+  }
+}

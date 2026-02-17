@@ -1,0 +1,62 @@
+{
+  "day": 24,
+  "key": "day_24_blood_of_the_covenant",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "The Blood of the Covenant"
+  },
+  "intro": {
+    "en": [
+      "After giving the law, Moses confirms the covenant between God and the people.",
+      "Blood becomes a visible sign of this covenant."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "proclamation",
+        "icon": "menu_book",
+        "label": { "en": "Every Command Proclaimed" },
+        "lines": [
+          "When Moses had proclaimed every commandment of the law to all the people,",
+          "he took the blood of calves,",
+          "together with water, scarlet wool and branches of hyssop,",
+          "and sprinkled the scroll and all the people."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "covenant",
+        "icon": "handshake",
+        "label": { "en": "The Blood of the Covenant" },
+        "lines": [
+          "He said,",
+          "“This is the blood of the covenant,",
+          "which God has commanded you to keep.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "cleansing",
+        "icon": "opacity",
+        "label": { "en": "Cleansed with Blood" },
+        "lines": [
+          "In the same way,",
+          "he sprinkled with the blood both the tabernacle",
+          "and everything used in its ceremonies.",
+          "The law requires that nearly everything be cleansed with blood,",
+          "and without the shedding of blood",
+          "there is no forgiveness."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about the connection between covenant, cleansing, and forgiveness in this passage?"
+  },
+  "further_reading": {
+    "en": ["Exodus 24:3–8", "Hebrews 9:18–22"]
+  }
+}

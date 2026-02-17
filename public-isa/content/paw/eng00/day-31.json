@@ -1,0 +1,39 @@
+{
+  "day": 31,
+  "key": "day_31_the_word_became_flesh",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "The Injil Speaks of the Word"
+  },
+  "intro": {
+    "en": [
+      "The Injil opens with words about the beginning and about the Word of God.",
+      "It describes how the Word came into the world."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "word",
+        "icon": "record_voice_over",
+        "label": { "en": "The Word Became Flesh" },
+        "lines": [
+          "The Word became flesh",
+          "and made his dwelling among us.",
+          "We have seen his glory,",
+          "the glory of the One and Only,",
+          "who came from the Father,",
+          "full of grace and truth."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about how the Injil describes the Word?"
+  },
+  "further_reading": {
+    "en": ["John 1:1–14"]
+  }
+}

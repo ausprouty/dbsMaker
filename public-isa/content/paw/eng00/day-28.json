@@ -1,0 +1,49 @@
+{
+  "day": 28,
+  "key": "day_28_david_holy_one_exalted",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "David Speaks of the Holy One"
+  },
+  "intro": {
+    "en": [
+      "King David writes of hope beyond the grave.",
+      "He also records words about one whom the Lord exalts."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "hope",
+        "icon": "favorite",
+        "label": { "en": "Not Abandoned" },
+        "lines": [
+          "Therefore my heart is glad and my tongue rejoices;",
+          "my body also will rest secure,",
+          "because you will not abandon me to the grave,",
+          "nor will you let your Holy One see decay."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "exaltation",
+        "icon": "arrow_upward",
+        "label": { "en": "Sit at My Right Hand" },
+        "lines": [
+          "The Lord says to my Lord:",
+          "“Sit at my right hand",
+          "until I make your enemies",
+          "a footstool for your feet.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about the hope described here—and about the one whom the Lord exalts?"
+  },
+  "further_reading": {
+    "en": ["Psalm 16:8–11", "Psalm 110:1"]
+  }
+}

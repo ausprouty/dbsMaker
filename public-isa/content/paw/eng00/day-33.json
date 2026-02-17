@@ -1,0 +1,91 @@
+{
+  "day": 33,
+  "key": "day_33_angel_speaks_to_joseph",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "An Angel Speaks to Joseph"
+  },
+  "intro": {
+    "en": [
+      "Before Jesus was born, Joseph faced a difficult decision.",
+      "In a dream, an angel of the Lord speaks to him."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "situation",
+        "icon": "family_restroom",
+        "label": { "en": "Joseph’s Dilemma" },
+        "lines": [
+          "Mary was pledged to be married to Joseph,",
+          "but before they came together,",
+          "she was found to be with child through the Holy Spirit.",
+          "Because Joseph was a righteous man",
+          "and did not want to expose her to public disgrace,",
+          "he had in mind to divorce her quietly."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "dream",
+        "icon": "nightlight",
+        "label": { "en": "The Angel Appears" },
+        "lines": [
+          "After he had considered this,",
+          "an angel of the Lord appeared to him in a dream and said:",
+          "“Joseph son of David,",
+          "do not be afraid to take Mary home as your wife,",
+          "because what is conceived in her",
+          "is from the Holy Spirit.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "name",
+        "icon": "badge",
+        "label": { "en": "You Shall Call His Name Jesus" },
+        "lines": [
+          "“She will give birth to a son,",
+          "and you are to give him the name Jesus,",
+          "because he will save his people",
+          "from their sins.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "prophet",
+        "icon": "menu_book",
+        "label": { "en": "What the Prophet Said" },
+        "lines": [
+          "All this took place to fulfill what the Lord had said through the prophet:",
+          "“The virgin will be with child",
+          "and will give birth to a son,",
+          "and they will call him Immanuel,”",
+          "which means, “God with us.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "obedience",
+        "icon": "verified",
+        "label": { "en": "Joseph Obeys" },
+        "lines": [
+          "When Joseph woke up,",
+          "he did what the angel of the Lord had commanded him",
+          "and took Mary home as his wife.",
+          "He had no union with her until she gave birth to a son.",
+          "And he gave him the name Jesus."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What stands out to you about the angel’s message—and Joseph’s response?"
+  },
+  "further_reading": {
+    "en": ["Matthew 1:18–25"]
+  }
+}

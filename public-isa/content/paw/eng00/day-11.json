@@ -2,55 +2,51 @@
   "day": 11,
   "key": "day_11_line_to_abraham",
   "version": 1,
-  "updated_at": "2026-02-01",
+  "updated_at": "2026-02-15",
   "title": {
-    "en": "Descendants of Adam, Continued"
+    "en": "From Noah to Abraham"
   },
   "intro": {
     "en": [
-      "From Noah comes a continuing family line.",
-      "Through this line, God brings forth Abraham, a key figure in the history of faith."
+      "After the flood, God’s story continues through families and generations.",
+      "This line of descendants leads from Noah to Abram (later called Abraham and known as Ibrahim in Arabic)."
     ]
   },
   "blocks": {
     "en": [
       {
         "type": "text",
-        "marker": "lineage",
+        "marker": "generations",
         "icon": "timeline",
-        "label": { "en": "From Noah to Eber" },
+        "label": { "en": "A Line Through the Generations" },
         "lines": [
-          "Noah was the father of Shem,",
-          "Shem the father of Arphaxad,",
-          "Arphaxad the father of Cainan,",
-          "Cainan the father of Shelah,",
-          "Shelah the father of Eber."
+          "Noah was the father of Shem.",
+          "Shem was the father of Arphaxad.",
+          "Arphaxad was the father of Shelah.",
+          "Shelah was the father of Eber.",
+          "Eber was the father of Peleg.",
+          "Peleg was the father of Reu.",
+          "Reu was the father of Serug.",
+          "Serug was the father of Nahor.",
+          "Nahor was the father of Terah.",
+          "Terah was the father of Abram."
         ]
       },
       {
         "type": "text",
-        "marker": "continuation",
-        "icon": "arrow_forward",
-        "label": { "en": "The Line Continues" },
+        "marker": "purpose",
+        "icon": "compass",
+        "label": { "en": "God Works Over Time" },
         "lines": [
-          "Eber was the father of Peleg,",
-          "Peleg the father of Reu,",
-          "Reu the father of Serug,",
-          "Serug the father of Nahor,",
-          "Nahor the father of Terah."
+          "These names show that God is not only working in one moment.",
+          "He is guiding history across many years.",
+          "What God begins, He continues."
         ]
-      },
-      {
-        "type": "text",
-        "marker": "calling",
-        "icon": "star",
-        "label": { "en": "Toward Abraham" },
-        "lines": ["Terah was the father of Abraham."]
       }
     ]
   },
   "question": {
-    "en": "What do you notice about how this family line leads toward Abraham?"
+    "en": "What stands out to you about God’s work across generations—and why might this lead into a new step in the story?"
   },
   "further_reading": {
     "en": ["Genesis 11:10–26"]

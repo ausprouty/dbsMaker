@@ -1,0 +1,60 @@
+{
+  "day": 20,
+  "key": "day_20_moses_called",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "God Calls Moses"
+  },
+  "intro": {
+    "en": [
+      "Years after Jacob’s family settled in Egypt, their descendants were oppressed.",
+      "God sees their suffering and calls Moses to lead them."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "call",
+        "icon": "local_fire_department",
+        "label": { "en": "God Calls His Name" },
+        "lines": [
+          "God called to him,",
+          "“Moses! Moses!”",
+          "And Moses said,",
+          "“Here I am.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "compassion",
+        "icon": "visibility",
+        "label": { "en": "God Sees and Hears" },
+        "lines": [
+          "“Now the cry of the Israelites has reached me,",
+          "and I have seen the way",
+          "the Egyptians are oppressing them.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "mission",
+        "icon": "send",
+        "label": { "en": "Sent to Pharaoh" },
+        "lines": [
+          "“So now, go.",
+          "I am sending you to Pharaoh",
+          "to bring my people the Israelites",
+          "out of Egypt.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about God’s awareness of suffering and His choice to send Moses?"
+  },
+  "further_reading": {
+    "en": ["Exodus 3:1–10"]
+  }
+}

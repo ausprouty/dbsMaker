@@ -1,0 +1,56 @@
+{
+  "day": 12,
+  "key": "day_12_call_of_abraham",
+  "version": 1,
+  "updated_at": "2026-02-15",
+  "title": {
+    "en": "God Calls Abraham"
+  },
+  "intro": {
+    "en": [
+      "From the line of Noah came Abram, later called Abraham (known in Arabic as Ibrahim).",
+      "God speaks to him and begins a new chapter in the story."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "calling",
+        "icon": "hearing",
+        "label": { "en": "A Clear Command" },
+        "lines": [
+          "The Lord had said to Abram,",
+          "“Leave your country,",
+          "your people",
+          "and your father’s household,",
+          "and go to the land I will show you.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "promise",
+        "icon": "stars",
+        "label": { "en": "A Great Promise" },
+        "lines": [
+          "“I will make you into a great nation,",
+          "and I will bless you;",
+          "I will make your name great,",
+          "and you will be a blessing.",
+          "I will bless those who bless you,",
+          "and whoever curses you I will curse;",
+          "and all peoples on earth",
+          "will be blessed throughyou.",
+          "and go to the land I will show you.”",
+          " So Abram left, as the Lord had told him."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What do you notice about God’s command, His promise, and Abraham’s response?"
+  },
+  "further_reading": {
+    "en": ["Genesis 12:1–9"]
+  }
+}
