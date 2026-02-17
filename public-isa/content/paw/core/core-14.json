@@ -1,0 +1,51 @@
+{
+  "day": 14,
+  "key": "core_14_covenant_law",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Covenant and Commandments"
+  },
+  "intro": {
+    "en": [
+      "God rescues first, then teaches how to live.",
+      "His commands protect love for God and love for neighbor."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "covenant",
+        "icon": "handshake",
+        "label": {
+          "en": "A Covenant Relationship"
+        },
+        "lines": [
+          "God brought the people to Himself and called them His own.",
+          "He invited them into a covenant."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "law",
+        "icon": "rule",
+        "label": {
+          "en": "The Ten Words"
+        },
+        "lines": [
+          "God gave commands that shape worship, truth, family, and justice."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "How do God’s commands shape a community that reflects Him?"
+  },
+  "further_reading": {
+    "en": [
+      "Exodus 19:3–6",
+      "Exodus 20:1–17"
+    ]
+  }
+}

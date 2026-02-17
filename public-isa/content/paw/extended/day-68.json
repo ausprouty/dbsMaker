@@ -1,0 +1,51 @@
+{
+  "day": 68,
+  "key": "day_68_written_that_you_may_believe",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "These Are Written"
+  },
+  "intro": {
+    "en": [
+      "After recording the resurrection appearances,",
+      "the writer explains why these events were written."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "purpose",
+        "icon": "menu_book",
+        "label": { "en": "Many Other Signs" },
+        "lines": [
+          "Jesus did many other miraculous signs",
+          "in the presence of his disciples,",
+          "which are not recorded in this book."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "belief",
+        "icon": "lightbulb",
+        "label": { "en": "Written So That You May Believe" },
+        "lines": [
+          "But these are written",
+          "that you may believe",
+          "that Jesus is the Christ,",
+          "the Son of God,",
+          "and that by believing",
+          "you may have life",
+          "in his name."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "If these events were written so that you may believe and have life, what do you think belief means in this context?"
+  },
+  "further_reading": {
+    "en": ["John 20:30–31"]
+  }
+}

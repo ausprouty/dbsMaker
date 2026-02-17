@@ -1,0 +1,78 @@
+{
+  "day": 60,
+  "key": "day_60_betrayal_and_covenant",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Betrayal and the New Covenant"
+  },
+  "intro": {
+    "en": [
+      "As the Feast of Passover approached,",
+      "the religious leaders were looking for a way to arrest Jesus.",
+      "The division that had been growing now moved closer."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "plot",
+        "icon": "gavel",
+        "label": { "en": "A Plan in Secret" },
+        "lines": [
+          "The chief priests and teachers of the law",
+          "were looking for some way to get rid of Jesus,",
+          "for they were afraid of the people.",
+          "Then Satan entered Judas,",
+          "one of the Twelve.",
+          "He went to the leaders",
+          "and discussed how he might betray Jesus.",
+          "They agreed to give him money."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "prediction",
+        "icon": "warning",
+        "label": { "en": "One of You Will Betray Me" },
+        "lines": [
+          "While they were eating the Passover meal,",
+          "Jesus said,",
+          "“I tell you the truth,",
+          "one of you will betray me.”",
+          "They were saddened",
+          "and began to ask,",
+          "“Surely not I, Lord?”",
+          "Jesus said,",
+          "“The Son of Man will go",
+          "just as it is written about him.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "covenant",
+        "icon": "restaurant",
+        "label": { "en": "My Body… My Blood" },
+        "lines": [
+          "Jesus took bread,",
+          "gave thanks,",
+          "and broke it.",
+          "He gave it to his disciples, saying,",
+          "“Take and eat; this is my body.”",
+          "Then he took the cup and said,",
+          "“Drink from it, all of you.",
+          "This is my blood of the covenant,",
+          "which is poured out for many",
+          "for the forgiveness of sins.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why do you think Jesus spoke about his body and blood during the Passover meal? What connection might he be making between sacrifice and forgiveness?"
+  },
+  "further_reading": {
+    "en": ["Luke 22:1–6", "Matthew 26:17–28"]
+  }
+}

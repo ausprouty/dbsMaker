@@ -1,0 +1,68 @@
+{
+  "day": 66,
+  "key": "day_66_who_do_you_say_he_is",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Who Do You Say He Is?"
+  },
+  "intro": {
+    "en": [
+      "You have read the words of Jesus.",
+      "You have seen the signs he performed.",
+      "You have witnessed his death and his resurrection."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "claims",
+        "icon": "record_voice_over",
+        "label": { "en": "What He Claimed" },
+        "lines": [
+          "He said,",
+          "“I am the way,",
+          "and the truth,",
+          "and the life.”",
+          "He said,",
+          "“I am the resurrection and the life.”",
+          "He said,",
+          "“Before Abraham was born, I am.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "cross",
+        "icon": "close",
+        "label": { "en": "What Happened" },
+        "lines": [
+          "He was condemned though declared innocent.",
+          "He was crucified.",
+          "He was buried in a sealed tomb.",
+          "On the third day,",
+          "the tomb was empty."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "response",
+        "icon": "help",
+        "label": { "en": "A Response Is Needed" },
+        "lines": [
+          "Some believed.",
+          "Some rejected him.",
+          "Some worshiped him.",
+          "Each person had to decide.",
+          "Who do you say he is?"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "After reading these events, what do you believe about Jesus the Messiah? What response feels right to you?"
+  },
+  "further_reading": {
+    "en": ["John 20:30–31"]
+  }
+}

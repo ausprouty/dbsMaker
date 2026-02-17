@@ -1,0 +1,51 @@
+{
+  "day": 4,
+  "key": "core_04_first_promise",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "A Promise of Rescue"
+  },
+  "intro": {
+    "en": [
+      "God does not abandon people in their failure.",
+      "Even in judgment, God speaks hope."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "conflict",
+        "icon": "gavel",
+        "label": {
+          "en": "God Names the Problem"
+        },
+        "lines": [
+          "God confronts the deception and the harm it brings.",
+          "He speaks consequences that are real and just."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "promise",
+        "icon": "stars",
+        "label": {
+          "en": "A Coming Victory"
+        },
+        "lines": [
+          "God promises that evil will not have the final word.",
+          "A future offspring will crush the serpent’s power."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "How do you see both justice and hope in God’s words here?"
+  },
+  "further_reading": {
+    "en": [
+      "Genesis 3:14–15"
+    ]
+  }
+}

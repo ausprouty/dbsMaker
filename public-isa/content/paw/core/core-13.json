@@ -1,0 +1,51 @@
+{
+  "day": 13,
+  "key": "core_13_red_sea",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Through the Sea: Freedom Begins"
+  },
+  "intro": {
+    "en": [
+      "God makes a way where there is no way.",
+      "Deliverance is God’s work, not human achievement."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "fear",
+        "icon": "warning",
+        "label": {
+          "en": "Trapped and Afraid"
+        },
+        "lines": [
+          "The people faced the sea ahead and an army behind.",
+          "Fear rose quickly."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "deliver",
+        "icon": "water",
+        "label": {
+          "en": "God Opens the Way"
+        },
+        "lines": [
+          "God made a path through the waters.",
+          "The people crossed to safety."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "When people are afraid, what do they tend to believe about God—and what does this story show instead?"
+  },
+  "further_reading": {
+    "en": [
+      "Exodus 14"
+    ]
+  }
+}

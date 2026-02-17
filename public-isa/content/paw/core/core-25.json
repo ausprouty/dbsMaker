@@ -1,0 +1,50 @@
+{
+  "day": 25,
+  "key": "core_25_lamb_of_god",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The Lamb of God"
+  },
+  "intro": {
+    "en": [
+      "John identifies Jesus using the language of sacrifice.",
+      "The Passover theme reappears with new clarity."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "witness",
+        "icon": "visibility",
+        "label": {
+          "en": "John’s Testimony"
+        },
+        "lines": [
+          "John the Baptist points to Jesus and calls him ‘the Lamb of God.’"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "meaning",
+        "icon": "lightbulb",
+        "label": {
+          "en": "A Bigger Rescue"
+        },
+        "lines": [
+          "The phrase suggests a rescue from sin, not only from oppression."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "How does calling Jesus ‘the Lamb of God’ connect with the Passover and earlier sacrifice stories?"
+  },
+  "further_reading": {
+    "en": [
+      "John 1:29–34",
+      "Exodus 12:1–13"
+    ]
+  }
+}

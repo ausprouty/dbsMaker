@@ -1,0 +1,52 @@
+{
+  "day": 9,
+  "key": "core_09_mountain",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The Mountain: God Provides a Substitute"
+  },
+  "intro": {
+    "en": [
+      "God tests Abraham’s trust.",
+      "At the decisive moment, God provides what is needed."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "trust",
+        "icon": "self_improvement",
+        "label": {
+          "en": "A Costly Obedience"
+        },
+        "lines": [
+          "Abraham set out to offer his son on the mountain.",
+          "He trusted that God would provide."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "provision",
+        "icon": "inventory_2",
+        "label": {
+          "en": "The Substitute"
+        },
+        "lines": [
+          "God stopped Abraham.",
+          "A ram was provided in place of the son.",
+          "Abraham named the place: “The LORD will provide.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What does this story suggest about God and substitution?"
+  },
+  "further_reading": {
+    "en": [
+      "Genesis 22:1–14"
+    ]
+  }
+}

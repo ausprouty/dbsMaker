@@ -1,0 +1,50 @@
+{
+  "day": 27,
+  "key": "core_27_crucifixion",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The Crucifixion"
+  },
+  "intro": {
+    "en": [
+      "Jesus suffers publicly and unjustly.",
+      "The righteous one bears shame and pain."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "cross",
+        "icon": "gavel",
+        "label": {
+          "en": "Condemned"
+        },
+        "lines": [
+          "Jesus is sentenced though he has not done wrong."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "suffering",
+        "icon": "local_fire_department",
+        "label": {
+          "en": "Suffering"
+        },
+        "lines": [
+          "He is crucified between criminals.",
+          "He prays and entrusts Himself to God."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What emotions and questions does this scene raise for you?"
+  },
+  "further_reading": {
+    "en": [
+      "Luke 23:32–49"
+    ]
+  }
+}

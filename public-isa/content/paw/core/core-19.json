@@ -1,0 +1,50 @@
+{
+  "day": 19,
+  "key": "core_19_suffering_servant_1",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The Servant Who Suffers for Others"
+  },
+  "intro": {
+    "en": [
+      "Isaiah describes a servant who bears suffering for many.",
+      "This is one of the clearest prophetic pictures of substitution."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "servant",
+        "icon": "person",
+        "label": {
+          "en": "Unexpected Greatness"
+        },
+        "lines": [
+          "The servant is lifted up, yet he is marred and rejected."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "sorrow",
+        "icon": "healing",
+        "label": {
+          "en": "Bearing Our Burdens"
+        },
+        "lines": [
+          "He carries sorrows that are not his own.",
+          "He is wounded because of others’ wrongdoing."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What stands out to you about why the servant suffers?"
+  },
+  "further_reading": {
+    "en": [
+      "Isaiah 52:13–53:6"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "day": 65,
+  "key": "day_65_the_risen_messiah",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "He Is Risen"
+  },
+  "intro": {
+    "en": ["The women hurried from the tomb,", "afraid yet filled with joy."]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "appearance",
+        "icon": "wb_sunny",
+        "label": { "en": "Jesus Met Them" },
+        "lines": [
+          "Suddenly Jesus met them.",
+          "“Greetings,” he said.",
+          "They came to him,",
+          "clasped his feet,",
+          "and worshiped him."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "reassurance",
+        "icon": "favorite",
+        "label": { "en": "Do Not Be Afraid" },
+        "lines": [
+          "Jesus said to them,",
+          "“Do not be afraid.",
+          "Go and tell my brothers",
+          "to go to Galilee;",
+          "there they will see me.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "relationship",
+        "icon": "groups",
+        "label": { "en": "My Father and Your Father" },
+        "lines": [
+          "He said,",
+          "“I am returning to my Father and your Father,",
+          "to my God and your God.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "The women worshiped him. Why do you think they responded this way? What does the resurrection suggest about everything Jesus had said before?"
+  },
+  "further_reading": {
+    "en": ["Matthew 28:8–10", "John 20:16–18"]
+  }
+}

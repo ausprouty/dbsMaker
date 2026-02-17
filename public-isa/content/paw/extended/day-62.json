@@ -1,0 +1,86 @@
+{
+  "day": 62,
+  "key": "day_62_crucifixion",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Condemned Though Innocent"
+  },
+  "intro": {
+    "en": [
+      "Though Pilate declared him innocent,",
+      "Jesus was handed over to be crucified."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "innocent",
+        "icon": "balance",
+        "label": { "en": "No Basis for a Charge" },
+        "lines": [
+          "Pilate said,",
+          "“I find no basis for a charge against him.”",
+          "But the crowd shouted,",
+          "“Crucify! Crucify!”",
+          "Finally, Pilate handed him over",
+          "to be crucified."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "cross",
+        "icon": "close",
+        "label": { "en": "They Crucified Him" },
+        "lines": [
+          "Carrying his own cross,",
+          "Jesus went out to Golgotha,",
+          "the place of the Skull.",
+          "There they crucified him,",
+          "and with him two others,",
+          "one on each side,",
+          "and Jesus in the middle.",
+          "The soldiers divided his garments,",
+          "fulfilling what had been written."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "mockery",
+        "icon": "campaign",
+        "label": { "en": "Mocked for Who He Claimed to Be" },
+        "lines": [
+          "Those who passed by mocked him:",
+          "“If you are the Son of God,",
+          "come down from the cross.”",
+          "The leaders said,",
+          "“He saved others,",
+          "but he cannot save himself.”"
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "faith",
+        "icon": "favorite",
+        "label": { "en": "Remember Me" },
+        "lines": [
+          "One of the criminals beside him said,",
+          "“We are punished justly,",
+          "but this man has done nothing wrong.”",
+          "Then he said,",
+          "“Jesus, remember me",
+          "when you come into your kingdom.”",
+          "Jesus answered,",
+          "“Today you will be with me in paradise.”"
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why do you think Jesus was mocked for who he claimed to be? What does his promise of paradise to the criminal suggest about his authority—even while on the cross?"
+  },
+  "further_reading": {
+    "en": ["John 19:1–24", "Matthew 27:39–44", "Luke 23:39–43"]
+  }
+}
