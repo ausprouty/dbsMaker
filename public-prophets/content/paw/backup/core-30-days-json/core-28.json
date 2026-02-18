@@ -1,0 +1,50 @@
+{
+  "day": 28,
+  "key": "core_28_resurrection",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The Resurrection"
+  },
+  "intro": {
+    "en": [
+      "God vindicates Jesus after suffering.",
+      "The story turns from death to life."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "empty",
+        "icon": "visibility",
+        "label": {
+          "en": "The Tomb Is Empty"
+        },
+        "lines": [
+          "Women come to the tomb and find it open and empty."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "alive",
+        "icon": "celebration",
+        "label": {
+          "en": "He Is Alive"
+        },
+        "lines": [
+          "The message is clear: Jesus is not among the dead."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "If Jesus rose from the dead, what does that imply about His identity and His message?"
+  },
+  "further_reading": {
+    "en": [
+      "Luke 24:1–12",
+      "Psalm 16:10–11"
+    ]
+  }
+}

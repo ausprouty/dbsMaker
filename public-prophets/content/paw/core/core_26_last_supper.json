@@ -1,0 +1,50 @@
+{
+  "day": 26,
+  "key": "core_26_last_supper",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The Meal of the New Covenant"
+  },
+  "intro": {
+    "en": [
+      "Jesus connects His death to Passover.",
+      "He speaks of His blood as the new covenant promise."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "meal",
+        "icon": "restaurant",
+        "label": {
+          "en": "A Passover Meal"
+        },
+        "lines": [
+          "Jesus shared the Passover with His disciples."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "covenant",
+        "icon": "opacity",
+        "label": {
+          "en": "Blood of the Covenant"
+        },
+        "lines": [
+          "Jesus speaks of His blood poured out for many."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why would Jesus link His coming death to covenant and forgiveness?"
+  },
+  "further_reading": {
+    "en": [
+      "Luke 22:14–20",
+      "Jeremiah 31:31–34"
+    ]
+  }
+}

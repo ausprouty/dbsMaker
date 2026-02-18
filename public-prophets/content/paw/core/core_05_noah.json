@@ -1,0 +1,63 @@
+{
+  "day": 5,
+  "key": "core_05_noah",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Noah: Judgment and Mercy"
+  },
+  "intro": {
+    "en": [
+      "God sees human violence and grief.",
+      "God judges evil, yet preserves life and begins again."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "grief",
+        "icon": "sentiment_dissatisfied",
+        "label": {
+          "en": "A World Gone Wrong"
+        },
+        "lines": [
+          "Human hearts turned toward evil and violence.",
+          "God was grieved by what people had become."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "mercy",
+        "icon": "favorite",
+        "label": {
+          "en": "Grace in the Story"
+        },
+        "lines": [
+          "Noah found favor with God.",
+          "God preserved Noah’s family and living creatures."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "covenant",
+        "icon": "handshake",
+        "label": {
+          "en": "A New Beginning"
+        },
+        "lines": [
+          "After the flood, God reaffirmed His commitment to life."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What does this story teach you about God’s heart toward evil and toward people?"
+  },
+  "further_reading": {
+    "en": [
+      "Genesis 6:5–9",
+      "Genesis 8:20–22"
+    ]
+  }
+}

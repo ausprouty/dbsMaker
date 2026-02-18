@@ -1,0 +1,49 @@
+{
+  "day": 21,
+  "key": "core_21_new_covenant",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "A New Covenant Promised"
+  },
+  "intro": {
+    "en": [
+      "God promises not only new rules, but new relationship.",
+      "Forgiveness and inner change are central."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "promise",
+        "icon": "handshake",
+        "label": {
+          "en": "A Covenant Unlike the Old"
+        },
+        "lines": [
+          "God says He will make a new covenant with His people."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "forgive",
+        "icon": "check_circle",
+        "label": {
+          "en": "Forgiveness at the Center"
+        },
+        "lines": [
+          "God promises to forgive wrongdoing and remember sin no more."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why is a ‘new covenant’ necessary if God already gave the law?"
+  },
+  "further_reading": {
+    "en": [
+      "Jeremiah 31:31–34"
+    ]
+  }
+}

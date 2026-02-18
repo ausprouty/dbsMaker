@@ -1,0 +1,52 @@
+{
+  "day": 15,
+  "key": "core_15_atonement",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Atonement: Sin Requires Cleansing"
+  },
+  "intro": {
+    "en": [
+      "God provides a way to deal with guilt and impurity.",
+      "Sacrifice points to the seriousness of sin and God’s mercy."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "holy",
+        "icon": "shield",
+        "label": {
+          "en": "God Is Holy"
+        },
+        "lines": [
+          "God’s presence is pure and life-giving.",
+          "Sin brings separation and defilement."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "atonement",
+        "icon": "healing",
+        "label": {
+          "en": "A Covering Provided"
+        },
+        "lines": [
+          "On the Day of Atonement, sacrifice was made for the people.",
+          "Blood symbolized life given to cleanse and restore."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why is it important that God provides a way to cleanse rather than ignoring sin?"
+  },
+  "further_reading": {
+    "en": [
+      "Leviticus 16 (selected)",
+      "Leviticus 17:11"
+    ]
+  }
+}

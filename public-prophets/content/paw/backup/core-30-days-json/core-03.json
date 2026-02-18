@@ -1,0 +1,51 @@
+{
+  "day": 3,
+  "key": "core_03_first_disobedience",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "The First Turning Away"
+  },
+  "intro": {
+    "en": [
+      "The first humans distrusted God’s goodness.",
+      "Brokenness entered human life through disobedience."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "temptation",
+        "icon": "warning",
+        "label": {
+          "en": "A Voice That Questions God"
+        },
+        "lines": [
+          "The serpent questioned God’s word and God’s goodness.",
+          "The woman and the man chose their own way."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "shame",
+        "icon": "visibility_off",
+        "label": {
+          "en": "Hiding and Shame"
+        },
+        "lines": [
+          "They felt shame and tried to hide from God.",
+          "Sin brought fear where there had been peace."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What changes when people stop trusting God?"
+  },
+  "further_reading": {
+    "en": [
+      "Genesis 3:1–13"
+    ]
+  }
+}

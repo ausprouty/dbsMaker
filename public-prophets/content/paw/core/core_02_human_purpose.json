@@ -1,0 +1,52 @@
+{
+  "day": 2,
+  "key": "core_02_human_purpose",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Made in God’s Image"
+  },
+  "intro": {
+    "en": [
+      "Human life has dignity because it reflects God.",
+      "God gives people purpose, responsibility, and blessing."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "image",
+        "icon": "person",
+        "label": {
+          "en": "Made to Reflect God"
+        },
+        "lines": [
+          "God created humans in His image—male and female.",
+          "God blessed them and gave them a calling.",
+          "They were to care for the earth as stewards."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "blessing",
+        "icon": "celebration",
+        "label": {
+          "en": "A World Given as a Gift"
+        },
+        "lines": [
+          "God saw what He made and called it very good.",
+          "Life is not an accident—God intended it."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "What does it mean to live as someone made in God’s image?"
+  },
+  "further_reading": {
+    "en": [
+      "Genesis 1:26–31"
+    ]
+  }
+}

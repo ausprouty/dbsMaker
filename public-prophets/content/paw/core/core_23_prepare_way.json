@@ -1,0 +1,50 @@
+{
+  "day": 23,
+  "key": "core_23_prepare_way",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "A Messenger Prepares the Way"
+  },
+  "intro": {
+    "en": [
+      "God prepares people before He acts in a new way.",
+      "The prophets point forward to a coming moment."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "messenger",
+        "icon": "record_voice_over",
+        "label": {
+          "en": "A Messenger"
+        },
+        "lines": [
+          "God promises to send a messenger to prepare the way."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "arrival",
+        "icon": "door_open",
+        "label": {
+          "en": "The Lord Comes Near"
+        },
+        "lines": [
+          "The passage speaks of God drawing near to His people."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why do you think God prepares people before revealing something greater?"
+  },
+  "further_reading": {
+    "en": [
+      "Malachi 3:1",
+      "Isaiah 40:3–5"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "day": 29,
+  "key": "core_29_forgiveness_proclaimed",
+  "version": 1,
+  "updated_at": "2026-02-17",
+  "title": {
+    "en": "Forgiveness Proclaimed to the Nations"
+  },
+  "intro": {
+    "en": [
+      "Jesus explains that the Scriptures pointed to His suffering and resurrection.",
+      "He calls for repentance and forgiveness to be proclaimed to all nations."
+    ]
+  },
+  "blocks": {
+    "en": [
+      {
+        "type": "text",
+        "marker": "scriptures",
+        "icon": "menu_book",
+        "label": {
+          "en": "The Story Explained"
+        },
+        "lines": [
+          "Jesus opens the Scriptures and shows the pattern: suffering, then glory."
+        ]
+      },
+      {
+        "type": "text",
+        "marker": "mission",
+        "icon": "public",
+        "label": {
+          "en": "To All Nations"
+        },
+        "lines": [
+          "Repentance and forgiveness are to be announced to the nations."
+        ]
+      }
+    ]
+  },
+  "question": {
+    "en": "Why do you think forgiveness is meant to be shared with every nation?"
+  },
+  "further_reading": {
+    "en": [
+      "Luke 24:44–47",
+      "Genesis 12:1–3"
+    ]
+  }
+}
