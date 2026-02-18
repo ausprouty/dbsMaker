@@ -36,6 +36,12 @@ const routes = [
         component: () => import("pages/SeriesMaster.vue"),
       },
       {
+        name: "JsonSeriesMaster",
+        path: "jsonSeries/:study/:lesson?",
+        //  possbile ?t=eng00&jf=20615&var=apply
+        component: () => import("pages/JsonSeriesMaster.vue"),
+      },
+      {
         name: "ExternalPage",
         path: "/external/:raw(.*)*",
         component: () => import("src/pages/ExternalPage.vue"),

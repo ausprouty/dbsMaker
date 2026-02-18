@@ -1,9 +1,9 @@
 [
   {
     "key": "paw",
-    "devName":"Prophets and the Word",
-    "image": "/images/jesus.webp",
+    "devName": "Prophets and the Word",
+    "image": "/images/pandw.webp",
     "route": "/jsonSeries/paw",
-    "maxLessons": 61
-  },
-  {
+    "maxLessons": 30
+  }
+]

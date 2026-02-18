@@ -31,10 +31,15 @@ export async function getLessonContent(
     );
   }
 
-  // http.get will add root url plus /api
-  const url = `/v2/translate/lessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;
   const key = buildLessonContentKey(studyId, hl, jf, lessonId);
   const contentStore = useContentStore();
+
+  // http.get will add root url plus /api
+  const url = `/v2/translate/lessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;
+  if ()
+    {url = `/v2/jsonLessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;}
+
+
 
   // Setter used when getContentWithFallback has direct access to the store.
   // Signature: (store, data)
