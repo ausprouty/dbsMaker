@@ -69,6 +69,21 @@ export const useContentStore = defineStore("contentStore", {
       return value;
     },
 
+    lessonContentSourceFor: (state) => (study, variant, hl) => {
+      const key = ContentKeys.buildCommonContentKey(study, variant, hl);
+      const cc = state.commonContent[key];
+
+      if (!cc || typeof cc !== "object") return null;
+      const meta = cc.meta;
+
+      if (!meta || typeof meta !== "object") return null;
+
+      // allow either missing (null) or explicit string
+      return typeof meta.lessonContentSource === "string"
+        ? meta.lessonContentSource
+        : null;
+    },
+
     siteContentFor: (state) => (hl) => {
       const key = ContentKeys.buildSiteContentKey(hl);
       console.log("SiteContentFor was asked for " + key);

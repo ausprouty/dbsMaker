@@ -5,5 +5,12 @@
     "image": "/images/pandw.webp",
     "route": "/jsonSeries/paw",
     "maxLessons": 30
+  },
+  {
+    "key": "pawExtend",
+    "devName": "Prophets and the Word Extend",
+    "image": "/images/pandw.webp",
+    "route": "/jsonSeries/pawExtend",
+    "maxLessons": 69
   }
 ]

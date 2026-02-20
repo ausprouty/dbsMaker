@@ -1,6 +1,7 @@
 // src/services/LessonContentService.js
 import { normId, normIntish } from "src/utils/normalize";
 import { useContentStore } from "stores/ContentStore";
+import { useSettingsStore } from "stores/SettingsStore";
 import { getContentWithFallback } from "src/services/ContentLoaderService";
 import { buildLessonContentKey } from "src/utils/ContentKeyBuilder";
 import {
@@ -33,13 +34,25 @@ export async function getLessonContent(
 
   const key = buildLessonContentKey(studyId, hl, jf, lessonId);
   const contentStore = useContentStore();
+  const settingsStore = useSettingsStore();
 
   // http.get will add root url plus /api
-  const url = `/v2/translate/lessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;
-  if ()
-    {url = `/v2/jsonLessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;}
+  let url = `/v2/translate/lessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;
+  const variant = settingsStore.variantForCurrentStudy();
+  const lessonContentSource = contentStore.lessonContentSourceFor(
+    studyId,
+    variant,
+    hl
+  );
 
+  console.log(
+    `[LessonContent] Determined lesson content type: ${lessonContentSource} for study ${studyId}, variant ${variant}, language ${hl}`
+  );
 
+  if (lessonContentSource === "prebuilt") {
+    url = `/v2/prebuiltLessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;
+  }
+  console.log(`[LessonContent] Fetching lesson content from URL: ${url}`);
 
   // Setter used when getContentWithFallback has direct access to the store.
   // Signature: (store, data)
