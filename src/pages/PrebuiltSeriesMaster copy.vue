@@ -10,7 +10,7 @@ import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings
 import { useSafeI18n } from "src/composables/useSafeI18n";
 
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
-import JsonLessonFramework from "src/components/Series/JsonLessonFramework.vue";
+import JsonLessonFramework from "src/components/Series/PrebuiltLessonFramework.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -133,6 +133,7 @@ watch(
 
 <template>
   <q-page padding>
+    <p>I reached this page</p>
     <q-btn
       v-if="showLanguageSelect"
       :label="safeT('interface.changeTextLanguage', 'Change text language')"

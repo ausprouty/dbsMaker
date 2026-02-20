@@ -3,14 +3,14 @@
     "key": "paw",
     "devName": "Prophets and the Word",
     "image": "/images/pandw.webp",
-    "route": "/jsonSeries/paw",
+    "route": "/path/paw",
     "maxLessons": 30
   },
   {
     "key": "pawExtend",
     "devName": "Prophets and the Word Extend",
     "image": "/images/pandw.webp",
-    "route": "/jsonSeries/pawExtend",
+    "route": "/path/pawExtend",
     "maxLessons": 69
   }
 ]

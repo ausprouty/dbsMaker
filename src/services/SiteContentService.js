@@ -8,6 +8,14 @@ import { getSiteContentFromDB, saveSiteContentToDB } from "./IndexedDBService";
 export async function getSiteContent(languageCodeHL) {
   const hl = normId(languageCodeHL);
   const site = normId(import.meta.env.VITE_APP);
+
+  console.log("MODE =", import.meta.env.MODE);
+  console.log("VITE_APP =", import.meta.env.VITE_APP);
+  console.log("all env =", import.meta.env);
+
+  console.log(
+    `[SiteContent] Fetching site content for site ${site} and language ${hl}`
+  );
   if (!hl || !site) {
     throw new Error("languageCodeHL and App Site required");
   }

@@ -74,6 +74,23 @@ export default configure((ctx) => {
   // Site overrides base
   const envAll = { ...envBase, ...envSite };
 
+  // ---------- FAIL FAST: confirm VITE_APP and modes ----------
+  console.log("▶ Build-time env check");
+  console.log("  ctx.dev:", ctx.dev);
+  console.log("  baseMode:", baseMode, "siteMode:", siteMode || "(none)");
+  console.log("  process.env.SITE:", process.env.SITE || "(empty)");
+  console.log("  process.env.VITE_APP:", process.env.VITE_APP || "(empty)");
+  console.log("  envSite.VITE_APP:", envSite.VITE_APP || "(empty)");
+  console.log("  envBase.VITE_APP:", envBase.VITE_APP || "(empty)");
+  console.log("  envAll.VITE_APP:", envAll.VITE_APP || "(empty)");
+
+  // If you expect env file to supply it, require it
+  if (!process.env.VITE_APP && !envAll.VITE_APP) {
+    throw new Error(
+      "Missing VITE_APP. Expected cross-env VITE_APP=... or .env.<mode> VITE_APP=..."
+    );
+  }
+
   // Load per-site meta.json (if present)
   const metaPath = path.resolve(ROOT, `src/sites/${site}/meta.json`);
   const meta = fs.existsSync(metaPath)

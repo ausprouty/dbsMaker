@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, watch } from "vue";
-import { useJsonSeries } from "src/composables/useJsonSeries";
+import { usePrebuiltSeries } from "src/composables/usePrebuiltSeries";
 
 const props = defineProps({
   seriesCode: { type: String, required: true },
@@ -9,7 +9,7 @@ const props = defineProps({
   commonContent: { type: Object, default: null },
 });
 
-const { index, page, loading, error, loadIndex, loadDay } = useJsonSeries();
+const { index, page, loading, error, loadIndex, loadDay } = usePrebuiltSeries();
 
 const lang = computed(() => {
   return "en";

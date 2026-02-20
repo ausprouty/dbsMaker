@@ -2,14 +2,14 @@
   "meta": {
     "schema": "interface.v1",
     "kind": "interface",
-    "subject": "dbs",
+    "subject": "prophets",
     "variant": null,
     "parent": {
       "kind": "interface",
       "subject": "root"
     },
     "languageCodeHL": "eng00",
-    "namespace": "interface.dbs",
+    "namespace": "interface.prophets",
     "updatedAt": "2025-09-03T00:00:00Z"
   },
   "interface": {
