@@ -1,5 +1,5 @@
 <script>
-import { computed, inject, onMounted, ref, watch } from "vue";
+import { computed, inject, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
@@ -8,6 +8,8 @@ import { useSettingsStore } from "src/stores/SettingsStore";
 import { useProgressTracker } from "src/composables/useProgressTracker.js";
 import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings";
 import { useSafeI18n } from "src/composables/useSafeI18n";
+import { useCommonContent } from "src/composables/useCommonContent";
+import { buildLessonContentKey } from "src/utils/ContentKeyBuilder";
 
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 import PrebuiltLessonFramework from "src/components/Series/PrebuiltLessonFramework.vue";
@@ -82,17 +84,29 @@ export default {
       return v ? v : "default";
     });
 
-    const lessonKey = computed(() => {
-      return [
-        "jsonSeries",
-        seriesCode.value,
-        computedLanguageHL.value,
-        computedLanguageJF.value,
-        computedStudy.value,
-        computedVariant.value,
-        computedLessonNumber.value,
-      ].join("|");
-    });
+    const lessonKey = computed(
+      () =>
+        buildLessonContentKey(
+          computedStudy.value,
+          computedLanguageHL.value,
+          computedLanguageJF.value,
+          computedLessonNumber.value
+        ) || "lessonContent-invalid"
+    );
+
+    // ---- Lesson content readiness ----
+
+    const {
+      commonContent,
+      topics,
+      loadCommonContent,
+      loading: commonLoading,
+      error: commonError,
+    } = useCommonContent(
+      computedStudy,
+      computedVariant, //this is a ref
+      computedLanguageHL
+    );
 
     const {
       completedLessons,
@@ -100,71 +114,6 @@ export default {
       markLessonComplete,
       loadProgress,
     } = useProgressTracker(computedStudy);
-
-    const commonContent = ref(null);
-    const commonLoading = ref(false);
-    const commonError = ref("");
-
-    const http = inject("http", null);
-
-    function buildCommonContentUrl() {
-      const hl = computedLanguageHL.value;
-      const subject = seriesCode.value;
-      const variant = computedVariant.value;
-
-      const qs = "variant=" + encodeURIComponent(variant);
-
-      return "/v2/commonContent/" + hl + "/" + subject + "?" + qs;
-    }
-
-    async function loadCommonContent() {
-      commonLoading.value = true;
-      commonError.value = "";
-
-      try {
-        const url = buildCommonContentUrl();
-
-        console.log("[JsonSeriesMaster] loading commonContent:", url);
-
-        if (!http || typeof http.get !== "function") {
-          throw new Error(
-            "No http client injected. Provide inject('http') with get()."
-          );
-        }
-
-        const res = await http.get(url);
-        const data = res && res.data ? res.data : res;
-
-        commonContent.value = data;
-
-        console.log("[JsonSeriesMaster] commonContent loaded:", data);
-      } catch (e) {
-        console.error("[JsonSeriesMaster] commonContent load failed:", e);
-        commonError.value = e && e.message ? String(e.message) : "Load failed";
-        commonContent.value = null;
-      } finally {
-        commonLoading.value = false;
-      }
-    }
-
-    const topicsForSelect = computed(() => {
-      const cc = commonContent.value;
-      const topicObj = cc && cc.topic ? cc.topic : null;
-
-      if (!topicObj) return [];
-
-      const keys = Object.keys(topicObj).sort((a, b) => {
-        return Number(a) - Number(b);
-      });
-
-      const arr = [""];
-
-      keys.forEach((k) => {
-        arr.push(String(topicObj[k]));
-      });
-
-      return arr;
-    });
 
     const introLines = computed(() => {
       const cc = commonContent.value;
@@ -187,7 +136,7 @@ export default {
         openLanguageSelect();
         return;
       }
-      console.warn("[JsonSeriesMaster] No language UI handler provided");
+      console.warn("[PrebuiltSeriesMaster] No language UI handler provided");
     }
 
     function updateLesson(nextLessonNumber) {
@@ -196,18 +145,22 @@ export default {
 
     onMounted(() => {
       loadProgress();
-      loadCommonContent();
     });
 
     watch(computedLanguageHL, (next, prev) => {
-      console.log("[JsonSeriesMaster] HL changed:", prev, "→", next);
+      console.log("[PrebuiltSeriesMaster] HL changed:", prev, "→", next);
       loadCommonContent();
     });
 
     watch(
       () => seriesCode.value,
       (next, prev) => {
-        console.log("[JsonSeriesMaster] seriesCode changed:", prev, "→", next);
+        console.log(
+          "[PrebuiltSeriesMaster] seriesCode changed:",
+          prev,
+          "→",
+          next
+        );
         loadCommonContent();
       }
     );
@@ -215,7 +168,7 @@ export default {
     watch(
       () => computedVariant.value,
       (next, prev) => {
-        console.log("[JsonSeriesMaster] variant changed:", prev, "→", next);
+        console.log("[PrebuiltSeriesMaster] variant changed:", prev, "→", next);
         loadCommonContent();
       }
     );
@@ -223,7 +176,7 @@ export default {
     watch(
       () => computedLessonNumber.value,
       (next, prev) => {
-        console.log("[JsonSeriesMaster] lesson changed:", prev, "→", next);
+        console.log("[PrebuiltSeriesMaster] lesson changed:", prev, "→", next);
       }
     );
 
@@ -250,7 +203,7 @@ export default {
       commonLoading,
       commonError,
 
-      topicsForSelect,
+      topics,
       introLines,
     };
   },
@@ -284,7 +237,7 @@ export default {
 
     <SeriesPassageSelect
       :study="computedStudy"
-      :topics="topicsForSelect"
+      :topics="topics"
       :lesson="computedLessonNumber"
       :markLessonComplete="markLessonComplete"
       :isLessonCompleted="isLessonCompleted"
@@ -295,7 +248,7 @@ export default {
 
     <hr />
 
-    <JsonLessonFramework
+    <PrebuiltLessonFramework
       :key="lessonKey"
       :seriesCode="seriesCode"
       :lesson="computedLessonNumber"

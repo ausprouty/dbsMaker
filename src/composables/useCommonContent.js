@@ -8,6 +8,9 @@ import { normStudyKey, normHL, normVariant } from "src/utils/normalize.js";
 export function useCommonContent(studyRef, variantRef, languageCodeHLRef) {
   const contentStore = useContentStore();
 
+  const loading = ref(false);
+  const error = ref("");
+
   // ——— Normalised inputs (single source of truth) ———
   const study = computed(() => normStudyKey(studyRef) || DEFAULTS.study);
   const languageCodeHL = computed(
@@ -53,6 +56,8 @@ export function useCommonContent(studyRef, variantRef, languageCodeHLRef) {
 
   // ——— Populate store (async) when needed , but we do not do anything with this data ----
   async function loadCommonContent() {
+    loading.value = true;
+    error.value = "";
     const resolvedStudy = unref(study);
     const resolvedVariant = unref(variant);
     const resolvedHL = unref(languageCodeHL);
@@ -85,6 +90,13 @@ export function useCommonContent(studyRef, variantRef, languageCodeHLRef) {
       });
     } catch (err) {
       console.warn("[commonContent] load failed:", err);
+      error.value =
+        err && err.message
+          ? String(err.message)
+          : "Failed to load common content";
+    } finally {
+      loading.value = false;
+
     }
   }
 
@@ -110,5 +122,5 @@ export function useCommonContent(studyRef, variantRef, languageCodeHLRef) {
   onMounted(loadCommonContent);
   watch([study, variant, languageCodeHL], loadCommonContent);
 
-  return { commonContent, topics, loadCommonContent };
+  return { commonContent, topics, loadCommonContent, loading, error };
 }

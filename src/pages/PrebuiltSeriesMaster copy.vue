@@ -36,16 +36,17 @@ const seriesCode = computed(() => {
 
   const path = route.path || "";
   const parts = path.split("/").filter(Boolean);
-  const i = parts.indexOf("jsonSeries");
+  // 'path is a marker that this is a prebuilt series , and the next part is the series code
+  const i = parts.indexOf("path");
   if (i >= 0 && parts[i + 1]) {
     return String(parts[i + 1]);
   }
-
+  // default series code if not specified
   return "paw";
 });
 
 const computedStudy = computed(
-  () => settingsStore.currentStudySelected || "dbs"
+  () => settingsStore.currentStudySelected || "paw"
 );
 
 const computedLessonNumber = computed(() => {
@@ -76,7 +77,7 @@ const computedVariant = computed(() => {
 
 const lessonKey = computed(() => {
   return [
-    "jsonSeries",
+    "path",
     seriesCode.value,
     computedLanguageHL.value,
     computedLanguageJF.value,
