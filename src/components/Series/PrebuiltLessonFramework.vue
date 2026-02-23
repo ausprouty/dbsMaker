@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, watch } from "vue";
-import { usePrebuiltSeries } from "src/composables/usePrebuiltSeries";
+import { usePrebuiltSeries } from "src/composables/usePrebuiltSeries.js";
 
 const props = defineProps({
   seriesCode: { type: String, required: true },
@@ -12,7 +12,7 @@ const props = defineProps({
 const { index, page, loading, error, loadIndex, loadDay } = usePrebuiltSeries();
 
 const lang = computed(() => {
-  return "en";
+  return props.languageCodeHL;
 });
 
 const title = computed(() => {

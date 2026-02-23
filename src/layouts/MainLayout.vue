@@ -17,6 +17,14 @@ const settingsStore = useSettingsStore();
 const contentStore = useContentStore();
 const app = normId(import.meta.env.VITE_APP) || "default";
 
+// Hide language picker entirely when VITE_LANG_PICKER_TYPE=none
+const langPickerType = String(
+  import.meta.env.VITE_LANG_PICKER_TYPE || ""
+).trim();
+const showLangPicker = computed(() => {
+  return langPickerType.toLowerCase() !== "none";
+});
+
 const { isRTL, applyInterfaceLanguageToWebpage } = useInterfaceLocale();
 const { locale } = useI18n();
 const isRtl = computed(() => isRTL(settingsStore.textLanguageObjectSelected));
@@ -36,11 +44,13 @@ function openRightDrawer() {
   rightDrawerOpen.value = true;
 }
 
+provide("openLanguageSelect", openLanguageSelect);
 function openLanguageSelect() {
+  if (!showLangPicker.value) {
+    return;
+  }
   openRightDrawer();
 }
-
-provide("openLanguageSelect", openLanguageSelect);
 
 // make seasonal content available to pages/components
 const { ensureSeasonalValid, refreshSeasonal } = useSeasonalService();
@@ -165,6 +175,10 @@ watch(routeFullPathKeyRef, function () {
   rightDrawerOpen.value = false;
 });
 
+watch(showLangPicker, function (show) {
+  if (!show) rightDrawerOpen.value = false;
+});
+
 const appbarStyle = computed(function () {
   // Prefer route.meta.appbar if present
   try {
@@ -232,6 +246,7 @@ const actionBtnColor = computed(() =>
         <ShareLink />
 
         <q-btn
+          v-if="showLangPicker"
           flat
           dense
           round
@@ -244,6 +259,7 @@ const actionBtnColor = computed(() =>
     </q-header>
 
     <q-drawer
+      v-if="showLangPicker"
       side="right"
       v-model="rightDrawerOpen"
       overlay

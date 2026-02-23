@@ -3,7 +3,7 @@ import { ref } from "vue";
 const indexCache = {};
 const pageCache = {};
 
-export function useJsonSeries() {
+export function usePrebuiltSeries() {
   const index = ref(null);
   const page = ref(null);
   const loading = ref(false);
@@ -55,6 +55,9 @@ export function useJsonSeries() {
   }
 
   async function loadDay(seriesCode, dayNumber) {
+    if (!index.value || !indexCache[seriesCode]) {
+      await loadIndex(seriesCode);
+    }
     const entry = findDayEntry(dayNumber);
     if (!entry || !entry.file) {
       page.value = null;
