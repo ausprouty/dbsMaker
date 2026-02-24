@@ -19,6 +19,16 @@ export async function getLessonContent(
   const hl = normId(languageCodeHL);
   const jf = normIntish(languageCodeJF);
   const lessonId = normIntish(lesson);
+  console.log(
+    "[LessonContent] Requested content for study:",
+    study,
+    "hl:",
+    hl,
+    "jf:",
+    jf,
+    "lesson:",
+    lessonId
+  );
 
   if (!studyId || !hl || !jf || !lessonId) {
     console.error("[LessonContent] Missing required params", {

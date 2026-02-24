@@ -35,28 +35,10 @@ export default {
 
     const openLanguageSelect = inject("openLanguageSelect", null);
 
-    const seriesCode = computed(() => {
-      const p =
-        route.params && route.params.seriesCode
-          ? String(route.params.seriesCode)
-          : "";
-
-      if (p) return p;
-
-      const path = route.path || "";
-      const parts = path.split("/").filter(Boolean);
-      const i = parts.indexOf("jsonSeries");
-
-      if (i >= 0 && parts[i + 1]) {
-        return String(parts[i + 1]);
-      }
-
-      return "paw";
-    });
-
     const computedStudy = computed(() => {
-      return settingsStore.currentStudySelected || "dbs";
+      return settingsStore.currentStudySelected || "paw";
     });
+    console.log("[PrebuiltSeriesMaster] computedStudy:", computedStudy.value);
 
     const computedLessonNumber = computed(() => {
       if (typeof settingsStore.lessonNumberForStudy === "function") {
@@ -153,14 +135,9 @@ export default {
     });
 
     watch(
-      () => seriesCode.value,
+      () => computedStudy.value,
       (next, prev) => {
-        console.log(
-          "[PrebuiltSeriesMaster] seriesCode changed:",
-          prev,
-          "→",
-          next
-        );
+        console.log("[PrebuiltSeriesMaster] study changed:", prev, "→", next);
         loadCommonContent();
       }
     );
@@ -182,7 +159,6 @@ export default {
 
     return {
       safeT,
-      seriesCode,
       computedStudy,
       computedLessonNumber,
       computedLanguageHL,
@@ -249,8 +225,7 @@ export default {
     <hr />
 
     <PrebuiltLessonFramework
-      :key="lessonKey"
-      :seriesCode="seriesCode"
+      :study="computedStudy"
       :lesson="computedLessonNumber"
       :languageCodeHL="computedLanguageHL"
       :commonContent="commonContent"
