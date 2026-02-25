@@ -28,7 +28,7 @@ export function useCommonContent(studyRef, variantRef, languageCodeHLRef) {
     study: unref(study),
     variant: unref(variant),
     hl: unref(languageCodeHL),
-    key: key,
+    key: unref(key),
   });
 
   // end debug
@@ -96,7 +96,6 @@ export function useCommonContent(studyRef, variantRef, languageCodeHLRef) {
           : "Failed to load common content";
     } finally {
       loading.value = false;
-
     }
   }
 

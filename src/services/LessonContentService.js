@@ -9,11 +9,14 @@ import {
   saveLessonContentToDB,
 } from "./IndexedDBService";
 
+// Accept optional commonContent so callers can influence source selection
+// without relying on Vue props (which do not exist in services).
 export async function getLessonContent(
   study,
   languageCodeHL,
   languageCodeJF,
-  lesson
+  lesson,
+  commonContent = null
 ) {
   const studyId = normId(study);
   const hl = normId(languageCodeHL);
@@ -46,14 +49,14 @@ export async function getLessonContent(
   const contentStore = useContentStore();
   const settingsStore = useSettingsStore();
 
+  //
   // http.get will add root url plus /api
   let url = `/v2/translate/lessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;
-  const variant = settingsStore.variantForCurrentStudy();
-  const lessonContentSource = contentStore.lessonContentSourceFor(
-    studyId,
-    variant,
-    hl
-  );
+  const variant = settingsStore.variantForCurrentStudy;
+  const lessonContentSource =
+    commonContent?.meta?.lessonContentSource ||
+    contentStore.lessonContentSourceFor(studyId, variant, hl);
+  // see if we need to change the URL based on the determined content source
 
   console.log(
     `[LessonContent] Determined lesson content type: ${lessonContentSource} for study ${studyId}, variant ${variant}, language ${hl}`

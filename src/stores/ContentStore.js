@@ -273,13 +273,18 @@ export const useContentStore = defineStore("contentStore", {
     // We get the lesson content from
     // either the database (if we can), or go to the API
     // lessonContent DOES NOT have a variant value
-    async loadLessonContent(study, hl, jf, lesson) {
-      const validated = validateLessonNumber(unref(lesson));
-      if (validated === null) {
+    async loadLessonContent(study, hl, jf, lesson, commonContent = null) {
+      const vl = validateLessonNumber(unref(lesson));
+      if (vl === null) {
         console.warn(`Invalid lesson '${unref(lesson)}'`);
         return null;
       }
-      return await getLessonContent(study, hl, jf, validated); // fetch/cache only
+      try {
+        return await getLessonContent(study, hl, jf, vl, commonContent);
+      } catch (e) {
+        console.error("[ContentStore.loadLessonContent] failed", e);
+        throw e;
+      }
     },
     // I want to get rid of this
     async loadVideoUrls(jf, study) {

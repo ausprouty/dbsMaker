@@ -27,8 +27,10 @@ const showLangPicker = computed(() => {
 
 const { isRTL, applyInterfaceLanguageToWebpage } = useInterfaceLocale();
 const { locale } = useI18n();
-const isRtl = computed(() => isRTL(settingsStore.textLanguageObjectSelected));
-console.log("isRtl =", isRtl.value);
+const isRtl = computed(() => {
+  const obj = settingsStore.textLanguageObjectSelected;
+  return obj && obj.languageDirection === "rtl";
+});
 
 const brandTitle = computed(() => settingsStore.brandTitle || "Not Set");
 
@@ -302,13 +304,14 @@ const actionBtnColor = computed(() =>
 
 /* Two-line clamp for the link text */
 .appbar .toolbar-title {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  flex: 1 1 auto;
+  min-width: 0; /* important in flex rows */
   overflow: hidden;
+
   white-space: normal;
   word-break: break-word;
   line-height: 1.15;
+  max-height: calc(2 * 1.15em);
 }
 
 @media (max-width: 600px) {

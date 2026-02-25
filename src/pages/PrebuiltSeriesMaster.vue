@@ -1,6 +1,5 @@
-<script>
+<script setup>
 import { computed, inject, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 
@@ -14,176 +13,138 @@ import { buildLessonContentKey } from "src/utils/ContentKeyBuilder";
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
 import PrebuiltLessonFramework from "src/components/Series/PrebuiltLessonFramework.vue";
 
-export default {
-  name: "PrebuiltSeriesMaster",
-  components: {
-    SeriesPassageSelect,
-    PrebuiltLessonFramework,
-  },
+useI18n({ useScope: "global" });
+const { safeT } = useSafeI18n();
 
-  setup() {
-    const route = useRoute();
+const settingsStore = useSettingsStore();
 
-    useI18n({ useScope: "global" });
-    const { safeT } = useSafeI18n();
+try {
+  useApplyRouteToSettings(settingsStore);
+} catch (e) {
+  console.error("[PrebuiltSeriesMaster] useApplyRouteToSettings failed", e);
+  throw e;
+}
 
-    const settingsStore = useSettingsStore();
-    useApplyRouteToSettings(settingsStore);
+const { textLanguageObjectSelected, videoLanguageObjectSelected } =
+  storeToRefs(settingsStore);
 
-    const { textLanguageObjectSelected, videoLanguageObjectSelected } =
-      storeToRefs(settingsStore);
+const openLanguageSelect = inject("openLanguageSelect", null);
 
-    const openLanguageSelect = inject("openLanguageSelect", null);
+const computedStudy = computed(() => {
+  return settingsStore.currentStudySelected || "paw";
+});
 
-    const computedStudy = computed(() => {
-      return settingsStore.currentStudySelected || "paw";
-    });
-    console.log("[PrebuiltSeriesMaster] computedStudy:", computedStudy.value);
+const computedLessonNumber = computed(() => {
+  if (typeof settingsStore.lessonNumberForStudy === "function") {
+    return settingsStore.lessonNumberForStudy(computedStudy.value);
+  }
 
-    const computedLessonNumber = computed(() => {
-      if (typeof settingsStore.lessonNumberForStudy === "function") {
-        return settingsStore.lessonNumberForStudy(computedStudy.value);
-      }
+  return typeof settingsStore.lessonNumber === "number"
+    ? settingsStore.lessonNumber
+    : 1;
+});
 
-      return typeof settingsStore.lessonNumber === "number"
-        ? settingsStore.lessonNumber
-        : 1;
-    });
+const computedLanguageHL = computed(() => {
+  var obj = textLanguageObjectSelected.value;
+  return obj && obj.languageCodeHL ? String(obj.languageCodeHL) : "eng00";
+});
 
-    const computedLanguageHL = computed(() => {
-      var obj = textLanguageObjectSelected.value;
-      return obj && obj.languageCodeHL ? String(obj.languageCodeHL) : "eng00";
-    });
+const computedLanguageJF = computed(() => {
+  var obj = videoLanguageObjectSelected.value;
+  return obj && obj.languageCodeJF ? String(obj.languageCodeJF) : "529";
+});
 
-    const computedLanguageJF = computed(() => {
-      var obj = videoLanguageObjectSelected.value;
-      return obj && obj.languageCodeJF ? String(obj.languageCodeJF) : "529";
-    });
+const computedVariant = computed(() => {
+  const raw = settingsStore.variantForCurrentStudy;
+  const v = raw == null ? "" : String(raw).trim();
+  return v ? v : "default";
+});
 
-    const computedVariant = computed(() => {
-      var v = settingsStore.variantForCurrentStudy;
-      v = v == null ? "" : String(v).trim();
-      return v ? v : "default";
-    });
+const lessonKey = computed(() => {
+  return (
+    buildLessonContentKey(
+      computedStudy.value,
+      computedLanguageHL.value,
+      computedLanguageJF.value,
+      computedLessonNumber.value
+    ) || "lessonContent-invalid"
+  );
+});
 
-    const lessonKey = computed(
-      () =>
-        buildLessonContentKey(
-          computedStudy.value,
-          computedLanguageHL.value,
-          computedLanguageJF.value,
-          computedLessonNumber.value
-        ) || "lessonContent-invalid"
-    );
+const {
+  commonContent,
+  topics,
+  loadCommonContent,
+  loading: commonLoading,
+  error: commonError,
+} = useCommonContent(computedStudy, computedVariant, computedLanguageHL);
 
-    // ---- Lesson content readiness ----
+const {
+  completedLessons,
+  isLessonCompleted,
+  markLessonComplete,
+  loadProgress,
+} = useProgressTracker(computedStudy);
 
-    const {
-      commonContent,
-      topics,
-      loadCommonContent,
-      loading: commonLoading,
-      error: commonError,
-    } = useCommonContent(
-      computedStudy,
-      computedVariant, //this is a ref
-      computedLanguageHL
-    );
+const introLines = computed(() => {
+  const cc = commonContent.value;
+  const study = cc && cc.study ? cc.study : null;
+  const para = study && study.para ? study.para : null;
 
-    const {
-      completedLessons,
-      isLessonCompleted,
-      markLessonComplete,
-      loadProgress,
-    } = useProgressTracker(computedStudy);
+  if (!para) return [];
 
-    const introLines = computed(() => {
-      const cc = commonContent.value;
-      const study = cc && cc.study ? cc.study : null;
-      const para = study && study.para ? study.para : null;
+  const keys = Object.keys(para).sort((a, b) => {
+    return Number(a) - Number(b);
+  });
 
-      if (!para) return [];
+  return keys.map((k) => String(para[k]));
+});
 
-      const keys = Object.keys(para).sort((a, b) => {
-        return Number(a) - Number(b);
-      });
+const showLanguageSelect = true;
 
-      return keys.map((k) => String(para[k]));
-    });
+function onChangeLanguageClick() {
+  if (typeof openLanguageSelect === "function") {
+    openLanguageSelect();
+    return;
+  }
+  console.warn("[PrebuiltSeriesMaster] No language UI handler provided");
+}
 
-    const showLanguageSelect = true;
+function updateLesson(nextLessonNumber) {
+  settingsStore.setLessonNumber(computedStudy.value, nextLessonNumber);
+}
 
-    function onChangeLanguageClick() {
-      if (typeof openLanguageSelect === "function") {
-        openLanguageSelect();
-        return;
-      }
-      console.warn("[PrebuiltSeriesMaster] No language UI handler provided");
-    }
+onMounted(() => {
+  loadProgress();
+});
 
-    function updateLesson(nextLessonNumber) {
-      settingsStore.setLessonNumber(computedStudy.value, nextLessonNumber);
-    }
+watch(computedLanguageHL, (next, prev) => {
+  console.log("[PrebuiltSeriesMaster] HL changed:", prev, "→", next);
+  loadCommonContent();
+});
 
-    onMounted(() => {
-      loadProgress();
-    });
+watch(
+  () => computedStudy.value,
+  (next, prev) => {
+    console.log("[PrebuiltSeriesMaster] study changed:", prev, "→", next);
+    loadCommonContent();
+  }
+);
 
-    watch(computedLanguageHL, (next, prev) => {
-      console.log("[PrebuiltSeriesMaster] HL changed:", prev, "→", next);
-      loadCommonContent();
-    });
+watch(
+  () => computedVariant.value,
+  (next, prev) => {
+    console.log("[PrebuiltSeriesMaster] variant changed:", prev, "→", next);
+    loadCommonContent();
+  }
+);
 
-    watch(
-      () => computedStudy.value,
-      (next, prev) => {
-        console.log("[PrebuiltSeriesMaster] study changed:", prev, "→", next);
-        loadCommonContent();
-      }
-    );
-
-    watch(
-      () => computedVariant.value,
-      (next, prev) => {
-        console.log("[PrebuiltSeriesMaster] variant changed:", prev, "→", next);
-        loadCommonContent();
-      }
-    );
-
-    watch(
-      () => computedLessonNumber.value,
-      (next, prev) => {
-        console.log("[PrebuiltSeriesMaster] lesson changed:", prev, "→", next);
-      }
-    );
-
-    return {
-      safeT,
-      computedStudy,
-      computedLessonNumber,
-      computedLanguageHL,
-      computedLanguageJF,
-      computedVariant,
-      lessonKey,
-
-      completedLessons,
-      isLessonCompleted,
-      markLessonComplete,
-      loadProgress,
-
-      showLanguageSelect,
-      onChangeLanguageClick,
-      updateLesson,
-
-      commonContent,
-      commonLoading,
-      commonError,
-
-      topics,
-      introLines,
-    };
-  },
-};
+watch(
+  () => computedLessonNumber.value,
+  (next, prev) => {
+    console.log("[PrebuiltSeriesMaster] lesson changed:", prev, "→", next);
+  }
+);
 </script>
 
 <template>
@@ -228,7 +189,9 @@ export default {
       :study="computedStudy"
       :lesson="computedLessonNumber"
       :languageCodeHL="computedLanguageHL"
+      :languageCodeJF="computedLanguageJF"
       :commonContent="commonContent"
+      :lessonKey="lessonKey"
     />
 
     <q-btn
