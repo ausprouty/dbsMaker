@@ -54,6 +54,13 @@ const computedLanguageJF = computed(() => {
   return obj && obj.languageCodeJF ? String(obj.languageCodeJF) : "529";
 });
 
+// ---- Aliases (defensive)
+// Some code paths / older template refs may still use languageCodeHL/JF.
+// Keeping these aliases prevents "ReferenceError: languageCodeJF is not defined"
+// if any lingering reference exists.
+const languageCodeHL = computedLanguageHL;
+const languageCodeJF = computedLanguageJF;
+
 const computedVariant = computed(() => {
   const raw = settingsStore.variantForCurrentStudy;
   const v = raw == null ? "" : String(raw).trim();
@@ -188,8 +195,8 @@ watch(
     <PrebuiltLessonFramework
       :study="computedStudy"
       :lesson="computedLessonNumber"
-      :languageCodeHL="computedLanguageHL"
-      :languageCodeJF="computedLanguageJF"
+      :languageCodeHL="languageCodeHL"
+      :languageCodeJF="languageCodeJF"
       :commonContent="commonContent"
       :lessonKey="lessonKey"
     />
