@@ -1,0 +1,109 @@
+/* src/css/tokens.prebuilt.scss */
+@use "sass:color";
+
+/* ----------------------------------------------------------
+   Prebuilt series tokens (banner + intro)
+   - NO hard-coded colours in component CSS
+   - Site overrides come via tokens.prebuilt.site.scss -> @brand
+---------------------------------------------------------- */
+
+/* --- Banner image (per-site) --- */
+$prebuilt-banner-image: none !default; // e.g. unquote("url('/img/banner.jpg')")
+$prebuilt-banner-position: center left !default;
+
+/* --- Prebuilt colours --- */
+$prebuilt-text-green: #2e4d3a !default; // override per site if desired
+$prebuilt-title-ink: #f8f3ee !default; // override per site if desired
+
+/* Overlays (derived defaults; can be overridden) */
+$prebuilt-overlay-left: rgba(
+  #a05a2c,
+  0.25
+) !default; // default matches your $primary
+$prebuilt-overlay-right: rgba(0, 0, 0, 0.15) !default;
+
+/* --- Typography --- */
+$prebuilt-title-font: "Georgia", serif !default;
+$prebuilt-body-font: "Open Sans", sans-serif !default;
+
+/* --- Banner sizing --- */
+$prebuilt-banner-height: 160px !default;
+$prebuilt-banner-pad-x: 24px !default;
+$prebuilt-banner-radius: 0px !default;
+$prebuilt-banner-border-height: 2px !default;
+
+/* --- Type sizing --- */
+$prebuilt-title-size: 1.7rem !default;
+$prebuilt-title-weight: 500 !default;
+$prebuilt-title-letter-spacing: 0.6px !default;
+$prebuilt-title-line-height: 1.2 !default;
+
+$prebuilt-subtitle-size: 0.9rem !default;
+$prebuilt-subtitle-weight: 400 !default;
+$prebuilt-subtitle-letter-spacing: 0.3px !default;
+$prebuilt-subtitle-line-height: 1.35 !default;
+$prebuilt-subtitle-margin-top: 4px !default;
+
+/* --- Intro block --- */
+$prebuilt-intro-border-width: 4px !default;
+$prebuilt-intro-pad: 18px 20px !default;
+$prebuilt-intro-radius: 6px !default;
+
+/* --- Body text --- */
+$prebuilt-body-size: 1rem !default;
+$prebuilt-body-line-height: 1.65 !default;
+$prebuilt-body-max-width: 720px !default;
+
+/* ----------------------------------------------------------
+   Emit CSS custom properties (called from app.scss)
+---------------------------------------------------------- */
+@mixin emit-prebuilt-css-vars {
+  :root {
+    --prebuilt-banner-image: #{$prebuilt-banner-image};
+    --prebuilt-banner-position: #{$prebuilt-banner-position};
+
+    --prebuilt-banner-height: #{$prebuilt-banner-height};
+    --prebuilt-banner-pad-x: #{$prebuilt-banner-pad-x};
+    --prebuilt-banner-radius: #{$prebuilt-banner-radius};
+
+    --prebuilt-banner-border-height: #{$prebuilt-banner-border-height};
+    --prebuilt-banner-border-color: var(--q-secondary);
+
+    --prebuilt-banner-overlay: linear-gradient(
+      to right,
+      #{$prebuilt-overlay-left},
+      #{$prebuilt-overlay-right}
+    );
+
+    --prebuilt-banner-text-max-width: 900px;
+
+    --prebuilt-title-font: #{$prebuilt-title-font};
+    --prebuilt-body-font: #{$prebuilt-body-font};
+
+    --prebuilt-title-size: #{$prebuilt-title-size};
+    --prebuilt-title-weight: #{$prebuilt-title-weight};
+    --prebuilt-title-letter-spacing: #{$prebuilt-title-letter-spacing};
+    --prebuilt-title-line-height: #{$prebuilt-title-line-height};
+    --prebuilt-title-color: #{$prebuilt-title-ink};
+    --prebuilt-title-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+
+    --prebuilt-subtitle-size: #{$prebuilt-subtitle-size};
+    --prebuilt-subtitle-weight: #{$prebuilt-subtitle-weight};
+    --prebuilt-subtitle-letter-spacing: #{$prebuilt-subtitle-letter-spacing};
+    --prebuilt-subtitle-line-height: #{$prebuilt-subtitle-line-height};
+    --prebuilt-subtitle-margin-top: #{$prebuilt-subtitle-margin-top};
+    --prebuilt-subtitle-color: var(--q-secondary);
+
+    --prebuilt-intro-bg: var(--q-neutral);
+    --prebuilt-intro-border-width: #{$prebuilt-intro-border-width};
+    --prebuilt-intro-border-color: var(--q-secondary);
+    --prebuilt-intro-pad: #{$prebuilt-intro-pad};
+    --prebuilt-intro-radius: #{$prebuilt-intro-radius};
+
+    --prebuilt-heading-color: var(--q-primary);
+    --prebuilt-body-color: #{$prebuilt-text-green};
+    --prebuilt-body-size: #{$prebuilt-body-size};
+    --prebuilt-body-line-height: #{$prebuilt-body-line-height};
+    --prebuilt-body-max-width: #{$prebuilt-body-max-width};
+  }
+}

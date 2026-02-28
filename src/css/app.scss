@@ -1,11 +1,13 @@
 /* src/css/app.scss */
 @use "@/css/tokens.core.site.scss" as core;
+@use "@/css/tokens.prebuilt.site.scss" as prebuilt;
 
 /* Quasar base */
 @import "quasar/src/css/index.sass";
 
 /* Emit :root variables after Quasar */
 @include core.emit-css-vars();
+@include prebuilt.emit-prebuilt-css-vars();
 
 @import "./appbar.scss";
 

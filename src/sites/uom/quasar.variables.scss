@@ -1,20 +1,30 @@
 /* src/sites/uom/quasar.variables.scss */
-$primary:   #000F46;  /* Heritage blue */
-$secondary: #ABC1A7;  /* Light sage */
-$accent:    #46C8F0;  /* Bright blue */
+$primary: #000f46; /* Heritage blue */
+$secondary: #abc1a7; /* Light sage */
+$accent: #46c8f0; /* Bright blue */
 
-$minor1:    #DDE7DF;  /* light sage tint (focus) */
-$minor2:    #5E6F63;  /* deep sage (dividers) */
-$neutral:   #C8C8C8;  /* light neutral */
+$minor1: #dde7df; /* light sage tint (focus) */
+$minor2: #5e6f63; /* deep sage (dividers) */
+$neutral: #c8c8c8; /* light neutral */
 
-$dark:      #2D2D2D;  /* dark gray (ink) */
-$dark-page: #000B34;  /* deep page bg */
+$dark: #2d2d2d; /* dark gray (ink) */
+$dark-page: #000b34; /* deep page bg */
 
-$positive:  #2E7D32;  /* green */
-$negative:  #C62828;  /* danger red */
-$info:      $primary; /* info tone */
-$warning:   #FFD629;  /* UoM yellow */
+$positive: #2e7d32; /* green */
+$negative: #c62828; /* danger red */
+$info: $primary; /* info tone */
+$warning: #ffd629; /* UoM yellow */
 
-$highlight-scripture: #FFD629; /* Scripture highlight */
-$shadow:              #7F6E63; /* subtle shadow */
-$success-highlight:   $primary; /* brand-tinted success */
+$highlight-scripture: #ffd629; /* Scripture highlight */
+$shadow: #7f6e63; /* subtle shadow */
+$success-highlight: $primary; /* brand-tinted success */
+
+/* --- Prebuilt series (banner + intro) --- */
+$prebuilt-banner-image: unquote("url('/sites/uom/img/prebuilt-banner.jpg')");
+$prebuilt-banner-position: center left;
+
+$prebuilt-text-green: #2e4d3a;
+$prebuilt-title-ink: $neutral;
+
+$prebuilt-overlay-left: rgba($primary, 0.25);
+$prebuilt-overlay-right: rgba(0, 0, 0, 0.15);

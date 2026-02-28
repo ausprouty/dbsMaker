@@ -1,20 +1,30 @@
 /* src/sites/wsu/quasar.variables.scss */
-$primary:   #A50034;  /* Western Red (crimson) */
-$secondary: #111111;  /* headings / strong text */
-$accent:    #D59744;  /* warm gold accent */
+$primary: #a50034; /* Western Red (crimson) */
+$secondary: #111111; /* headings / strong text */
+$accent: #d59744; /* warm gold accent */
 
-$minor1:    #D3B18C;  /* sand / highlight */
-$minor2:    #6A4E42;  /* warm brown divider */
-$neutral:   #F8F3EE;  /* off-white background */
+$minor1: #d3b18c; /* sand / highlight */
+$minor2: #6a4e42; /* warm brown divider */
+$neutral: #f8f3ee; /* off-white background */
 
-$dark:      #2E2E2E;
-$dark-page: #1C1C1C;
+$dark: #2e2e2e;
+$dark-page: #1c1c1c;
 
-$positive:  #65C058;  /* semantic green */
-$negative:  $primary; /* brand red for errors */
-$info:      $primary; /* brand emphasis */
-$warning:   $accent;  /* gold */
+$positive: #65c058; /* semantic green */
+$negative: $primary; /* brand red for errors */
+$info: $primary; /* brand emphasis */
+$warning: $accent; /* gold */
 
-$highlight-scripture: $accent;   /* scripture highlight */
-$shadow:              #7F6E63;   /* consistent subtle shadow */
-$success-highlight:   $primary;  /* brand-tinted success callout */
+$highlight-scripture: $accent; /* scripture highlight */
+$shadow: #7f6e63; /* consistent subtle shadow */
+$success-highlight: $primary; /* brand-tinted success callout */
+
+/* --- Prebuilt series (banner + intro) --- */
+$prebuilt-banner-image: unquote("url('/sites/wsu/img/prebuilt-banner.jpg')");
+$prebuilt-banner-position: center left;
+
+$prebuilt-text-green: #2e4d3a;
+$prebuilt-title-ink: $neutral;
+
+$prebuilt-overlay-left: rgba($primary, 0.25);
+$prebuilt-overlay-right: rgba(0, 0, 0, 0.15);

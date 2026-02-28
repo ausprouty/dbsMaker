@@ -17,9 +17,9 @@ const settingsStore = useSettingsStore();
 const contentStore = useContentStore();
 const app = normId(import.meta.env.VITE_APP) || "default";
 
-// Hide language picker entirely when VITE_LANG_PICKER_TYPE=none
+// Hide language picker entirely when VITE_LANGUAGE_PICKER_TYPE=none
 const langPickerType = String(
-  import.meta.env.VITE_LANG_PICKER_TYPE || ""
+  import.meta.env.VITE_LANGUAGE_PICKER_TYPE || ""
 ).trim();
 const showLangPicker = computed(() => {
   return langPickerType.toLowerCase() !== "none";

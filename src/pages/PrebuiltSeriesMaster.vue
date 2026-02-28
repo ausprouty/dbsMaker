@@ -60,6 +60,8 @@ const computedLanguageJF = computed(() => {
 // if any lingering reference exists.
 const languageCodeHL = computedLanguageHL;
 const languageCodeJF = computedLanguageJF;
+console.log("[PrebuiltSeriesMaster] languageCodeHL:", languageCodeHL.value);
+console.log("[PrebuiltSeriesMaster] languageCodeJF:", languageCodeJF.value);
 
 const computedVariant = computed(() => {
   const raw = settingsStore.variantForCurrentStudy;
@@ -106,8 +108,24 @@ const introLines = computed(() => {
 
   return keys.map((k) => String(para[k]));
 });
-
-const showLanguageSelect = true;
+const title = computed(() => {
+  const cc = commonContent.value;
+  return cc && cc.study && cc.study.header_title
+    ? String(cc.study.header_title)
+    : "";
+});
+// Hide language button entirely when VITE_LANGUAGE_PICKER_TYPE=none
+const langPickerType = String(
+  import.meta.env.VITE_LANGUAGE_PICKER_TYPE || ""
+).trim();
+console.log("[PrebuiltSeriesMaster] Language picker type:", langPickerType);
+const showLanguageSelect = computed(() => {
+  return langPickerType.toLowerCase() !== "none";
+});
+console.log(
+  "[PrebuiltSeriesMaster] showLanguageSelect:",
+  showLanguageSelect.value
+);
 
 function onChangeLanguageClick() {
   if (typeof openLanguageSelect === "function") {
@@ -156,6 +174,13 @@ watch(
 
 <template>
   <q-page padding>
+    <div class="prebuilt-banner q-mb-md" :style="bannerStyle">
+      <div class="prebuilt-banner__overlay">
+        <div class="prebuilt-banner__text">
+          <div class="prebuilt-banner__title">{{ title }}</div>
+        </div>
+      </div>
+    </div>
     <q-btn
       v-if="showLanguageSelect"
       :label="safeT('interface.changeTextLanguage', 'Change text language')"

@@ -4,13 +4,6 @@
     "devName": "Prophets and the Word",
     "image": "/images/paw.webp",
     "route": "/path/paw",
-    "maxLessons": 30
-  },
-  {
-    "key": "pawExtend",
-    "devName": "Prophets and the Word Extend",
-    "image": "/images/pandw.webp",
-    "route": "/path/pawExtend",
     "maxLessons": 69
   }
 ]

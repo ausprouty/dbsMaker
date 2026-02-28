@@ -19,3 +19,19 @@ $warning: #d59744;
 $highlight-scripture: #d59744;
 $shadow: #7f6e63;
 $success-highlight: #a05a2c;
+
+/* --- Prebuilt series (banner + intro) --- */
+/* IMPORTANT: banner image must be unquoted so it becomes valid CSS */
+$prebuilt-banner-image: unquote(
+  "url('/sites/prophets/img/prebuilt-banner.jpg')"
+);
+$prebuilt-banner-position: center left;
+
+/* If you want these to stay global defaults, you can omit them.
+   But defining them here lets each site tune the vibe. */
+$prebuilt-text-green: #2e4d3a;
+$prebuilt-title-ink: $neutral;
+
+/* Optional overlays (nice for per-site mood) */
+$prebuilt-overlay-left: rgba($primary, 0.25);
+$prebuilt-overlay-right: rgba(0, 0, 0, 0.15);

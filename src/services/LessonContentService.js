@@ -52,20 +52,6 @@ export async function getLessonContent(
   //
   // http.get will add root url plus /api
   let url = `/v2/translate/lessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;
-  const variant = settingsStore.variantForCurrentStudy;
-  const lessonContentSource =
-    commonContent?.meta?.lessonContentSource ||
-    contentStore.lessonContentSourceFor(studyId, variant, hl);
-  // see if we need to change the URL based on the determined content source
-
-  console.log(
-    `[LessonContent] Determined lesson content type: ${lessonContentSource} for study ${studyId}, variant ${variant}, language ${hl}`
-  );
-
-  if (lessonContentSource === "prebuilt") {
-    url = `/v2/prebuiltLessonContent/${hl}/${studyId}/${lessonId}?jf=${jf}`;
-  }
-  console.log(`[LessonContent] Fetching lesson content from URL: ${url}`);
 
   // Setter used when getContentWithFallback has direct access to the store.
   // Signature: (store, data)

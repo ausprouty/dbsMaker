@@ -18,3 +18,13 @@ $warning: #d59744; /* amber-gold — caution that still fits the palette */
 $highlight-scripture: #f1c40f; /* gold — Scripture highlight with warmth */
 $shadow: #7f6e63; /* warm gray-brown — softer, less cold than gray */
 $success-highlight: #a05a2c; /* warm terracotta — success emphasis without competing with $primary */
+
+/* --- Prebuilt series (banner + intro) --- */
+$prebuilt-banner-image: unquote("url('/sites/wisdom/img/prebuilt-banner.jpg')");
+$prebuilt-banner-position: center left;
+
+$prebuilt-text-green: #2e4d3a;
+$prebuilt-title-ink: $neutral;
+
+$prebuilt-overlay-left: rgba($primary, 0.25);
+$prebuilt-overlay-right: rgba(0, 0, 0, 0.15);

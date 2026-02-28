@@ -23,6 +23,7 @@
     "dev:wisdom": "yarn run _prep:wisdom && cross-env SITE=wisdom VITE_APP=wisdom quasar dev -m pwa --vite-mode wisdom",
     "dev:wsu": "yarn run _prep:wsu && cross-env SITE=wsu VITE_APP=wsu quasar dev -m pwa --vite-mode wsu",
     "build:dbs": "yarn run _prep:dbs && cross-env SITE=dbs VITE_APP=dbs quasar build -m pwa --vite-mode dbs",
+    "build:guru": "yarn run _prep:guru && cross-env SITE=guru VITE_APP=guru quasar build -m pwa --vite-mode guru",
     "build:uom": "yarn run _prep:uom && cross-env SITE=uom VITE_APP=uom quasar build -m pwa --vite-mode uom",
     "build:prophets": "yarn run _prep:prophets && cross-env SITE=prophets VITE_APP=prophets quasar build -m pwa --vite-mode prophets",
     "build:wisdom": "yarn run _prep:wisdom && cross-env SITE=wisdom VITE_APP=wisdom quasar build -m pwa --vite-mode wisdom",
