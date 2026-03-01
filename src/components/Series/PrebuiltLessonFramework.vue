@@ -1,6 +1,7 @@
 <script setup>
-import { computed, onMounted, watch, ref } from "vue";
+import { computed, watch, ref } from "vue";
 import { useContentStore } from "src/stores/ContentStore";
+import { getPassage } from "src/services/PassageLoaderService";
 
 const props = defineProps({
   study: { type: String, required: true },
@@ -16,6 +17,9 @@ const contentStore = useContentStore();
 const loading = ref(false);
 const error = ref(null);
 const returnedPage = ref(null);
+const passageOpen = ref(false);
+const passageItem = ref(null);
+const passageError = ref("");
 
 const pageFromStore = computed(() => {
   try {
@@ -36,7 +40,11 @@ const page = computed(() => {
   return pageFromStore.value || returnedPage.value || null;
 });
 
+let loadingSeq = 0;
+
 async function loadLessonContent() {
+  const seq = (loadingSeq += 1);
+
   loading.value = true;
   error.value = null;
   returnedPage.value = null;
@@ -49,32 +57,57 @@ async function loadLessonContent() {
       props.lesson
     );
 
+    if (seq !== loadingSeq) return; // newer request won
     returnedPage.value = returned || null;
 
     if (!page.value) {
       error.value = "Lesson content was not available.";
     }
   } catch (e) {
+    if (seq !== loadingSeq) return;
     error.value = "Could not load lesson content.";
   } finally {
-    loading.value = false;
+    if (seq === loadingSeq) {
+      loading.value = false;
+    }
   }
 }
 
-onMounted(loadLessonContent);
+async function prefetchFurtherReading() {
+  const list = further.value || [];
+  if (!list.length) return;
 
-watch(
-  () => [
-    props.study,
-    props.lesson,
-    props.languageCodeHL,
-    props.languageCodeJF,
-    props.lessonKey,
-  ],
-  () => {
-    loadLessonContent();
+  for (let i = 0; i < list.length; i += 1) {
+    const entry = list[i];
+    if (!entry) continue;
+    try {
+      await getPassage({
+        entry,
+        languageCodeHL: props.languageCodeHL,
+      });
+    } catch (e) {}
   }
-);
+}
+
+async function openPassage(entry) {
+  passageError.value = "";
+  passageItem.value = null;
+  passageOpen.value = true;
+
+  try {
+    const rec = await getPassage({
+      entry,
+      languageCodeHL: props.languageCodeHL,
+    });
+    passageItem.value = rec || null;
+    if (!rec || rec.error) {
+      passageError.value =
+        rec && rec.error ? rec.error : "Passage not available.";
+    }
+  } catch (e) {
+    passageError.value = "Passage not available.";
+  }
+}
 
 const introLines = computed(() => {
   const p = page.value;
@@ -95,6 +128,30 @@ const further = computed(() => {
   const p = page.value;
   return p && Array.isArray(p.further_reading) ? p.further_reading : [];
 });
+
+watch(
+  () => [
+    props.study,
+    props.lesson,
+    props.languageCodeHL,
+    props.languageCodeJF,
+    props.lessonKey,
+  ],
+  () => {
+    loadLessonContent();
+  },
+  { immediate: true }
+);
+
+watch(
+  () => props.languageCodeHL + "|" + JSON.stringify(further.value || []),
+  () => {
+    if (further.value && further.value.length) {
+      prefetchFurtherReading();
+    }
+  },
+  { immediate: true }
+);
 
 function safeStr(v) {
   return typeof v === "string" ? v : "";
@@ -167,11 +224,39 @@ function markerClass(marker) {
         <div class="further-title q-mb-xs">Further reading</div>
         <ul class="q-mb-none">
           <li v-for="(r, i) in further" :key="'ref-' + i">
-            {{ r }}
+            <button type="button" class="further-link" @click="openPassage(r)">
+              {{ r }}
+            </button>
           </li>
         </ul>
       </div>
     </div>
+    <q-dialog v-model="passageOpen">
+      <q-card style="max-width: 900px; width: 92vw">
+        <q-card-section class="text-h6">
+          {{
+            passageItem && passageItem.ref
+              ? passageItem.ref
+              : passageItem && passageItem.entry
+              ? passageItem.entry
+              : ""
+          }}
+        </q-card-section>
+        <q-card-section>
+          <div v-if="passageError" class="text-negative">
+            {{ passageError }}
+          </div>
+          <div
+            v-else-if="passageItem && passageItem.text"
+            v-html="passageItem.text"
+          />
+          <div v-else>Loading</div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -180,7 +265,7 @@ function markerClass(marker) {
   color: var(--prebuilt-body-color, var(--color-text));
   font-family: var(--prebuilt-body-font, "Open Sans", sans-serif);
   font-size: var(--prebuilt-body-size, 1rem);
-  line-height: var(--prebuilt-body-line-height, 1.65);
+  line-height: var(--prebuilt-body-line-height, 1.7);
   max-width: var(--prebuilt-body-max-width, 720px);
   font-size: 1.1rem;
 }
@@ -207,7 +292,7 @@ function markerClass(marker) {
 .segment-heading {
   color: color-mix(
     in srgb,
-    var(--prebuilt-section-color, var(--q-accent)) 70%,
+    var(--prebuilt-section-color, var(--q-accent)) 92%,
     var(--color-text)
   );
 }
@@ -257,38 +342,22 @@ function markerClass(marker) {
 .further-title {
   font-size: 1.15rem;
   font-weight: 800;
+  color: var(--prebuilt-further-color, var(--color-secondary));
 }
 
-.prebuilt-banner {
-  height: var(--prebuilt-banner-height, 160px);
-  border-bottom: var(--prebuilt-banner-border-height, 2px) solid
-    var(--prebuilt-banner-border-color, var(--color-secondary));
-  border-radius: var(--prebuilt-banner-radius, 0px);
-  background-image: var(--prebuilt-banner-image, none);
-  background-position: var(--prebuilt-banner-position, center left);
-  background-size: cover;
-  background-repeat: no-repeat;
-  overflow: hidden;
+.further-link {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  color: var(--prebuilt-body-color, var(--color-text));
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.prebuilt-banner__overlay {
-  height: 100%;
-  width: 100%;
-  background: var(--prebuilt-banner-overlay);
-  display: flex;
-  align-items: flex-end;
-  padding: 0 var(--prebuilt-banner-pad-x, 24px) 14px
-    var(--prebuilt-banner-pad-x, 24px);
-}
-
-.prebuilt-banner__title {
-  font-family: var(--prebuilt-title-font, "Georgia", serif);
-  font-size: var(--prebuilt-title-size, 1.7rem);
-  font-weight: var(--prebuilt-title-weight, 500);
-  letter-spacing: var(--prebuilt-title-letter-spacing, 0.6px);
-  line-height: var(--prebuilt-title-line-height, 1.2);
-  color: var(--prebuilt-title-color, var(--color-neutral));
-  text-shadow: var(--prebuilt-title-shadow, none);
-  max-width: var(--prebuilt-banner-text-max-width, 900px);
+.further-link:hover {
+  opacity: 0.85;
 }
 </style>

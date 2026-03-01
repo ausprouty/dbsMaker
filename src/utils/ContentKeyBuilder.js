@@ -74,6 +74,25 @@ export function buildNotesKey(study, lesson, position) {
   return "notes-" + s + "-" + l + "-" + pos;
 }
 
+export function buildPassageKey(entry, languageCodeHL, bid) {
+  // entry is required
+  if (!entry) return null;
+
+  var e = String(entry).trim().replace(/\s+/g, " ");
+
+  // If bid is supplied, use it (explicit version selection)
+  var b = nInt(bid);
+  if (b) {
+    return "passage-bid-" + b + "-" + encodeURIComponent(e);
+  }
+
+  // Otherwise require languageCodeHL
+  var hl = nId(languageCodeHL);
+  if (!hl) return null;
+
+  return "passage-hl-" + hl + "-" + encodeURIComponent(e);
+}
+
 export function buildVideoUrlsKey(study, languageCodeJF) {
   var s = nId(study);
   var jf = nInt(languageCodeJF);

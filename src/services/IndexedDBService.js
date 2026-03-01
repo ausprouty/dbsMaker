@@ -1,7 +1,7 @@
 import * as ContentKeys from "src/utils/ContentKeyBuilder";
 
 const dbName = "MyBibleApp";
-const dbVersion = 3;
+const dbVersion = 4;
 const IDB_TX_MAX_RETRIES = 2; // total retries after the first attempt
 const IDB_TX_RETRY_DELAY_MS = 25;
 
@@ -95,6 +95,9 @@ export function openDatabase() {
       }
       if (!db.objectStoreNames.contains("notes")) {
         db.createObjectStore("notes");
+      }
+      if (!db.objectStoreNames.contains("bible_passages")) {
+        db.createObjectStore("bible_passages");
       }
       if (!db.objectStoreNames.contains("study_progress")) {
         db.createObjectStore("study_progress");
@@ -352,6 +355,18 @@ export async function saveLessonContentToDB(
     lesson
   );
   return saveItem("lessonContent", key, content);
+}
+
+// ----------------- Bible Passage Content -----------------
+
+export async function getPassageFromDB(entry, languageCodeHL, bid) {
+  const key = ContentKeys.buildPassageKey(entry, languageCodeHL, bid);
+  return getItem("bible_passages", key);
+}
+
+export async function savePassageToDB(entry, languageCodeHL, bid, content) {
+  const key = ContentKeys.buildPassageKey(entry, languageCodeHL, bid);
+  return saveItem("bible_passages", key, content);
 }
 
 // ----------------- Study Progress -----------------

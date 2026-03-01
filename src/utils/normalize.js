@@ -149,3 +149,38 @@ export function normStudyKey(v) {
   const s = normId(v); // unref + pickFirst + trim + 'undefined' → ''
   return s ? s.toLowerCase().replace(/[^a-z0-9-]/g, "") : "";
 }
+
+// Normalize Bible reference strings (does NOT lowercase)
+// Examples:
+//  - " Genesis 3:1–13 "     -> "Genesis 3:1–13"
+//  - ["John 4:1-7"]         -> "John 4:1–7"
+//  - "1  John  1:1-4"       -> "1 John 1:1–4"
+export function normBibleRef(v) {
+  const raw = pickFirst(v);
+  let s = String(raw == null ? "" : raw).trim();
+  if (!s) return "";
+
+  // Collapse any whitespace to single spaces
+  s = s.replace(/\s+/g, " ");
+
+  // Normalise hyphen ranges to en dash for consistency
+  // (Leaves existing en dashes and em dashes alone)
+  s = s.replace(/(\d)\s*-\s*(\d)/g, "$1–$2");
+
+  // Remove spaces around common separators
+  // "John 3 : 16" -> "John 3:16"
+  s = s.replace(/\s*:\s*/g, ":");
+
+  // "John 3: 16" -> "John 3:16"
+  s = s.replace(/:\s+/g, ":");
+
+  // "John 3 :16" -> "John 3:16"
+  s = s.replace(/\s+:/g, ":");
+
+  // Normalise commas and semicolons spacing if present
+  // "John 3:16 , 18" -> "John 3:16, 18"
+  s = s.replace(/\s*,\s*/g, ", ");
+  s = s.replace(/\s*;\s*/g, "; ");
+
+  return s.trim();
+}

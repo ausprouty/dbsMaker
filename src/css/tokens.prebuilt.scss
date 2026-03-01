@@ -12,7 +12,7 @@ $prebuilt-banner-image: none !default; // e.g. unquote("url('/img/banner.jpg')")
 $prebuilt-banner-position: center left !default;
 
 /* --- Prebuilt colours --- */
-$prebuilt-text-green: #2e4d3a !default; // override per site if desired
+$prebuilt-text-color: #111111 !default; // body text (override per site)
 $prebuilt-title-ink: #f8f3ee !default; // override per site if desired
 
 /* Overlays (derived defaults; can be overridden) */
@@ -101,7 +101,7 @@ $prebuilt-body-max-width: 720px !default;
     --prebuilt-intro-radius: #{$prebuilt-intro-radius};
 
     --prebuilt-heading-color: var(--q-primary);
-    --prebuilt-body-color: #{$prebuilt-text-green};
+    --prebuilt-body-color: #{$prebuilt-text-color};
     --prebuilt-body-size: #{$prebuilt-body-size};
     --prebuilt-body-line-height: #{$prebuilt-body-line-height};
     --prebuilt-body-max-width: #{$prebuilt-body-max-width};

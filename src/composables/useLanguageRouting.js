@@ -1,10 +1,27 @@
 // src/composables/useLanguageRouting.js
 import { useRouter, useRoute } from "vue-router";
-import { safeReplace } from "src/router/safeNav";
+
+function swallowNavError(err) {
+  const msg = err && (err.message || String(err));
+  if (!msg) return true;
+  return (
+    msg.indexOf("Avoided redundant navigation") >= 0 ||
+    msg.indexOf("NavigationDuplicated") >= 0 ||
+    msg.indexOf("redundant navigation") >= 0
+  );
+}
+
+function safeReplace(router, to) {
+  if (!router) return Promise.resolve(true);
+  return router.replace(to).catch((e) => {
+    if (!swallowNavError(e)) throw e;
+    return true;
+  });
+}
 
 export function useLanguageRouting() {
   const router = useRouter();
-  const route  = useRoute();
+  const route = useRoute();
   // Prevent route <-> state ping-pong during language changes.
   let isSyncingLanguage = false;
 
@@ -15,7 +32,9 @@ export function useLanguageRouting() {
     return p.indexOf("/series") === 0 || p.indexOf("/video") === 0;
   }
 
-  function S(x) { return x == null ? "" : String(x); }
+  function S(x) {
+    return x == null ? "" : String(x);
+  }
 
   function buildNextLocation(hl, jf) {
     const name = route.name || null;
@@ -24,10 +43,10 @@ export function useLanguageRouting() {
     const curP = Object.assign({}, route.params || {});
 
     if (isSeriesOrVideo()) {
-      const study   = S(curP.study || "ctc");
-      const lesson  = S(curP.lesson || "1"); // <-- default lesson to "1"
-      const nextHL  = S(hl || curP.languageCodeHL || "");
-      const nextJF  = S(jf || curP.languageCodeJF || "");
+      const study = S(curP.study || "ctc");
+      const lesson = S(curP.lesson || "1"); // <-- default lesson to "1"
+      const nextHL = S(hl || curP.languageCodeHL || "");
+      const nextJF = S(jf || curP.languageCodeJF || "");
 
       // Require HL+JF as a pair on Series/Video routes
       if ((nextHL && !nextJF) || (!nextHL && nextJF)) {
@@ -40,7 +59,7 @@ export function useLanguageRouting() {
         study: study,
         lesson: lesson,
         languageCodeHL: nextHL,
-        languageCodeJF: nextJF
+        languageCodeJF: nextJF,
       };
 
       return name
@@ -64,14 +83,19 @@ export function useLanguageRouting() {
       (!a.name && !b.name && a.path === b.path);
 
     function J(x) {
-      try { return JSON.stringify(x || {}); }
-      catch (e) { return ""; }
+      try {
+        return JSON.stringify(x || {});
+      } catch (e) {
+        return "";
+      }
     }
 
-    return sameNameOrPath &&
+    return (
+      sameNameOrPath &&
       J(a.params) === J(b.params) &&
-      J(a.query)  === J(b.query)  &&
-      String(a.hash || "") === String(b.hash || "");
+      J(a.query) === J(b.query) &&
+      String(a.hash || "") === String(b.hash || "")
+    );
   }
 
   async function changeLanguage(hl, jf) {
@@ -88,23 +112,25 @@ export function useLanguageRouting() {
       path: route.path,
       params: route.params || {},
       query: route.query || {},
-      hash: route.hash || ""
+      hash: route.hash || "",
     };
 
     if (sameLocation(next, cur)) {
       return true; // no-op; avoids UI hangs
     }
 
-        // replace avoids history spam while picking languages
+    // replace avoids history spam while picking languages
     isSyncingLanguage = true;
     try {
       await safeReplace(router, next);
       return true;
     } finally {
       // Let reactive watchers settle before allowing another change.
-      queueMicrotask(() => { isSyncingLanguage = false; });
+      queueMicrotask(() => {
+        isSyncingLanguage = false;
+      });
     }
-   }
+  }
 
-   return { changeLanguage };
+  return { changeLanguage };
 }

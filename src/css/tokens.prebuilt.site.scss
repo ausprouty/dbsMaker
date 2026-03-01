@@ -3,10 +3,9 @@
 
 /* Forward prebuilt tokens with per-site overrides coming from @brand */
 @forward "@/css/tokens.prebuilt.scss" with (
-  $prebuilt-banner-image: brand.$prebuilt-banner-image,
   $prebuilt-banner-position: brand.$prebuilt-banner-position,
 
-  $prebuilt-text-green: brand.$prebuilt-text-green,
+  $prebuilt-text-color: brand.$prebuilt-text-color,
   $prebuilt-title-ink: brand.$prebuilt-title-ink,
 
   $prebuilt-overlay-left: brand.$prebuilt-overlay-left,
