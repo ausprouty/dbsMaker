@@ -13,7 +13,11 @@
     "VITE_LESSON": "1",
     "VITE_LANGUAGE_CODE_HL": "eng00",
     "VITE_LANGUAGE_CODE_JF": "529",
-    "VITE_LANGUAGE_PICKER_TYPE": "none"
+    "VITE_LANGUAGE_PICKER_TYPE": "none",
+
+    "VITE_API_PRODUCTION": "https://api2.mylanguage.net.au",
+    "VITE_API_DEVELOPMENT": "https://localhost:9200/api2_mylanguage2026",
+    "VITE_POST_AUTH_CODE": "0_,Q->,^b%i4SH="
   },
   "dev": { "host": "localhost", "port": 9220, "https": false },
   "pwa": {

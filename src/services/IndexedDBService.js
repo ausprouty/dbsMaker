@@ -361,11 +361,13 @@ export async function saveLessonContentToDB(
 
 export async function getPassageFromDB(entry, languageCodeHL, bid) {
   const key = ContentKeys.buildPassageKey(entry, languageCodeHL, bid);
+  console.log(["getPassageFromDB: "] + key);
   return getItem("bible_passages", key);
 }
 
 export async function savePassageToDB(entry, languageCodeHL, bid, content) {
   const key = ContentKeys.buildPassageKey(entry, languageCodeHL, bid);
+  console.log(["savePassageToDB: "] + key);
   return saveItem("bible_passages", key, content);
 }
 
