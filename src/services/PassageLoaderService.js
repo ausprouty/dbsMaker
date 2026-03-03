@@ -7,46 +7,67 @@ import {
 } from "src/services/IndexedDBService";
 
 export async function getPassage(params) {
+  console.log("[getPassage] params:", params);
   var entry = normBibleRef(params.entry);
-  var bid = params.bid ? Number(params.bid) : 0;
   var hl = params.languageCodeHL ? String(params.languageCodeHL) : "";
 
+  console.log("[getPassage] params.entry:", params.entry);
+  console.log("[getPassage] normalized entry:", entry);
+  console.log("[getPassage] hl:", hl);
+
   // 1) IndexedDB
-  var fromDb = await getPassageFromDB(entry, hl, bid);
+  console.log("[getPassage] checking IndexedDB for entry:", entry, "hl:", hl);
+  var fromDb = await getPassageFromDB(entry, hl);
+  console.log("[getPassage] fromDb:", fromDb);
   if (fromDb && fromDb.text) {
     return fromDb;
   }
+  console.log("[getPassage] not found in DB, fetching from API...");
 
   // 2) POST API (one route)
   var payload = { entry: entry };
-  if (bid > 0) payload.bid = bid;
-  if (bid <= 0 && hl) payload.languageCodeHL = hl;
+  payload.languageCodeHL = hl;
 
   var res = await http.post("/v2/bible/passage", payload);
   var data = res && res.data ? res.data : res;
   console.log("PassageLoaderService.getPassage: data", data);
+
+  // If the API reports an error, alert and do NOT attempt to save to IndexedDB.
+  if (data && typeof data.error === "string" && data.error.trim() !== "") {
+    const msg = data.error.trim();
+    // Keep alert simple and immediate for now (per request).
+    alert("Bible passage error: " + msg);
+
+    return normalizePassageRecord({
+      entry: entry,
+      bid: Number(data.bid || 0),
+      hl: hl,
+      text: String(data.text || ""),
+      url: String(data.url || ""),
+      ref: String(data.ref || ""),
+      error: msg,
+      savedAt: new Date().toISOString(),
+    });
+  }
+
   var record = {
-    cacheKey: key,
     entry: entry,
     bid: Number(data.bid || 0),
     hl: hl,
     text: String(data.text || ""),
     url: String(data.url || ""),
     ref: String(data.ref || ""),
-    error: String(data.error || ""),
     savedAt: new Date().toISOString(),
   };
-
+  console.log("PassageLoaderService.getPassage: record", record);
   record = normalizePassageRecord(record);
   console.log("PassageLoaderService.getPassage: record", record);
-  const hasError =
-    typeof record.error === "string" && record.error.trim() !== "";
-  console.log("PassageLoaderService.hasError: ", hasError);
+
   const hasText = typeof record.text === "string" && record.text.trim() !== "";
   console.log("PassageLoaderService.hasText: ", hasText);
-  if (!hasError && hasText) {
-    console.log("PassageLoaderService.getPassage: saving to DB", record);
-    await savePassageToDB(entry, hl, bid, record);
+  if (hasText) {
+    console.log("PassageLoaderService saving to DB: ", record);
+    await savePassageToDB(entry, hl, record);
   }
 
   return record;

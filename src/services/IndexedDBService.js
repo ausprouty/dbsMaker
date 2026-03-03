@@ -157,20 +157,28 @@ async function withTx(storeName, mode, fn, attempt) {
 // --- IndexedDB core -----------------------------------------
 async function saveItem(storeName, key, value, opts = {}) {
   const { allowEmpty = false, deleteOnEmpty = true } = opts;
+  console.log(`[IDB] saveItem to "${storeName}" with key:`, String(key));
 
   if (key == null) {
     console.warn(`❌ Refusing to save to "${storeName}" because key is null.`);
     return false;
   }
-
-  // Refuse error objects
+  // Refuse payloads that represent an actual error.
+  // (Allow objects that merely have an `error` field set to "" or null.)
   if (isPlainObject(value) && "error" in value) {
-    console.warn(
-      `⛔ Skipping save for key "${key}" due to error: ${value.error}`
-    );
-    return false;
-  }
+    const errVal = value.error;
+    const errText = typeof errVal === "string" ? errVal.trim() : "";
+    const hasRealError =
+      (typeof errVal === "string" && errText.length > 0) || Boolean(errVal);
 
+    if (hasRealError) {
+      console.warn(
+        `⛔ Skipping save for key "${key}" due to error: ${String(errVal)}`
+      );
+      return false;
+    }
+  }
+  console.log(`[IDB] passed error check for "${key}", value:`, value);
   // Block empties (and optionally delete existing)
   if (!allowEmpty && !isMeaningful(value)) {
     if (IS_DEV) {
@@ -193,6 +201,7 @@ async function saveItem(storeName, key, value, opts = {}) {
     }
     return false;
   }
+  console.log(`[IDB] value for "${key}" is meaningful, proceeding to save.`);
 
   // Save meaningful values
   return withTx(storeName, "readwrite", (tx, store) => {
@@ -201,6 +210,7 @@ async function saveItem(storeName, key, value, opts = {}) {
       return Promise.resolve(false);
     }
     return new Promise((resolve, reject) => {
+      console.log(`[IDB] saving to "${storeName}" with key "${key}":`, value);
       const req = store.put(value, key);
       req.onsuccess = () => resolve(true);
       req.onerror = (e) => reject(e);
@@ -359,15 +369,18 @@ export async function saveLessonContentToDB(
 
 // ----------------- Bible Passage Content -----------------
 
-export async function getPassageFromDB(entry, languageCodeHL, bid) {
-  const key = ContentKeys.buildPassageKey(entry, languageCodeHL, bid);
+export async function getPassageFromDB(entry, languageCodeHL) {
+  console.log("[getPassageFromDB] entry:", entry);
+  const key = ContentKeys.buildPassageKey(entry, languageCodeHL);
   console.log(["getPassageFromDB: "] + key);
   return getItem("bible_passages", key);
 }
 
-export async function savePassageToDB(entry, languageCodeHL, bid, content) {
-  const key = ContentKeys.buildPassageKey(entry, languageCodeHL, bid);
-  console.log(["savePassageToDB: "] + key);
+export async function savePassageToDB(entry, languageCodeHL, content) {
+  console.log("[savePassageToDB] entry:", entry);
+  const key = ContentKeys.buildPassageKey(entry, languageCodeHL);
+  console.log(["savePassageToDB key: "] + key);
+  console.log(["savePassageToDB content: "], content);
   return saveItem("bible_passages", key, content);
 }
 

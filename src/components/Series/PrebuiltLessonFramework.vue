@@ -93,6 +93,9 @@ async function openPassage(entry) {
   passageError.value = "";
   passageItem.value = null;
   passageOpen.value = true;
+  console.log("[FurtherReading click] raw entry:", entry);
+
+  console.log("[FurtherReading click] hl:", props.languageCodeHL);
 
   try {
     const rec = await getPassage({

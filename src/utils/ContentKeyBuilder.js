@@ -1,5 +1,5 @@
 // src/utils/keyBuilders.js
-import { normId, normIntish } from "src/utils/normalize";
+import { normId, normIntish, normBibleRef } from "src/utils/normalize";
 
 // Normalize helpers: return null when invalid/falsy after normalization
 function nId(value) {
@@ -74,23 +74,20 @@ export function buildNotesKey(study, lesson, position) {
   return "notes-" + s + "-" + l + "-" + pos;
 }
 
-export function buildPassageKey(entry, languageCodeHL, bid) {
+export function buildPassageKey(entry, languageCodeHL) {
+  console.log("[buildPassageKey] entry:", entry);
+  console.log("[buildPassageKey] languageCodeHL:", languageCodeHL);
   // entry is required
   if (!entry) return null;
+  const safeEntry = normBibleRef(entry);
+  if (!safeEntry) return null;
 
-  var e = String(entry).trim().replace(/\s+/g, " ");
-
-  // If bid is supplied, use it (explicit version selection)
-  var b = nInt(bid);
-  if (b) {
-    return "passage-bid-" + b + "-" + encodeURIComponent(e);
-  }
-
-  // Otherwise require languageCodeHL
-  var hl = nId(languageCodeHL);
+  // hl is required for now (since passage content is language-specific); can relax this later if needed
+  const hl = nId(languageCodeHL);
   if (!hl) return null;
 
-  return "passage-hl-" + hl + "-" + encodeURIComponent(e);
+  console.log("[buildPassageKey] safeEntry:", safeEntry);
+  return "passage-" + hl + "-" + safeEntry;
 }
 
 export function buildVideoUrlsKey(study, languageCodeJF) {
