@@ -179,6 +179,7 @@ async function saveItem(storeName, key, value, opts = {}) {
     }
   }
   console.log(`[IDB] passed error check for "${key}", value:`, value);
+
   // Block empties (and optionally delete existing)
   if (!allowEmpty && !isMeaningful(value)) {
     if (IS_DEV) {
@@ -517,8 +518,21 @@ function isMeaningful(v) {
   if (typeof v === "string") return v.trim().length > 0;
   if (Array.isArray(v)) return v.length > 0;
   if (isPlainObject(v)) {
-    if ("error" in v) return false; // explicit error payloads
-    return Object.keys(v).length > 0; // {} is not meaningful
+    // Treat objects with an `error` field as not meaningful ONLY if the error is real.
+    if ("error" in v) {
+      const errVal = v.error;
+      const errText = typeof errVal === "string" ? errVal.trim() : "";
+      const hasRealError =
+        (typeof errVal === "string" && errText.length > 0) || Boolean(errVal);
+      if (hasRealError) return false;
+    }
+
+    // {} is not meaningful; { error: "" } is also not meaningful
+    const keys = Object.keys(v);
+    if (keys.length === 0) return false;
+    if (keys.length === 1 && keys[0] === "error") return false;
+
+    return true;
   }
   return true; // numbers, booleans, Date, etc.
 }

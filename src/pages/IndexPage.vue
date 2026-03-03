@@ -233,7 +233,7 @@ img.icon {
 .introPanel {
   max-width: 1200px; /* match cards container */
   margin: 14px auto 12px; /* tightens space above/below */
-  padding: 14px 18px;
+  padding: 12px 16px;
   background: rgba(248, 243, 238, 0.9); /* your $neutral */
 
   /* accent line all around */
@@ -245,8 +245,9 @@ img.icon {
 }
 
 .intro {
-  font-size: clamp(14pt, 1.2vw, 18pt);
-  line-height: 1.35;
+  /* smaller on mobile, similar on desktop */
+  font-size: clamp(11.5pt, 1.2vw, 18pt);
+  line-height: 1.3;
   max-width: 92ch;
   margin: 0;
 }
