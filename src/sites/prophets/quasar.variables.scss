@@ -20,15 +20,13 @@ $highlight-scripture: #d59744;
 $shadow: #7f6e63;
 $success-highlight: #a05a2c;
 
-/* --- Prebuilt series (banner + intro) --- */
+/* ---- Prebuilt tokens (required by tokens.prebuilt.site.scss) ---- */
+$prebuilt-banner-position: center left !default;
 
-$prebuilt-banner-position: center left;
+/* Text colours for prebuilt pages */
+$prebuilt-text-color: #111111 !default;
+$prebuilt-title-ink: $neutral !default;
 
-/* If you want these to stay global defaults, you can omit them.
-   But defining them here lets each site tune the vibe. */
-$prebuilt-text-color: #111111;
-$prebuilt-title-ink: $neutral;
-
-/* Optional overlays (nice for per-site mood) */
-$prebuilt-overlay-left: rgba($primary, 0.25);
-$prebuilt-overlay-right: rgba(0, 0, 0, 0.15);
+/* Banner overlays (tune per site mood) */
+$prebuilt-overlay-left: rgba($primary, 0.25) !default;
+$prebuilt-overlay-right: rgba(0, 0, 0, 0.15) !default;

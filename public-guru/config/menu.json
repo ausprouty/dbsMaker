@@ -10,21 +10,24 @@
     "key": "jvideo",
     "devName": "Jesus Video",
     "image": "/images/jesus.webp",
-    "route": "/video/jvideo",
+    "banner": "/images/christmas_banner.webp",
+    "route": "/video/jvideo?variant=guru",
     "maxLessons": 61
   },
   {
     "key": "life",
     "devName": "Life Principles",
     "image": "/images/community.webp",
-    "route": "/series/life",
+    "banner": "/images/community-banner.webp",
+    "route": "/series/life?variant=guru",
     "maxLessons": 23
   },
   {
     "key": "ctc",
     "devName": "Creation to Church",
     "image": "/images/scroll.webp",
-    "route": "/series/ctc",
+    "banner": "/images/scroll-banner.webp",
+    "route": "/series/ctc?variant=guru",
     "maxLessons": 23
   },
   {
@@ -38,25 +41,16 @@
     "key": "ask",
     "devName": "Ask",
     "image": "/images/ask.webp",
+    "banner": "/images/ask-banner.webp",
     "route": "/ask?url=everyperson.com/contact.php"
   },
-  {
-    "key": "mountain",
-    "devName": "Mountain of God",
-    "image": "/images/mountain.webp",
-    "route": "/video/mountain",
-    "maxLessons": 1
-  },
+
   {
     "key": "karma",
     "devName": "Karma",
     "image": "/images/karma.webp",
+    "banner": "/images/karma-banner.webp",
     "route": "/page/karma"
-  },
-  {
-    "key": "deepavali",
-    "devName": "Deepavali",
-    "image": "/images/deepavali.webp",
-    "route": "/page/deepavali"
   }
+
 ]

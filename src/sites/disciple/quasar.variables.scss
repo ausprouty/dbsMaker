@@ -27,3 +27,14 @@ $prebuilt-title-ink: $neutral;
 
 $prebuilt-overlay-left: rgba($primary, 0.25);
 $prebuilt-overlay-right: rgba(0, 0, 0, 0.15);
+
+/* ---- Prebuilt tokens (required by tokens.prebuilt.site.scss) ---- */
+$prebuilt-banner-position: center left !default;
+
+/* Text colours for prebuilt pages */
+$prebuilt-text-color: #111111 !default;
+$prebuilt-title-ink: $neutral !default;
+
+/* Banner overlays (tune per site mood) */
+$prebuilt-overlay-left: rgba($primary, 0.25) !default;
+$prebuilt-overlay-right: rgba(0, 0, 0, 0.15) !default;

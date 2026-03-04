@@ -19,12 +19,13 @@ $highlight-scripture: $accent; /* scripture highlight */
 $shadow: #7f6e63; /* consistent subtle shadow */
 $success-highlight: $primary; /* brand-tinted success callout */
 
-/* --- Prebuilt series (banner + intro) --- */
-$prebuilt-banner-image: unquote("url('/sites/wsu/img/prebuilt-banner.jpg')");
-$prebuilt-banner-position: center left;
+/* ---- Prebuilt tokens (required by tokens.prebuilt.site.scss) ---- */
+$prebuilt-banner-position: center left !default;
 
-$prebuilt-text-green: #2e4d3a;
-$prebuilt-title-ink: $neutral;
+/* Text colours for prebuilt pages */
+$prebuilt-text-color: #111111 !default;
+$prebuilt-title-ink: $neutral !default;
 
-$prebuilt-overlay-left: rgba($primary, 0.25);
-$prebuilt-overlay-right: rgba(0, 0, 0, 0.15);
+/* Banner overlays (tune per site mood) */
+$prebuilt-overlay-left: rgba($primary, 0.25) !default;
+$prebuilt-overlay-right: rgba(0, 0, 0, 0.15) !default;

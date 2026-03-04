@@ -8,6 +8,7 @@ import { useProgressTracker } from "src/composables/useProgressTracker.js";
 import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings";
 import { useSafeI18n } from "src/composables/useSafeI18n";
 import { useCommonContent } from "src/composables/useCommonContent";
+import { useBannerForKey } from "src/composables/useBannerForKey";
 import { buildLessonContentKey } from "src/utils/ContentKeyBuilder";
 
 import SeriesPassageSelect from "src/components/Series/SeriesPassageSelect.vue";
@@ -110,22 +111,12 @@ const introLines = computed(() => {
 });
 
 // items for header banner
-const title = computed(() => {
-  const cc = commonContent.value;
-  return cc && cc.study && cc.study.banner_title
-    ? String(cc.study.banner_title)
-    : "";
-});
-const bannerUrl = computed(() => {
-  // assumes the files are in: public/images/<study>-banner.webp
-  return `/images/${computedStudy.value}-banner.webp`;
-});
 
-const bannerStyle = computed(() => {
-  return bannerUrl.value
-    ? { "--prebuilt-banner-image": `url('${bannerUrl.value}')` }
-    : {};
-});
+const { getBanner } = useBannerForKey();
+
+// getBanner returns a STRING:
+const bannerUrl = computed(() => getBanner("path", computedStudy.value) || "");
+console.log("[PrebuiltSeriesMaster] bannerUrl:", bannerUrl.value);
 
 // Hide language button entirely when VITE_LANGUAGE_PICKER_TYPE=none
 const langPickerType = String(
@@ -187,12 +178,8 @@ watch(
 
 <template>
   <q-page padding>
-    <div class="prebuilt-banner q-mb-md" :style="bannerStyle">
-      <div class="prebuilt-banner__overlay">
-        <div class="prebuilt-banner__text">
-          <div class="prebuilt-banner__title">{{ title }}</div>
-        </div>
-      </div>
+    <div v-if="bannerUrl" class="prebuilt-banner q-mb-md">
+      <img class="prebuilt-banner__img" :src="bannerUrl" alt="" />
     </div>
     <q-btn
       v-if="showLanguageSelect"
@@ -251,37 +238,3 @@ watch(
     />
   </q-page>
 </template>
-<style scoped>
-.prebuilt-banner {
-  height: var(--prebuilt-banner-height, 160px);
-  border-bottom: var(--prebuilt-banner-border-height, 2px) solid
-    var(--prebuilt-banner-border-color, var(--color-secondary));
-  border-radius: var(--prebuilt-banner-radius, 0px);
-  background-image: var(--prebuilt-banner-image, none);
-  background-position: var(--prebuilt-banner-position, center left);
-  background-size: cover;
-  background-repeat: no-repeat;
-  overflow: hidden;
-}
-
-.prebuilt-banner__overlay {
-  height: 100%;
-  width: 100%;
-  background: var(--prebuilt-banner-overlay);
-  display: flex;
-  align-items: flex-end;
-  padding: 0 var(--prebuilt-banner-pad-x, 24px) 14px
-    var(--prebuilt-banner-pad-x, 24px);
-}
-
-.prebuilt-banner__title {
-  font-family: var(--prebuilt-title-font, "Georgia", serif);
-  font-size: var(--prebuilt-title-size, 1.7rem);
-  font-weight: var(--prebuilt-title-weight, 500);
-  letter-spacing: var(--prebuilt-title-letter-spacing, 0.6px);
-  line-height: var(--prebuilt-title-line-height, 1.2);
-  color: var(--prebuilt-title-color, var(--color-neutral));
-  text-shadow: var(--prebuilt-title-shadow, none);
-  max-width: var(--prebuilt-banner-text-max-width, 900px);
-}
-</style>

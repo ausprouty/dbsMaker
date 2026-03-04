@@ -10,6 +10,7 @@ import { buildLessonContentKey } from "src/utils/ContentKeyBuilder";
 
 import { useCommonContent } from "src/composables/useCommonContent";
 import { useSiteContent } from "src/composables/useSiteContent";
+import { useBannerForKey } from "src/composables/useBannerForKey";
 
 import { useProgressTracker } from "src/composables/useProgressTracker.js";
 import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings";
@@ -127,6 +128,21 @@ const section = computed(() => {
   return getSection(computedStudy.value);
 });
 
+//Banner TURL (if any) for the current study, from common content or menu config.
+// Note that the banner image is expected to be in public/images and listed in the menu config for the study,
+
+const { getBanner } = useBannerForKey();
+// getBanner returns a STRING:
+const bannerUrl = computed(
+  () => getBanner("series", computedStudy.value) || ""
+);
+console.log("[SeriesMaster] bannerUrl:", bannerUrl.value);
+
+// For convenience, resolve menu items to their sections here,
+// so that we can display section titles/summaries in the menu if desired,
+// without needing to call getSection repeatedly in the menu component.
+// Note that getSection is a simple lookup and should be fast, but this way
+// we do it once and can reuse the resolved data in multiple places if needed.
 const pageTitle = computed(() => {
   const s = section.value;
   return (
@@ -196,6 +212,9 @@ watch(section, (v) =>
 <template>
   <template v-if="commonContent && commonContent.topic">
     <q-page padding>
+      <div v-if="bannerUrl" class="prebuilt-banner q-mb-md">
+        <img class="prebuilt-banner__img" :src="bannerUrl" alt="" />
+      </div>
       <h1 class="dbs">
         <span v-if="isSiteContentReady">{{ pageTitle }}</span>
         <span v-else>{{ safeT("interface.loading", "Loading") }}</span>
