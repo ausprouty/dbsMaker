@@ -29,6 +29,7 @@ useApplyRouteToSettings(settingsStore);
 const {
   heading,
   paras,
+  siteStudyBlock,
   topics,
 
   lesson,

@@ -1,16 +1,16 @@
 [
   {
-    "key": "jvideo",
-    "devName": "Jesus Video",
-    "image": "/images/jesus.webp",
-    "route": "/video/jvideo",
-    "maxLessons": 61
+    "key": "relate",
+    "devName": "Relate",
+    "image": "/images/relate.webp",
+    "route": "/series/relate?var=wsu",
+    "maxLessons": 9
   },
   {
     "key": "hope",
     "devName": "Seven Stories of Hope",
     "image": "/images/hope.webp",
-    "route": "/series/hope/apply",
+    "route": "/series/hope?var=apply",
     "maxLessons": 7
   },
   {
@@ -19,6 +19,13 @@
     "image": "/images/outline.webp",
     "route": "/page/dbsOutline",
     "maxLessons": 1
+  },
+  {
+    "key": "jvideo",
+    "devName": "Jesus Video",
+    "image": "/images/jesus.webp",
+    "route": "/video/jvideo",
+    "maxLessons": 61
   },
   {
     "key": "tips",

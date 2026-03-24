@@ -6,6 +6,7 @@ import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "src/stores/SettingsStore";
 import { useVideoParams } from "src/composables/useVideoParams";
 import { useCommonContent } from "src/composables/useCommonContent";
+import { useContentStore } from "src/stores/ContentStore";
 import { useProgressTracker } from "src/composables/useProgressTracker";
 import { useVideoSourceFromSpec } from "src/composables/useVideoSourceFromSpec";
 
@@ -19,6 +20,7 @@ export function useVideoMasterVM() {
 
   // Stores
   const settingsStore = useSettingsStore();
+  const ContentStore = useContentStore();
 
   // Study from route (:study)
   const currentStudyKeyRef = computed(function () {
@@ -66,20 +68,53 @@ export function useVideoMasterVM() {
     }
   }
 
-  // Study title
+  // Site content for heading / summary / intro paragraphs
+
+    const siteContentRef = computed(function () {
+    const languageCodeHL = languageCodeHLRef.value;
+    if (!languageCodeHL) {
+      return {};
+    }
+    const content = ContentStore.siteContentFor(languageCodeHL);
+    return isObj(content) ? content : {};
+  });
+
+  const siteSectionsRef = computed(function () {
+    const siteContent = siteContentRef.value;
+    if (!isObj(siteContent)) {
+      return {};
+    }
+
+    const sections = siteContent.sections;
+    return isObj(sections) ? sections : {};
+  });
+
+  const siteStudyBlockRef = computed(function () {
+    const sections = siteSectionsRef.value;
+    const studyKey = currentStudyKeyRef.value;
+
+    if (!isObj(sections) || !studyKey) {
+      return {};
+    }
+
+    const block = sections[studyKey];
+    return isObj(block) ? block : {};
+  });
+
   const studyTitleRef = computed(function () {
-    const cc = commonContentRef.value;
-    const studyBlock = cc && typeof cc === "object" ? cc.study : null;
+    const studyBlock = siteStudyBlockRef.value;
     const raw =
       studyBlock && studyBlock.title != null ? String(studyBlock.title) : "";
     return raw.trim();
   });
 
-  // Intro paragraphs (array | object | string → array<string>)
   const introParagraphsRef = computed(function () {
-    const cc = commonContentRef.value;
-    const studyBlock = cc && typeof cc === "object" ? cc.study : null;
-    const para = studyBlock ? studyBlock.para : null;
+    const studyBlock = siteStudyBlockRef.value;
+    const para = studyBlock
+      ? studyBlock.paras != null
+        ? studyBlock.paras
+        : studyBlock.para
+      : null;
 
     if (Array.isArray(para)) {
       const out = [];
@@ -107,6 +142,7 @@ export function useVideoMasterVM() {
     }
     return [];
   });
+  
 
   // Optional i18n fallback per-lesson topic
   const topicTitleRef = computed(function () {
@@ -171,7 +207,7 @@ export function useVideoMasterVM() {
 
   // Initial loads (defensive, never block forever)
   onMounted(async function () {
-    function settledFrom(fn) {
+    async function settledFrom(fn) {
       try {
         const p = fn();
         return Promise.resolve(p).catch(function () {});
@@ -283,6 +319,9 @@ export function useVideoMasterVM() {
     // content
     heading: headingRef,
     paras: introParagraphsRef,
+    siteContent: siteContentRef,
+    siteStudyBlock: siteStudyBlockRef,
+    siteSections: siteSectionsRef,
     topics: topicsRef,
 
     // params

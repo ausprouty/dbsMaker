@@ -11,7 +11,7 @@
     "devName": "Jesus Video",
     "image": "/images/jesus.webp",
     "banner": "/images/christmas_banner.webp",
-    "route": "/video/jvideo?variant=guru",
+    "route": "/video/jvideo?v=guru",
     "maxLessons": 61
   },
   {
@@ -19,7 +19,7 @@
     "devName": "Life Principles",
     "image": "/images/community.webp",
     "banner": "/images/community-banner.webp",
-    "route": "/series/life?variant=guru",
+    "route": "/series/life?v=guru",
     "maxLessons": 23
   },
   {
@@ -27,7 +27,7 @@
     "devName": "Creation to Church",
     "image": "/images/scroll.webp",
     "banner": "/images/scroll-banner.webp",
-    "route": "/series/ctc?variant=guru",
+    "route": "/series/ctc?v=guru",
     "maxLessons": 23
   },
   {

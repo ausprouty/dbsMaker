@@ -20,6 +20,7 @@ const returnedPage = ref(null);
 const passageOpen = ref(false);
 const passageItem = ref(null);
 const passageError = ref("");
+const showIcons = false; // set to true to show icons in segments (if provided in content)
 
 const pageFromStore = computed(() => {
   try {
@@ -197,7 +198,7 @@ function markerClass(marker) {
       <div v-for="(s, i) in segments" :key="'seg-' + i" class="segment q-mb-md">
         <div class="segment-header q-mb-xs segment-heading">
           <q-icon
-            v-if="s && s.icon"
+            v-if="s && s.icon && showIcons"
             :name="iconName(s.icon)"
             size="20px"
             class="segment-icon"
