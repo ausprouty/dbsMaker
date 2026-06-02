@@ -1,0 +1,238 @@
+<script setup>
+import { computed, onMounted, watch, inject } from "vue";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { storeToRefs } from "pinia";
+
+import { useSettingsStore } from "src/stores/SettingsStore";
+import { patchRouterForLogs } from "src/debug/patchRouterForLogs";
+import { buildLessonContentKey } from "src/utils/ContentKeyBuilder";
+
+import { useCommonContent } from "src/composables/useCommonContent";
+import { useSiteContent } from "src/composables/useSiteContent";
+import { useBannerForKey } from "src/composables/useBannerForKey";
+
+import { useProgressTracker } from "src/composables/useProgressTracker.js";
+import { useApplyRouteToSettings } from "src/composables/useApplyRouteToSettings";
+
+import SeriesLessonPrint from "src/components/Series/SeriesLessonPrint.vue";
+import { useSafeI18n } from "src/composables/useSafeI18n";
+
+const router = useRouter();
+
+const { t, locale } = useI18n({ useScope: "global" });
+const { safeT, i18nReady } = useSafeI18n();
+
+const isSiteContentReady = computed(
+  () => readyHL.value === computedLanguageHL.value
+);
+
+import { getActivePinia } from "pinia";
+console.log("[SeriesMaster] activePinia =", getActivePinia());
+const settingsStore = useSettingsStore();
+
+try {
+  useApplyRouteToSettings(settingsStore);
+} catch (e) {
+  console.error("[SeriesMaster] useApplyRouteToSettings failed", e);
+  throw e;
+}
+
+const {
+  textLanguageObjectSelected,
+  videoLanguageObjectSelected,
+  variantForStudy,
+} = storeToRefs(settingsStore);
+
+const computedStudy = computed(
+  () => settingsStore.currentStudySelected || "dbs"
+);
+
+const computedLessonNumber = computed(() => {
+  if (typeof settingsStore.lessonNumberForStudy === "function") {
+    return settingsStore.lessonNumberForStudy(computedStudy.value);
+  }
+
+  return typeof settingsStore.lessonNumber === "number"
+    ? settingsStore.lessonNumber
+    : 1;
+});
+
+// ✅ TEXT language (HL) — reactive
+const computedLanguageHL = computed(() => {
+  var obj = textLanguageObjectSelected.value;
+  return obj && obj.languageCodeHL ? String(obj.languageCodeHL) : "eng00";
+});
+
+// ✅ VIDEO language (JF) — reactive
+const computedLanguageJF = computed(() => {
+  var obj = videoLanguageObjectSelected.value;
+  return obj && obj.languageCodeJF ? String(obj.languageCodeJF) : "529";
+});
+
+// ✅ Variant — simplest form: just use the getter
+const computedVariant = computed(() => {
+  var v = settingsStore.variantForCurrentStudy; // getter value
+  v = v == null ? "" : String(v).trim();
+  return v ? v : "default";
+});
+
+const lessonKey = computed(
+  () =>
+    buildLessonContentKey(
+      computedStudy.value,
+      computedLanguageHL.value,
+      computedLanguageJF.value,
+      computedLessonNumber.value
+    ) || "lessonContent-invalid"
+);
+
+// ---- Lesson content readiness ----
+
+const { commonContent, topics, loadCommonContent } = useCommonContent(
+  computedStudy,
+  computedVariant, //this is a ref
+  computedLanguageHL
+);
+
+const {
+  completedLessons,
+  isLessonCompleted,
+  markLessonComplete,
+  loadProgress,
+} = useProgressTracker(computedStudy);
+
+// ---- UI: Language selector / drawer toggle ----
+
+const showLanguageSelect = true;
+
+const openLanguageSelect = inject("openLanguageSelect", null);
+
+function onChangeLanguageClick() {
+  if (typeof openLanguageSelect === "function") {
+    openLanguageSelect();
+    return;
+  }
+
+  console.warn("[SeriesMaster] No language UI handler provided");
+}
+
+const { getSection, readyHL } = useSiteContent(computedLanguageHL);
+
+const section = computed(() => {
+  const hl = computedLanguageHL.value;
+  if (readyHL.value !== hl) {
+    return { title: "", summary: "", paras: [] };
+  }
+  return getSection(computedStudy.value);
+});
+
+//Banner TURL (if any) for the current study, from common content or menu config.
+// Note that the banner image is expected to be in public/images and listed in the menu config for the study,
+
+const { getBanner } = useBannerForKey();
+// getBanner returns a STRING:
+const bannerUrl = computed(
+  () => getBanner("series", computedStudy.value) || ""
+);
+console.log("[SeriesMaster] bannerUrl:", bannerUrl.value);
+
+// For convenience, resolve menu items to their sections here,
+// so that we can display section titles/summaries in the menu if desired,
+// without needing to call getSection repeatedly in the menu component.
+// Note that getSection is a simple lookup and should be fast, but this way
+// we do it once and can reuse the resolved data in multiple places if needed.
+const pageTitle = computed(() => {
+  const s = section.value;
+  return (
+    (s && s.title) || (commonContent.value && commonContent.value.title) || ""
+  );
+});
+
+const pageParas = computed(() => {
+  const s = section.value;
+  return (
+    (s && s.paras) || (commonContent.value && commonContent.value.paras) || []
+  );
+});
+onMounted(() => {
+  try {
+
+    loadCommonContent();
+
+    if (import.meta.env.DEV) {
+      patchRouterForLogs(router);
+    }
+  } catch (err) {
+    console.error("❌ Could not load common content", err);
+  }
+});
+
+// update CommonContent when language, study or variant change
+watch(
+  [computedStudy, computedVariant, computedLanguageHL],
+  ([study, variant, hl], [oldStudy, oldVariant, oldHl]) => {
+    console.log(
+      "[SeriesMaster] common inputs changed:",
+      { oldStudy, oldVariant, oldHl },
+      "→",
+      { study, variant, hl }
+    );
+    loadCommonContent();
+  },
+  { immediate: true }
+);
+
+function updateLesson(nextLessonNumber) {
+  settingsStore.setLessonNumber(computedStudy.value, nextLessonNumber);
+}
+
+watch(computedLanguageHL, (next, prev) => {
+  const selected = textLanguageObjectSelected.value || null;
+  const selectedHL =
+    selected && selected.languageCodeHL ? String(selected.languageCodeHL) : "";
+
+  console.log(
+    "[SeriesMaster] HL changed:",
+    prev,
+    "→",
+    next,
+    "| selected:",
+    selectedHL
+  );
+});
+
+watch(section, (v) =>
+  console.log("[SeriesMaster] section changed →", v && v.title, v)
+);
+</script>
+
+<template>
+  <template v-if="commonContent && commonContent.topic">
+    <q-page padding>
+
+      <h1 class="dbs">
+        <span v-if="isSiteContentReady">{{ pageTitle }}</span>
+        <span v-else>{{ safeT("interface.loading", "Loading") }}</span>
+      </h1>
+
+
+      <SeriesLessonPrint
+        :key="lessonKey"
+        :languageCodeHL="computedLanguageHL"
+        :study="computedStudy"
+        :lesson="computedLessonNumber"
+        :commonContent="commonContent"
+      />
+
+
+  </template>
+
+  <template v-else>
+    <q-page padding>
+      <div class="text-negative text-h6">
+        {{ safeT("interface.loading", "Loading") }}
+      </div>
+    </q-page>
+  </template>
+</template>
